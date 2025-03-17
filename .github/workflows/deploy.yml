@@ -22,12 +22,11 @@ jobs:
       - name: Build project
         run: |
           npm run build
-          npm run export
 
       - name: Prepare output
         run: |
           mkdir output
-          cp -R my-scheduler/out/* output
+          cp -R out/* output
 
       - name: Pushes to personal repository
         id: push_directory
