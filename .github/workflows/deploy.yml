@@ -35,8 +35,8 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
           source-directory: "output"
-          destination-github-username: "YOUR_GITHUB_USERNAME"
-          destination-repository-name: "YOUR_REPO_NAME"
+          destination-github-username: davinahi
+          destination-repository-name: my-scheduler
           user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
           commit-message: ${{ github.event.commits[0].message }}
           target-branch: main
