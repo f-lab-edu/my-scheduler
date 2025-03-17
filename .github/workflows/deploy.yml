@@ -1,4 +1,4 @@
-name: scheduler-gihub-actions
+name: my-scheduler-nextjs-action
 
 on:
   push:
@@ -9,8 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -18,10 +17,20 @@ jobs:
           node-version: "20.x"
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          cd my-scheduler
+          npm ci
 
       - name: Build project
-        run: npm run build
+        run: |
+          cd my-scheduler
+          npm run build
+          npm run export
+
+      - name: Prepare output
+        run: |
+          mkdir output
+          cp -R my-scheduler/out/* output
 
       - name: Pushes to personal repository
         id: push_directory
@@ -30,10 +39,8 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
           source-directory: "output"
-          destination-github-username: davinahi
-          destination-repository-name: my-scheduler
+          destination-github-username: "YOUR_GITHUB_USERNAME"
+          destination-repository-name: "YOUR_REPO_NAME"
           user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
           commit-message: ${{ github.event.commits[0].message }}
           target-branch: main
-      - name: Test get variable exported by push-to-another-repository
-        run: echo $DESTINATION_CLONED_DIRECTORY
