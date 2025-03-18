@@ -1,6 +1,8 @@
 # my-scheduler
 배포링크: https://mymy-scheduler.vercel.app/
 
+<img width="561" alt="Screenshot 2025-03-18 at 1 14 18 AM" src="https://github.com/user-attachments/assets/18a7cc17-09b2-4098-b3ce-8a8e90d69844" />
+
 ### 프로젝트 제목 & 설명
 - 프로젝트명: my scheduler
 - 기존 [JS 프로젝트](https://github.com/f-lab-edu/Scheduler)를 Next.js를 활용하여 마이그레이션 하는 프로젝트입니다.
@@ -19,4 +21,3 @@
 - 프론트엔드: Next.js, Tailwind CSS
 - 백엔드 인프라: Firebase
 
-  <img width="561" alt="Screenshot 2025-03-18 at 1 14 18 AM" src="https://github.com/user-attachments/assets/18a7cc17-09b2-4098-b3ce-8a8e90d69844" />
