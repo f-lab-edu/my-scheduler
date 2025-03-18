@@ -15,4 +15,8 @@
 - drag & drop과 같은 동작을 통해 보다 유연한 사용자 경험을 제공
 - 로그인을 통해 사용자들이 함께 일정을 공유할 수 있는 기능 제공
 
+### 사용 기술
+- 프론트엔드: Next.js, Tailwind CSS
+- 백엔드 인프라: Firebase
+
   <img width="561" alt="Screenshot 2025-03-18 at 1 14 18 AM" src="https://github.com/user-attachments/assets/18a7cc17-09b2-4098-b3ce-8a8e90d69844" />
