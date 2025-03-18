@@ -7,8 +7,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        mainBlue: "#374370",
-        brightPurple: "#2e3653",
+        headerBlue: "#374370",
+        tabs: "#2e3653",
         white: "#ffffff",
         card: {
           high: "#5feef8",
@@ -22,20 +22,20 @@ export default {
           placeholder: "#959090",
         },
         background: {
-          startPurple: "#222841",
-          endBlack: "#001b41",
+          startContents: "#222841",
+          endContents: "#001b41",
           searchBar: "#373f60",
           taskList: "#2e3551",
-          count: "#434b70",
+          countBox: "#434b70",
           input: "#6a6c93",
-          agenda: "#2e3551",
+          agendaBox: "#2e3551",
         },
         border: {
           search: "#817a7a",
-          inputBottom: "#001b41",
+          editorTitle: "#001b41",
           editor: "#8f8e8e",
-          lightGray: "#ccc",
           gray: "#2d2d2d",
+          lightGray: "#ccc",
         },
         button: {
           filter: "#2e3653",
