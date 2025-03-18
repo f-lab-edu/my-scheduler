@@ -8,8 +8,10 @@
 - 기존 [JS 프로젝트](https://github.com/f-lab-edu/Scheduler)를 Next.js를 활용하여 마이그레이션 하는 프로젝트입니다.
 
 ### 프로젝트 목표
-- 기존 Vanilla JavaScript 프로젝트를 Next.js라는 프레임워크를 통해 개발하며 프레임워크를 사용하는 이유와 다른 점에 대해 이해하는 것
-- 변화된 Next.js를 익히며 제공하는 기능들에 대해 이해하기
+- Vanilla JavaScript → Next.js 전환 경험
+  - 기존에 순수 JavaScript로 구현했던 기능들을 Next.js 프레임워크로 재구성하며, 프레임워크 도입이 가져오는 구조적 이점과 개발 생산성 향상, 코드 유지보수성의 차별점을 명확히 이해하고 체득
+- Next.js 최신 기능 학습 및 실전 적용
+  - Next.js 14 기준으로 업데이트된 라우팅, 서버 컴포넌트(Server Components), Incremental Static Regeneration(ISR), API Routes, 이미지 최적화(Image Optimization) 등 핵심 기능을 직접 구현해 보며 각 기능의 동작 원리와 최적 활용 방안을 익히기
 
 ### 주요 기능
 - 사용자가 등록한 스케줄을 보더와 캘린더를 통해 관리 및 확인이 가능
