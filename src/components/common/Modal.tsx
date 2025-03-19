@@ -29,6 +29,7 @@ export default function Modal({ children, onClose }: Props) {
       role="button"
       className="fixed inset-0 bg-black/60 flex items-center justify-center"
       onClick={onClose}
+      onKeyUp={(e) => e.key === "Escape" && onClose()}
     >
       <div
         role="dialog"
