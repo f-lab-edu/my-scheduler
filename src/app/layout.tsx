@@ -18,6 +18,7 @@ export default function RootLayout({ children }: Props) {
       <body className="bg-background-startContents">
         <Header />
         {children}
+        <div id="portal"></div>
       </body>
     </html>
   );

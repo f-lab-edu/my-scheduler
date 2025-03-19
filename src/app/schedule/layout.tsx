@@ -8,7 +8,6 @@ export default function ScheduleLayout({ children }: Props) {
   return (
     <TabsProvider>
       <Tabs />
-      <div>hjkhjk</div>
       <main>{children}</main>
     </TabsProvider>
   );
