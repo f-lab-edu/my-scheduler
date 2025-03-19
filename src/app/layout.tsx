@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import Header from "@/components/common/Header";
+import Header from "@/components/layout/Header";
 import "./globals.css";
+import Tabs from "@/components/layout/Tabs";
 
 export const metadata: Metadata = {
   title: "Scheduler",
@@ -14,8 +15,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-background-startContents">
         <Header />
+        <Tabs />
         {children}
       </body>
     </html>
