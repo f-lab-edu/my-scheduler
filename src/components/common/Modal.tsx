@@ -29,7 +29,12 @@ export default function Modal({ children, onClose }: Props) {
       className="fixed inset-0 bg-black/60 flex items-center justify-center"
       onClick={onClose}
     >
-      <div role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
+      <div
+        role="dialog"
+        aria-modal="true"
+        onClick={(event) => event.stopPropagation()}
+        onKeyUp={(e) => e.key === "Escape" && onClose()}
+      >
         {children}
       </div>
     </div>,
