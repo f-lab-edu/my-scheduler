@@ -10,7 +10,7 @@ export default {
     extend: {
       colors: {
         headerBlue: "#374370",
-        tabs: "#2e3653",
+        tabs: "#8E95AF",
         white: "#ffffff",
         card: {
           high: "#5feef8",
@@ -31,6 +31,7 @@ export default {
           countBox: "#434b70",
           input: "#6a6c93",
           agendaBox: "#2e3551",
+          tabs: "#2e3653",
         },
         border: {
           search: "#817a7a",
@@ -38,6 +39,7 @@ export default {
           editor: "#8f8e8e",
           gray: "#2d2d2d",
           lightGray: "#ccc",
+          activeTab: "#5E7FEC",
         },
         button: {
           filter: "#2e3653",
