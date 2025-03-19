@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const PRIORITIES = ["High", "Medium", "Low"];
 export default function Editor() {
-  // value 처리
+  // TODO: 상태 및 props 처리
   return (
     <div className="py-[28px] px-[50px] rounded-lg bg-white ">
       <input
