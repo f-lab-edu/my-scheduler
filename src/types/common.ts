@@ -1,4 +1,3 @@
-import React from "react";
 import { ButtonHTMLAttributes, ReactNode } from "react";
 
 type Button = "add" | "filter" | "confirm" | "cancel";
