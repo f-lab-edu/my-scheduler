@@ -2,7 +2,7 @@
 import { useState, ChangeEvent, useActionState } from "react";
 import Image from "next/image";
 import dayjs from "dayjs";
-import { useModal } from "@/hooks/useModal";
+
 import calendarIcon from "@/assets/calendar.svg";
 import { submitTask } from "@/app/schedule/actions";
 import {
@@ -15,7 +15,6 @@ import {
 const PRIORITIES = ["High", "Medium", "Low"];
 
 export default function Editor() {
-  const { closeModal } = useModal();
   const [formState, formAction] = useActionState<TaskFormStatus, FormData>(
     submitTask,
     {
