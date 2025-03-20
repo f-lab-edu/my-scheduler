@@ -12,7 +12,7 @@ export default {
         headerBlue: "#374370",
         tabs: "#8E95AF",
         white: "#ffffff",
-        card: {
+        priority: {
           high: "#5feef8",
           medium: "#c4a8ff",
           low: "#ffd277",
