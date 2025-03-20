@@ -1,4 +1,6 @@
-import SearchBar from "./SearchInput";
+import CompoundButton from "@/components/common/button/CompoundButton";
+import SearchBar from "@/app/schedule/interactionBar/SearchBar";
+import plusIcon from "@/assets/plus.svg";
 
 export default function InteractionBar() {
   return (
@@ -8,6 +10,10 @@ export default function InteractionBar() {
         <span>3</span>
         <span>tasks</span>
       </span>
+      <CompoundButton variant="add">
+        <CompoundButton.Icon icon={plusIcon} />
+        <CompoundButton.Text text="Add New" />
+      </CompoundButton>
       <SearchBar />
     </div>
   );

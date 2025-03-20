@@ -44,6 +44,7 @@ export default {
         button: {
           filter: "#2e3653",
           prevNext: "#f7edff4d",
+          add: "#5E7FEC",
         },
         hover: {
           add: "#3c4b7e",
