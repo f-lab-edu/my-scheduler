@@ -2,39 +2,42 @@ name: my-scheduler-nextjs-action
 
 on:
   push:
-    branches: [fix/deploy]
+    branches: [main]
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20.x"
-      - name: Install & Build
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
         run: |
-          npm ci
           npm run build
 
-      - uses: actions/checkout@v4
+      #TODO: 추후 정상 동작 확인 후 제거 예정3
+      # - name: Prepare output
+      #   run: |
+      #     mkdir output
+      #     cp -R out/* output
+
+      - name: Pushes to personal repository
+        id: push_directory
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{secrets.API_CLASSIC_TOKEN_GITHUB_NEXT }}
         with:
-          repository: davinahi/my-scheduler
-          token: ${{ secrets.API_CLASSIC_TOKEN_GITHUB_NEXT }}
-          path: personal
-
-      # 동기화 -> 커밋 -> 푸시
-      - name: Sync to personal repo & push
-        run: |
-          rsync -av --delete --exclude='.git' --exclude='.github' ./ personal/
-          cd personal
-          git config user.name "davinahi"
-
-          git add .
-          git commit -m "Deploy from org repo @${{ github.sha }}" || echo "No changes to commit"
-          git push origin main
+          source-directory: "."
+          destination-github-username: davinahi
+          destination-repository-name: my-scheduler
+          user-name: davinahi
+          user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
+          commit-message: ${{ github.event.commits[0].message }}
+          target-branch: main
