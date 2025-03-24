@@ -1,17 +1,91 @@
 "use client";
-import calendarIcon from "@/assets/calendar.svg";
+import { useState, ChangeEvent, useActionState } from "react";
 import Image from "next/image";
+import dayjs from "dayjs";
+
+import calendarIcon from "@/assets/calendar.svg";
+import { submitTask } from "@/app/schedule/actions";
+import {
+  TaskFormStatus,
+  TaskForm,
+  Priority,
+  DateField,
+} from "@/types/schedule";
 
 const PRIORITIES = ["High", "Medium", "Low"];
+
 export default function Editor() {
-  // TODO: 상태 및 props 처리
+  const [formState, formAction] = useActionState<TaskFormStatus, FormData>(
+    submitTask,
+    {
+      success: false,
+      message: "",
+    }
+  );
+  const [taskFormData, setTaskFormData] = useState<TaskForm>({
+    title: "",
+    startDate: dayjs().format("YYYY-MM-DD"),
+    endDate: dayjs().format("YYYY-MM-DD"),
+    priority: "High",
+    description: "",
+  });
+
+  const priorityClasses: Record<Priority, string> = {
+    High: "bg-priority-high",
+    Medium: "bg-priority-medium",
+    Low: "bg-priority-low",
+  };
+
+  const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setTaskFormData((prev) => ({ ...prev, title: event.target.value }));
+  };
+
+  const handleChangeDate = (
+    event: ChangeEvent<HTMLInputElement>,
+    dateField: DateField
+  ) => {
+    const newDate = dayjs(event.target.value);
+
+    // TODO: 해당 유효성 검사를 submit 때 할지 정하기
+    if (dateField === "end") {
+      if (newDate.isBefore(dayjs(taskFormData.startDate))) {
+        alert("종료 날짜는 시작 날짜보다 이전일 수 없습니다.");
+        return;
+      }
+      setTaskFormData((prev) => ({
+        ...prev,
+        endDate: event.target.value,
+      }));
+    } else {
+      setTaskFormData((prev) => ({
+        ...prev,
+        startDate: event.target.value,
+      }));
+    }
+  };
+
+  const handlePrioritySelect = (event: ChangeEvent<HTMLSelectElement>) => {
+    setTaskFormData((prev) => ({
+      ...prev,
+      priority: event.target.value as Priority,
+    }));
+  };
+
+  const handleDescriptionChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setTaskFormData((prev) => ({ ...prev, description: event.target.value }));
+  };
+
   return (
-    <div className="py-[28px] px-[50px] rounded-lg bg-white ">
+    <form
+      action={formAction}
+      className="py-[28px] px-[50px] rounded-lg bg-white "
+    >
       <input
+        name="title"
         placeholder="New Title"
         className="mt-7 border-b-2 border-border-editor w-[600px] h-[40px] text-2xl outline-none"
-        value=""
-        onChange={() => {}}
+        value={taskFormData.title}
+        onChange={handleTitleChange}
       />
 
       <div className="flex items-center justify-between mt-4">
@@ -23,26 +97,33 @@ export default function Editor() {
             alt="calendar icon"
           />
           <input
-            className="border border-gray-300 rounded px-2 py-1 outline-none"
+            name="startDate"
             type="date"
             placeholder="start"
-            value=""
-            onChange={() => {}}
+            value={taskFormData.startDate}
+            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+              handleChangeDate(event, "start")
+            }
+            className="border border-gray-300 rounded px-2 py-1 outline-none"
           />
           <input
-            className="border border-gray-300 rounded px-2 py-1 outline-none"
+            name="endDate"
             type="date"
             placeholder="end"
-            value=""
-            onChange={() => {}}
+            value={taskFormData.endDate}
+            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+              handleChangeDate(event, "end")
+            }
+            className="border border-gray-300 rounded px-2 py-1 outline-none"
           />
         </div>
 
         <div className="flex items-center space-x-2">
           <span>priority</span>
           <select
+            name="priority"
             className="border border-gray-300 rounded px-2 py-1 outline-none"
-            onChange={() => {}}
+            onChange={handlePrioritySelect}
           >
             {PRIORITIES.map((priority, i) => (
               <option key={`${priority}-${i}`} value={priority}>
@@ -50,18 +131,34 @@ export default function Editor() {
               </option>
             ))}
           </select>
-          <div className="w-4 h-4 rounded-full bg-blue-500" />
+          <div
+            className={`w-7 h-7 rounded ${
+              priorityClasses[taskFormData.priority]
+            }`}
+          />
         </div>
       </div>
 
       <textarea
-        className="mt-4 w-full h-32 border border-gray-300 rounded p-2 outline-none"
+        name="description"
         placeholder="Description"
-        value=""
-        onChange={() => {}}
+        value={taskFormData.description}
+        onChange={handleDescriptionChange}
+        className="w-full min-h-[350px] h-32 mt-4 border border-gray-300 rounded p-5 outline-none resize-none"
       />
 
-      <div className="flex justify-end space-x-2 mt-4"></div>
-    </div>
+      <div className="flex justify-end space-x-2 mt-4">
+        <button type="button">cancel</button>
+        <button type="submit">submit</button>
+      </div>
+
+      {/* TODO: db 연결해서 테스트   */}
+      {formState?.success && (
+        <div className="text-green-600 mt-2">{formState.message}</div>
+      )}
+      {formState?.success === false && (
+        <div className="text-red-600 mt-2">{formState.message}</div>
+      )}
+    </form>
   );
 }
