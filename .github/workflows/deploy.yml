@@ -37,6 +37,7 @@ jobs:
           source-directory: "."
           destination-github-username: davinahi
           destination-repository-name: my-scheduler
+          user-name: "davinahi"
           user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
           commit-message: ${{ github.event.commits[0].message }}
           target-branch: main
