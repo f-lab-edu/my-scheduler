@@ -3,6 +3,7 @@ name: my-scheduler-nextjs-action
 on:
   push:
     branches: [fix/deploy]
+    # branches: [main]
 
 jobs:
   build:
