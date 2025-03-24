@@ -2,7 +2,7 @@ name: my-scheduler-nextjs-action
 
 on:
   push:
-    branches: [main]
+    branches: [fix/deploy]
 
 jobs:
   build:
@@ -22,19 +22,13 @@ jobs:
         run: |
           npm run build
 
-      #TODO: 추후 정상 동작 확인 후 제거 예정3
-      # - name: Prepare output
-      #   run: |
-      #     mkdir output
-      #     cp -R out/* output
-
       - name: Pushes to personal repository
         id: push_directory
         uses: cpina/github-action-push-to-another-repository@main
         env:
           API_TOKEN_GITHUB: ${{secrets.API_CLASSIC_TOKEN_GITHUB_NEXT }}
         with:
-          source-directory: "."
+          source-directory: "./"
           destination-github-username: davinahi
           destination-repository-name: my-scheduler
           user-name: davinahi
