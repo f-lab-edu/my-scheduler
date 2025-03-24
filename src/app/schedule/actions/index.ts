@@ -1,7 +1,7 @@
 "use server";
 import { TaskFormStatus, Priority } from "@/types/schedule";
 
-export async function submitTask(
+async function submitTask(
   state: TaskFormStatus,
   payload: FormData
 ): Promise<TaskFormStatus> {
