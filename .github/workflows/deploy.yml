@@ -22,7 +22,7 @@ jobs:
         run: |
           npm run build
 
-      #TODO: 추후 정상 동작 확인 후 제거 예정
+      #TODO: 추후 정상 동작 확인 후 제거 예정2
       # - name: Prepare output
       #   run: |
       #     mkdir output
