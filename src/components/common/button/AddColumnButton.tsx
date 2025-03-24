@@ -1,5 +1,4 @@
 import plusIcon from "@/assets/plus.svg";
-import { useModal } from "@/hooks/useModal";
 import Image from "next/image";
 export default function AddColumnButton() {
   return (
