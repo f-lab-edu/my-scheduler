@@ -1,4 +1,4 @@
-import { ComponentType, SVGProps } from "react";
+import { ComponentType, SVGProps, MouseEventHandler } from "react";
 
 type Size = "sm" | "md";
 
@@ -10,11 +10,21 @@ interface Props {
   icon: ComponentType<SVGProps<SVGSVGElement>>;
   alt: string;
   size?: Size;
+  onClick: MouseEventHandler<HTMLButtonElement>;
 }
 
-export default function IconButton({ icon: Icon, alt, size = "md" }: Props) {
+export default function IconButton({
+  icon: Icon,
+  alt,
+  size = "md",
+  onClick,
+}: Props) {
   return (
-    <button aria-label={alt} className="p-2 rounded hover:bg-hover-add">
+    <button
+      aria-label={alt}
+      className="p-2 rounded hover:bg-hover-add"
+      onClick={onClick}
+    >
       <Icon className={SIZE[size]} />
     </button>
   );
