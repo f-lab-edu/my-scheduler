@@ -1,5 +1,5 @@
 export type DateField = "start" | "end";
-export type Priorities = "high" | "medium" | "low";
+export type Priorities = "High" | "Medium" | "Low";
 
 export interface StatusType {
   statusName: string;

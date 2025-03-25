@@ -23,6 +23,7 @@ export default {
           taskDescription: "#4f4f4f",
           placeholder: "#959090",
           filter: "#8E95AF",
+          gray: "#4F4F4F",
         },
         background: {
           startContents: "#222841",
