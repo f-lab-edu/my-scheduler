@@ -1,13 +1,12 @@
 "use client";
 import { useState, ChangeEvent, useActionState } from "react";
-import Image from "next/image";
 import dayjs from "dayjs";
 
 import calendarIcon from "@/assets/calendar.svg";
 import { submitTask } from "@/app/schedule/actions";
 import {
-  TaskFormStatus,
-  TaskForm,
+  TaskFormStatusType,
+  TaskFormType,
   Priorities,
   DateField,
 } from "@/types/scheduleType";
@@ -15,14 +14,14 @@ import {
 const PRIORITIES = ["High", "Medium", "Low"];
 
 export default function Editor() {
-  const [formState, formAction] = useActionState<TaskFormStatus, FormData>(
+  const [formState, formAction] = useActionState<TaskFormStatusType, FormData>(
     submitTask,
     {
       success: false,
       message: "",
     }
   );
-  const [taskFormData, setTaskFormData] = useState<TaskForm>({
+  const [taskFormData, setTaskFormData] = useState<TaskFormType>({
     title: "",
     startDate: dayjs().format("YYYY-MM-DD"),
     endDate: dayjs().format("YYYY-MM-DD"),
