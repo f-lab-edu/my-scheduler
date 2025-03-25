@@ -28,7 +28,7 @@ export default {
           startContents: "#222841",
           endContents: "#001b41",
           searchBar: "#373f60",
-          taskList: "#2e3551",
+          status: "#2e3551",
           countBox: "#434b70",
           input: "#6a6c93",
           agendaBox: "#2e3551",
