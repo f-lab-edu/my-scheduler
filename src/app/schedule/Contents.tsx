@@ -1,4 +1,4 @@
-import StatusList from "./board/StatusList";
+import StatusList from "@/app/schedule/board/StatusList";
 import { Priorities } from "@/types/scheduleType";
 import SideAddColumnButton from "@/components/common/button/SideAddColumnButton";
 
@@ -52,7 +52,7 @@ const statusDummyData = [
 
 export default function Contents() {
   return (
-    <div className="flex px-[70px]">
+    <div className="flex px-[70px] overflow-x-auto scrollbar-thin scrollbar-thumb-gray-500">
       <section className="flex gap-4 h-full">
         {statusDummyData.map((status, index) => (
           <StatusList key={`${status.statusName}-${index}`} status={status} />
