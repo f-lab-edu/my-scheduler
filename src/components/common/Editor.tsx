@@ -8,9 +8,9 @@ import { submitTask } from "@/app/schedule/actions";
 import {
   TaskFormStatus,
   TaskForm,
-  Priority,
+  Priorities,
   DateField,
-} from "@/types/schedule";
+} from "@/types/scheduleType";
 
 const PRIORITIES = ["High", "Medium", "Low"];
 
@@ -30,7 +30,7 @@ export default function Editor() {
     description: "",
   });
 
-  const priorityClasses: Record<Priority, string> = {
+  const priorityClasses: Record<Priorities, string> = {
     High: "bg-priority-high",
     Medium: "bg-priority-medium",
     Low: "bg-priority-low",
@@ -67,7 +67,7 @@ export default function Editor() {
   const handlePrioritySelect = (event: ChangeEvent<HTMLSelectElement>) => {
     setTaskFormData((prev) => ({
       ...prev,
-      priority: event.target.value as Priority,
+      priority: event.target.value as Priorities,
     }));
   };
 
