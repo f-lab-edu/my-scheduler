@@ -22,7 +22,7 @@ export default function IconButton({
   return (
     <button
       aria-label={alt}
-      className="p-2 rounded hover:bg-hover-add"
+      className="p-2 rounded hover:bg-headerBlue"
       onClick={onClick}
     >
       <Icon className={SIZE[size]} />
