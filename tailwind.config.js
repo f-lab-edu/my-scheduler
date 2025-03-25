@@ -22,6 +22,7 @@ export default {
           tabInactive: "#8e95af",
           taskDescription: "#4f4f4f",
           placeholder: "#959090",
+          filter: "#8E95AF",
         },
         background: {
           startContents: "#222841",
@@ -47,8 +48,8 @@ export default {
           add: "#5E7FEC",
         },
         hover: {
-          add: "#3c4b7e",
-          filter: "#403c6d",
+          add: "#597BED",
+          filter: "#2C3555",
           dropdown: "#e5e4ee",
         },
         scrollbar: {
