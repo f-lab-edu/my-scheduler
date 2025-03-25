@@ -10,6 +10,7 @@ import {
   Priorities,
   DateField,
 } from "@/types/scheduleType";
+import ConfirmButton from "./button/ConfirmButtons";
 
 const PRIORITIES = ["High", "Medium", "Low"];
 
@@ -142,8 +143,8 @@ export default function Editor() {
       />
 
       <div className="flex justify-end space-x-2 mt-4">
-        <button type="button">cancel</button>
-        <button type="submit">submit</button>
+        <ConfirmButton isSave={false} text="Cancel" type="button" />
+        <ConfirmButton isSave={true} text="Save" />
       </div>
 
       {/* TODO: db 연결해서 테스트   */}

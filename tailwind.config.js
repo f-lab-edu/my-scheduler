@@ -47,6 +47,7 @@ export default {
           filter: "#2e3653",
           prevNext: "#f7edff4d",
           add: "#5E7FEC",
+          save: "#0851EE",
         },
         hover: {
           add: "#597BED",
