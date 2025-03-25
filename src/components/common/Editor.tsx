@@ -2,7 +2,7 @@
 import { useState, ChangeEvent, useActionState } from "react";
 import dayjs from "dayjs";
 
-import calendarIcon from "@/assets/calendar.svg";
+import CalendarIcon from "@/assets/calendar.svg";
 import { submitTask } from "@/app/schedule/actions";
 import {
   TaskFormStatusType,
@@ -89,12 +89,7 @@ export default function Editor() {
 
       <div className="flex items-center justify-between mt-4">
         <div className="flex items-center space-x-2">
-          <Image
-            width={24}
-            height={24}
-            src={calendarIcon}
-            alt="calendar icon"
-          />
+          <CalendarIcon />
           <input
             name="startDate"
             type="date"
