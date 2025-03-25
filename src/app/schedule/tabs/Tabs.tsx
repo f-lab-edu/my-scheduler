@@ -1,12 +1,14 @@
 "use client";
 
-import Tab from "./Tab";
+import Tab from "@/app/schedule/tabs/Tab";
+import { useTabsContext } from "./TabsContext";
 
-const TabList = ["Board", "Calendar"];
 export default function Tabs() {
+  const { tabList } = useTabsContext();
+
   return (
     <div className="pt-12 pl-[70px] bg-background-tabs">
-      {TabList.map((tab) => (
+      {tabList.map((tab) => (
         <Tab key={tab} tab={tab} />
       ))}
     </div>
