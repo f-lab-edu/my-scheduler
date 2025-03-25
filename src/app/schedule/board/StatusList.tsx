@@ -6,12 +6,16 @@ import { StatusType } from "@/types/scheduleType";
 import menuIcon from "@/assets/three-dots.svg";
 import plusIcon from "@/assets/plus.svg";
 import MenuList from "@/components/dropdown/MenuList";
+import { useModal } from "@/hooks/useModal";
+import Modal from "@/components/common/Modal";
+import Editor from "@/components/common/Editor";
 
 interface Props {
   status: StatusType;
 }
 
 export default function StatusList({ status }: Props) {
+  const { open, openModal, closeModal } = useModal();
   const [dropdownPosition, setDropdownPosition] = useState<{
     top: number;
     left: number;
@@ -44,7 +48,7 @@ export default function StatusList({ status }: Props) {
             alt="menu button"
             onClick={(event) => toggleDropdown(event)}
           />
-          <IconButton icon={plusIcon} alt="plus button" onClick={() => {}} />
+          <IconButton icon={plusIcon} alt="plus button" onClick={openModal} />
         </span>
       </div>
       <div className="flex flex-col gap-2 mt-5">
@@ -59,6 +63,12 @@ export default function StatusList({ status }: Props) {
           left={dropdownPosition.left}
           onClick={() => setDropdownPosition(null)}
         />
+      )}
+
+      {open && (
+        <Modal onClose={closeModal}>
+          <Editor />
+        </Modal>
       )}
     </section>
   );
