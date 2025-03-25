@@ -1,4 +1,3 @@
-import { useModal } from "@/hooks/useModal";
 import Modal from "./Modal";
 
 interface Props {
