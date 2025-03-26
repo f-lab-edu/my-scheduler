@@ -7,7 +7,7 @@ import { submitTask } from "@/app/schedule/actions";
 import {
   TaskFormStatusType,
   TaskFormType,
-  Priorities,
+  Priority,
   DateField,
 } from "@/types/scheduleType";
 import ConfirmButton from "./button/ConfirmButtons";
@@ -30,7 +30,7 @@ export default function Editor() {
     description: "",
   });
 
-  const priorityClasses: Record<Priorities, string> = {
+  const priorityClasses: Record<Priority, string> = {
     High: "bg-priority-high",
     Medium: "bg-priority-medium",
     Low: "bg-priority-low",
@@ -67,7 +67,7 @@ export default function Editor() {
   const handlePrioritySelect = (event: ChangeEvent<HTMLSelectElement>) => {
     setTaskFormData((prev) => ({
       ...prev,
-      priority: event.target.value as Priorities,
+      priority: event.target.value as Priority,
     }));
   };
 

@@ -1,5 +1,5 @@
 export type DateField = "start" | "end";
-export type Priorities = "High" | "Medium" | "Low";
+export type Priority = "High" | "Medium" | "Low";
 
 export interface StatusType {
   statusName: string;
@@ -12,7 +12,7 @@ export interface TaskType {
   title: string;
   startDate: string;
   endDate: string;
-  priority: Priorities;
+  priority: Priority;
   description: string;
   statusId: string | null;
   taskId?: string; //수정 시에만 필요
@@ -24,7 +24,7 @@ export interface TaskFormType {
   title: string;
   startDate: string;
   endDate: string;
-  priority: Priorities;
+  priority: Priority;
   description: string;
 }
 

@@ -1,5 +1,5 @@
 import StatusList from "@/app/schedule/board/StatusList";
-import { Priorities } from "@/types/scheduleType";
+import { Priority } from "@/types/scheduleType";
 import SideAddColumnButton from "@/components/common/button/SideAddColumnButton";
 
 const statusDummyData = [
@@ -11,7 +11,7 @@ const statusDummyData = [
         title: "밥 먹기",
         startDate: "2025-03-03",
         endDate: "2025-04-01",
-        priority: "High" as Priorities,
+        priority: "High" as Priority,
         description: "밥 먹고 뭐 먹을까",
         statusId: "1",
         taskId: "2",
@@ -28,7 +28,7 @@ const statusDummyData = [
         title: "밥 먹기",
         startDate: "2025-03-03",
         endDate: "2025-04-01",
-        priority: "High" as Priorities,
+        priority: "High" as Priority,
         description: "밥 먹고 뭐 먹을까",
         statusId: "1",
         taskId: "3",
@@ -39,7 +39,7 @@ const statusDummyData = [
         title: "놀기",
         startDate: "2025-03-26",
         endDate: "2025-03-26",
-        priority: "Low" as Priorities,
+        priority: "Low" as Priority,
         description: "뭐하고 놀까",
         statusId: "4",
         taskId: "5",
