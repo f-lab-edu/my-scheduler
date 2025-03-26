@@ -5,15 +5,17 @@ import { createContext, useContext, useState, ReactNode } from "react";
 type Props = {
   activeTab: string;
   setActiveTab: (name: string) => void;
+  tabList: string[];
 };
 
 const TabsContext = createContext<Props | null>(null);
 
 export function TabsProvider({ children }: { children: ReactNode }) {
   const [activeTab, setActiveTab] = useState("Board");
+  const tabList = ["Board", "Calendar"];
 
   return (
-    <TabsContext.Provider value={{ activeTab, setActiveTab }}>
+    <TabsContext.Provider value={{ activeTab, setActiveTab, tabList }}>
       {children}
     </TabsContext.Provider>
   );
