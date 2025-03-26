@@ -142,8 +142,13 @@ export default function Editor() {
       />
 
       <div className="flex justify-end space-x-2 mt-4">
-        <ConfirmButton isSave={false} text="Cancel" type="button" />
-        <ConfirmButton isSave={true} text="Save" />
+        <ConfirmButton
+          isSave={false}
+          text="Cancel"
+          type="button"
+          onClose={() => {}}
+        />
+        <ConfirmButton isSave={true} text="Save" onClose={() => {}} />
       </div>
 
       {/* TODO: db 연결해서 테스트   */}
