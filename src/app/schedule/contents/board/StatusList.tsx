@@ -1,6 +1,6 @@
 "use client";
 import { MouseEvent, useState } from "react";
-import Task from "@/app/schedule/board/Task";
+import Task from "@/app/schedule/contents/board/Task";
 import IconButton from "@/components/common/button/IconButton";
 import { StatusType } from "@/types/scheduleType";
 import menuIcon from "@/assets/three-dots.svg";

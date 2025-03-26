@@ -1,6 +1,6 @@
 "use client";
 
-import Contents from "@/app/schedule/Contents";
+import Contents from "@/app/schedule/contents/Contents";
 
 export default function Page() {
   return (

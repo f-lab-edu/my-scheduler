@@ -1,6 +1,7 @@
-import StatusList from "@/app/schedule/board/StatusList";
+import StatusList from "@/app/schedule/contents/board/StatusList";
 import { Priority } from "@/types/scheduleType";
 import SideAddColumnButton from "@/components/common/button/SideAddColumnButton";
+import AddStatusInput from "@/components/common/AddStatusInput";
 
 const statusDummyData = [
   {
@@ -58,8 +59,9 @@ export default function Contents() {
           <StatusList key={`${status.statusName}-${index}`} status={status} />
         ))}
       </section>
-      <section>
-        <SideAddColumnButton />
+      <section className="flex justify-end py-5 px-3 w-96 ml-4 rounded-xl m-w-[150px] h-full bg-background-status hover:bg-headerBlue">
+        {/* <SideAddColumnButton /> */}
+        <AddStatusInput />
       </section>
     </div>
   );
