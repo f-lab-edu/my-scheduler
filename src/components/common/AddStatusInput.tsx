@@ -3,7 +3,10 @@
 import { ChangeEvent, useState } from "react";
 import ConfirmButton from "@/components/common/button/ConfirmButtons";
 
-export default function AddStatusInput() {
+interface Props {
+  onClick: () => void;
+}
+export default function AddStatusInput({ onClick }: Props) {
   const [value, setValue] = useState("");
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -17,8 +20,13 @@ export default function AddStatusInput() {
         onChange={handleInputChange}
       />
       <div className="flex justify-end gap-1 mt-2">
-        <ConfirmButton isSave={false} text="Cancel" size="sm" />
-        <ConfirmButton isSave={true} text="Save" size="sm" />
+        <ConfirmButton
+          isSave={false}
+          text="Cancel"
+          size="sm"
+          onClose={onClick}
+        />
+        <ConfirmButton isSave={true} text="Save" size="sm" onClose={onClick} />
       </div>
     </div>
   );

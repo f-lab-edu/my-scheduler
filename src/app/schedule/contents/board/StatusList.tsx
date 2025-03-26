@@ -1,14 +1,14 @@
 "use client";
 import { MouseEvent, useState } from "react";
 import Task from "@/app/schedule/contents/board/Task";
+import Modal from "@/components/common/Modal";
+import Editor from "@/components/common/Editor";
+import MenuList from "@/components/dropdown/MenuList";
 import IconButton from "@/components/common/button/IconButton";
+import { useModal } from "@/hooks/useModal";
 import { StatusType } from "@/types/scheduleType";
 import menuIcon from "@/assets/three-dots.svg";
 import plusIcon from "@/assets/plus.svg";
-import MenuList from "@/components/dropdown/MenuList";
-import { useModal } from "@/hooks/useModal";
-import Modal from "@/components/common/Modal";
-import Editor from "@/components/common/Editor";
 
 interface Props {
   status: StatusType;
@@ -23,7 +23,6 @@ export default function StatusList({ status }: Props) {
 
   const toggleDropdown = (event: MouseEvent<HTMLButtonElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
-
     setDropdownPosition(
       dropdownPosition
         ? null
@@ -33,6 +32,7 @@ export default function StatusList({ status }: Props) {
           }
     );
   };
+
   return (
     <section className="flex flex-col py-5 px-3 mb-[100px] w-96 rounded-xl bg-background-status h-full ">
       <div className="flex justify-between">

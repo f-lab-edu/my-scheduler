@@ -2,6 +2,7 @@ import StatusList from "@/app/schedule/contents/board/StatusList";
 import { Priority } from "@/types/scheduleType";
 import SideAddColumnButton from "@/components/common/button/SideAddColumnButton";
 import AddStatusInput from "@/components/common/AddStatusInput";
+import { useContentsContext } from "./ContentsContext";
 
 const statusDummyData = [
   {
@@ -52,6 +53,11 @@ const statusDummyData = [
 ];
 
 export default function Contents() {
+  const { isAddStatusVisible, setIsAddStatusVisible } = useContentsContext();
+  const handleAddStatusInputVisibility = () => {
+    setIsAddStatusVisible(!isAddStatusVisible);
+  };
+
   return (
     <div className="flex px-[70px] overflow-x-auto scrollbar-thin scrollbar-thumb-gray-500">
       <section className="flex gap-4 h-full">
@@ -59,9 +65,13 @@ export default function Contents() {
           <StatusList key={`${status.statusName}-${index}`} status={status} />
         ))}
       </section>
-      <section className="flex justify-end py-5 px-3 w-96 ml-4 rounded-xl m-w-[150px] h-full bg-background-status hover:bg-headerBlue">
-        {/* <SideAddColumnButton /> */}
-        <AddStatusInput />
+      <section className="flex justify-end py-5 px-3 w-96 ml-4 rounded-xl m-w-[150px] h-full bg-background-status">
+        {!isAddStatusVisible && (
+          <SideAddColumnButton onClick={handleAddStatusInputVisibility} />
+        )}
+        {isAddStatusVisible && (
+          <AddStatusInput onClick={handleAddStatusInputVisibility} />
+        )}
       </section>
     </div>
   );
