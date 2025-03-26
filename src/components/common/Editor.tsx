@@ -1,28 +1,27 @@
 "use client";
 import { useState, ChangeEvent, useActionState } from "react";
-import Image from "next/image";
 import dayjs from "dayjs";
 
-import calendarIcon from "@/assets/calendar.svg";
+import CalendarIcon from "@/assets/calendar.svg";
 import { submitTask } from "@/app/schedule/actions";
 import {
-  TaskFormStatus,
-  TaskForm,
-  Priority,
+  TaskFormStatusType,
+  TaskFormType,
+  Priorities,
   DateField,
-} from "@/types/schedule";
+} from "@/types/scheduleType";
 
 const PRIORITIES = ["High", "Medium", "Low"];
 
 export default function Editor() {
-  const [formState, formAction] = useActionState<TaskFormStatus, FormData>(
+  const [formState, formAction] = useActionState<TaskFormStatusType, FormData>(
     submitTask,
     {
       success: false,
       message: "",
     }
   );
-  const [taskFormData, setTaskFormData] = useState<TaskForm>({
+  const [taskFormData, setTaskFormData] = useState<TaskFormType>({
     title: "",
     startDate: dayjs().format("YYYY-MM-DD"),
     endDate: dayjs().format("YYYY-MM-DD"),
@@ -30,7 +29,7 @@ export default function Editor() {
     description: "",
   });
 
-  const priorityClasses: Record<Priority, string> = {
+  const priorityClasses: Record<Priorities, string> = {
     High: "bg-priority-high",
     Medium: "bg-priority-medium",
     Low: "bg-priority-low",
@@ -67,7 +66,7 @@ export default function Editor() {
   const handlePrioritySelect = (event: ChangeEvent<HTMLSelectElement>) => {
     setTaskFormData((prev) => ({
       ...prev,
-      priority: event.target.value as Priority,
+      priority: event.target.value as Priorities,
     }));
   };
 
@@ -90,12 +89,7 @@ export default function Editor() {
 
       <div className="flex items-center justify-between mt-4">
         <div className="flex items-center space-x-2">
-          <Image
-            width={24}
-            height={24}
-            src={calendarIcon}
-            alt="calendar icon"
-          />
+          <CalendarIcon />
           <input
             name="startDate"
             type="date"

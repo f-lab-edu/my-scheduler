@@ -1,14 +1,15 @@
 "use server";
-import { TaskFormStatus, Priority } from "@/types/schedule";
+import { TaskFormStatusType, Priorities } from "@/types/scheduleType";
 
 export async function submitTask(
-  state: TaskFormStatus,
+  state: TaskFormStatusType,
   payload: FormData
-): Promise<TaskFormStatus> {
+): Promise<TaskFormStatusType> {
   const title = payload.get("title")?.toString() || "";
   const startDate = payload.get("startDate")?.toString() || "";
   const endDate = payload.get("endDate")?.toString() || "";
-  const priority = (payload.get("priority")?.toString() || "High") as Priority;
+  const priority = (payload.get("priority")?.toString() ||
+    "High") as Priorities;
   const description = payload.get("description")?.toString() || "";
 
   if (!title) {
