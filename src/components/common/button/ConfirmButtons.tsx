@@ -25,7 +25,7 @@ export default function ConfirmButton({
       ? "w-[75px] h-[40px] text-[14px] p-[10px]"
       : "w-[108px] h-11 px-5";
 
-  const handleInputClose = () => {
+  const handleConfirm = () => {
     if (isSave) {
       onClose();
       onSave();
@@ -36,7 +36,7 @@ export default function ConfirmButton({
     <button
       className={clsx(saveClassName, sizeClassName, baseClassName)}
       type={type}
-      onClick={handleInputClose}
+      onClick={handleConfirm}
     >
       {text}
     </button>
