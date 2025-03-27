@@ -1,7 +1,7 @@
 "use client";
 import { useState, ChangeEvent, useActionState } from "react";
 import dayjs from "dayjs";
-import { submitTask } from "@/app/schedule/actions";
+import { TaskActions } from "@/app/schedule/contents/TaskActions";
 import ConfirmButton from "@/components/common/button/ConfirmButtons";
 import {
   TaskFormStatusType,
@@ -15,7 +15,7 @@ const PRIORITIES = ["High", "Medium", "Low"];
 
 export default function Editor() {
   const [formState, formAction] = useActionState<TaskFormStatusType, FormData>(
-    submitTask,
+    TaskActions,
     {
       success: false,
       message: "",

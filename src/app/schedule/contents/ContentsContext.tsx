@@ -1,9 +1,18 @@
 "use client";
 
-import { Priority } from "@/types/scheduleType";
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  Dispatch,
+  SetStateAction,
+} from "react";
+import { Priority, StatusType } from "@/types/scheduleType";
 
 type Props = {
+  statusList: StatusType[];
+  setStatusList: Dispatch<SetStateAction<StatusType[]>>;
   searchValue: string;
   setSearchValue: (value: string) => void;
   isAddStatusVisible: boolean;
@@ -15,6 +24,7 @@ type Props = {
 const ContentsContext = createContext<Props | null>(null);
 
 export function ContentsProvider({ children }: { children: ReactNode }) {
+  const [statusList, setStatusList] = useState<StatusType[]>([]);
   const [searchValue, setSearchValue] = useState("");
   const [isAddStatusVisible, setIsAddStatusVisible] = useState(false);
   const [filterList, setFilterList] = useState<Priority[]>([]);
@@ -22,6 +32,8 @@ export function ContentsProvider({ children }: { children: ReactNode }) {
   return (
     <ContentsContext.Provider
       value={{
+        statusList,
+        setStatusList,
         searchValue,
         setSearchValue,
         isAddStatusVisible,

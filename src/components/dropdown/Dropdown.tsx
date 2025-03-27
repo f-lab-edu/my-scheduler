@@ -20,7 +20,7 @@ export default function Dropdown({
   useEffect(() => {
     const $portal = document.getElementById("portal");
     setNode($portal);
-  });
+  }, []);
 
   if (!node) return null;
 

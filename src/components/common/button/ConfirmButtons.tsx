@@ -5,6 +5,7 @@ interface Props {
   type?: "button" | "submit" | "reset";
   size?: "sm" | "md";
   onClose: () => void;
+  onSave?: () => void;
 }
 
 export default function ConfirmButton({
@@ -13,6 +14,7 @@ export default function ConfirmButton({
   type = "submit",
   size = "md",
   onClose,
+  onSave = () => {},
 }: Props) {
   const baseClassName = "rounded-lg cursor-pointer";
   const saveClassName = isSave
@@ -26,7 +28,7 @@ export default function ConfirmButton({
   const handleInputClose = () => {
     if (isSave) {
       onClose();
-      // TODO: 저장동작 (서버함수)
+      onSave();
     } else onClose();
   };
 

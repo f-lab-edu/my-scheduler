@@ -2,15 +2,28 @@
 
 import { ChangeEvent, useState } from "react";
 import ConfirmButton from "@/components/common/button/ConfirmButtons";
+import { StatusType } from "@/types/scheduleType";
 
 interface Props {
   onClick: () => void;
+  onSave: (status: StatusType) => void;
 }
-export default function AddStatusInput({ onClick }: Props) {
+export default function AddStatusInput({ onClick, onSave }: Props) {
   const [value, setValue] = useState("");
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
+
+  const handleSaveStatus = () => {
+    const newStatus: StatusType = {
+      statusName: value,
+      count: 0,
+      taskList: [],
+    };
+
+    onSave(newStatus);
+  };
+
   return (
     <div>
       <input
@@ -26,7 +39,13 @@ export default function AddStatusInput({ onClick }: Props) {
           size="sm"
           onClose={onClick}
         />
-        <ConfirmButton isSave={true} text="Save" size="sm" onClose={onClick} />
+        <ConfirmButton
+          isSave={true}
+          text="Save"
+          size="sm"
+          onClose={onClick}
+          onSave={handleSaveStatus}
+        />
       </div>
     </div>
   );
