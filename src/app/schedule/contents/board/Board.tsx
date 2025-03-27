@@ -5,6 +5,7 @@ import { StatusType } from "@/types/scheduleType";
 import SideAddColumnButton from "@/components/common/button/SideAddColumnButton";
 import AddStatusInput from "@/components/common/AddStatusInput";
 import { useContentsContext } from "../ContentsContext";
+import { useEffect } from "react";
 
 interface StatusProps {
   status: StatusType;
@@ -12,9 +13,10 @@ interface StatusProps {
 
 interface Props {
   onCreateNewStatus: (status: StatusProps) => Promise<string>;
+  status: StatusType[];
 }
 
-export default function Board({ onCreateNewStatus }: Props) {
+export default function Board({ onCreateNewStatus, status }: Props) {
   const {
     statusList,
     setStatusList,
@@ -24,6 +26,10 @@ export default function Board({ onCreateNewStatus }: Props) {
   const handleAddStatusInputVisibility = () => {
     setIsAddStatusVisible(!isAddStatusVisible);
   };
+
+  useEffect(() => {
+    console.log("🟢", status);
+  }, []);
 
   const handleSaveStatus = async (newStatusData: StatusType) => {
     try {
