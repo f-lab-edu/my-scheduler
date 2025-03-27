@@ -1,5 +1,5 @@
 "use client";
-import { MouseEvent, useEffect, useState } from "react";
+import { MouseEvent, useState } from "react";
 import Task from "@/app/schedule/contents/board/Task";
 import Modal from "@/components/common/Modal";
 import Editor from "@/components/common/Editor";
@@ -38,10 +38,12 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
 
   const handleDeleteStatus = async () => {
     try {
-      await onDeleteStatus(status.id);
+      await onDeleteStatus(status.id!);
       setStatusList((prev) => prev.filter((item) => item.id !== status.id));
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.log(error.message);
+      }
     }
   };
 

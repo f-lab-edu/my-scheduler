@@ -34,8 +34,7 @@ export default function Board({
 
   useEffect(() => {
     setStatusList(status);
-    console.log("🟢", status);
-  }, [status]);
+  }, [status, setStatusList]);
 
   const handleSaveStatus = async (newStatusData: StatusType) => {
     try {
@@ -59,7 +58,7 @@ export default function Board({
           />
         ))}
       </section>
-      <section className="flex justify-center py-5 px-3 w-[250px] ml-4 rounded-xl m-w-[150px] h-full bg-background-status">
+      <section className="flex justify-center py-5 px-3 w-[184px] ml-4 rounded-xl m-w-[150px] h-full bg-background-status">
         {!isAddStatusVisible && (
           <SideAddColumnButton onClick={handleAddStatusInputVisibility} />
         )}
