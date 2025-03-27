@@ -17,8 +17,8 @@ export default function ConfirmButton({
   const baseClassName = "rounded-lg cursor-pointer";
 
   const variantClassNames: Record<"confirm" | "cancel", string> = {
-    confirm: "bg-green-500 text-white",
-    cancel: "bg-gray-200 text-gray-600 border border-gray-400",
+    confirm: "bg-button-save text-white hover:bg-hover-save",
+    cancel: "bg-gray-200 text-gray-600 border border-gray-400 hover:bg-white",
   };
 
   const confirmClassName = variantClassNames[variant];
