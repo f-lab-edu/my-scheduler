@@ -1,5 +1,5 @@
 "use client";
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import Task from "@/app/schedule/contents/board/Task";
 import Modal from "@/components/common/Modal";
 import Editor from "@/components/common/Editor";
@@ -9,13 +9,16 @@ import { useModal } from "@/hooks/useModal";
 import { StatusType } from "@/types/scheduleType";
 import menuIcon from "@/assets/three-dots.svg";
 import plusIcon from "@/assets/plus.svg";
+import { useContentsContext } from "../ContentsContext";
 
 interface Props {
   status: StatusType;
+  onDeleteStatus: (id: string) => Promise<void>;
 }
 
-export default function StatusList({ status }: Props) {
+export default function StatusList({ status, onDeleteStatus }: Props) {
   const { open, openModal, closeModal } = useModal();
+  const { setStatusList } = useContentsContext();
   const [dropdownPosition, setDropdownPosition] = useState<{
     top: number;
     left: number;
@@ -31,6 +34,15 @@ export default function StatusList({ status }: Props) {
             left: rect.left,
           }
     );
+  };
+
+  const handleDeleteStatus = async () => {
+    try {
+      await onDeleteStatus(status.id);
+      setStatusList((prev) => prev.filter((item) => item.id !== status.id));
+    } catch (error: any) {
+      console.log(error.message);
+    }
   };
 
   return (
@@ -61,7 +73,10 @@ export default function StatusList({ status }: Props) {
         <MenuList
           top={dropdownPosition.top}
           left={dropdownPosition.left}
-          onClick={() => setDropdownPosition(null)}
+          onClick={() => {
+            setDropdownPosition(null);
+            handleDeleteStatus();
+          }}
         />
       )}
 

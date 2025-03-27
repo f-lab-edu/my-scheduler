@@ -1,11 +1,11 @@
 "use client";
 
+import { useEffect } from "react";
 import StatusList from "@/app/schedule/contents/board/StatusList";
-import { StatusType } from "@/types/scheduleType";
+import { useContentsContext } from "@/app/schedule/contents/ContentsContext";
 import SideAddColumnButton from "@/components/common/button/SideAddColumnButton";
 import AddStatusInput from "@/components/common/AddStatusInput";
-import { useContentsContext } from "../ContentsContext";
-import { useEffect } from "react";
+import { StatusType } from "@/types/scheduleType";
 
 interface StatusProps {
   status: StatusType;
@@ -13,10 +13,15 @@ interface StatusProps {
 
 interface Props {
   onCreateNewStatus: (status: StatusProps) => Promise<string>;
+  onDeleteStatus: (id: string) => Promise<void>;
   status: StatusType[];
 }
 
-export default function Board({ onCreateNewStatus, status }: Props) {
+export default function Board({
+  onCreateNewStatus,
+  onDeleteStatus,
+  status,
+}: Props) {
   const {
     statusList,
     setStatusList,
@@ -28,8 +33,9 @@ export default function Board({ onCreateNewStatus, status }: Props) {
   };
 
   useEffect(() => {
+    setStatusList(status);
     console.log("🟢", status);
-  }, []);
+  }, [status]);
 
   const handleSaveStatus = async (newStatusData: StatusType) => {
     try {
@@ -46,7 +52,11 @@ export default function Board({ onCreateNewStatus, status }: Props) {
     <div className="flex px-[70px] overflow-x-auto scrollbar-thin scrollbar-thumb-gray-500">
       <section className="flex gap-4 h-full">
         {statusList.map((status, index) => (
-          <StatusList key={`${status.statusName}-${index}`} status={status} />
+          <StatusList
+            key={`${status.statusName}-${index}`}
+            status={status}
+            onDeleteStatus={onDeleteStatus}
+          />
         ))}
       </section>
       <section className="flex justify-center py-5 px-3 w-[250px] ml-4 rounded-xl m-w-[150px] h-full bg-background-status">

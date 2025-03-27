@@ -2,6 +2,7 @@ export type DateField = "start" | "end";
 export type Priority = "High" | "Medium" | "Low";
 
 export interface StatusType {
+  id: string;
   statusName: string;
   count: number;
   taskList: TaskType[];
