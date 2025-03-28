@@ -84,7 +84,7 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
 
       {open && (
         <Modal onClose={closeModal}>
-          <Editor />
+          <Editor onClose={closeModal} />
         </Modal>
       )}
     </section>

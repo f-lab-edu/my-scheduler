@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, ChangeEvent, useActionState } from "react";
 import dayjs from "dayjs";
 import { TaskActions } from "@/app/schedule/contents/TaskActions";
@@ -10,10 +11,16 @@ import {
   DateField,
 } from "@/types/scheduleType";
 import CalendarIcon from "@/assets/calendar.svg";
+import { useContentsContext } from "@/app/schedule/contents/ContentsContext";
+
+interface Props {
+  onClose: () => void;
+}
 
 const PRIORITIES = ["High", "Medium", "Low"];
 
-export default function Editor() {
+export default function Editor({ onClose }: Props) {
+  const {} = useContentsContext;
   const [formState, formAction] = useActionState<TaskFormStatusType, FormData>(
     TaskActions,
     {
@@ -146,7 +153,7 @@ export default function Editor() {
           variant="cancel"
           text="Cancel"
           type="button"
-          onClick={() => {}}
+          onClick={onClose}
         />
         <ConfirmButton variant="confirm" text="Save" onClick={() => {}} />
       </div>
