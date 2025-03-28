@@ -3,6 +3,9 @@
 import { useState, ChangeEvent, useActionState } from "react";
 import dayjs from "dayjs";
 import { TaskActions } from "@/app/schedule/contents/TaskActions";
+import { useContentsContext } from "@/app/schedule/contents/ContentsContext";
+import { confirmSaveMessage } from "@/app/schedule/constants";
+import ConfirmDialog from "@/components/common/button/confirmDialog";
 import ConfirmButton from "@/components/common/button/ConfirmButtons";
 import {
   TaskFormStatusType,
@@ -11,7 +14,7 @@ import {
   DateField,
 } from "@/types/scheduleType";
 import CalendarIcon from "@/assets/calendar.svg";
-import { useContentsContext } from "@/app/schedule/contents/ContentsContext";
+import { useModal } from "@/hooks/useModal";
 
 interface Props {
   onClose: () => void;
@@ -20,7 +23,7 @@ interface Props {
 const PRIORITIES = ["High", "Medium", "Low"];
 
 export default function Editor({ onClose }: Props) {
-  const {} = useContentsContext;
+  const { open, openModal, closeModal } = useModal();
   const [formState, formAction] = useActionState<TaskFormStatusType, FormData>(
     TaskActions,
     {
@@ -35,6 +38,7 @@ export default function Editor({ onClose }: Props) {
     priority: "High",
     description: "",
   });
+  const [confirmDialog, setConfirmDialog] = useState(false);
 
   const priorityClasses: Record<Priority, string> = {
     High: "bg-priority-high",
@@ -81,6 +85,11 @@ export default function Editor({ onClose }: Props) {
     setTaskFormData((prev) => ({ ...prev, description: event.target.value }));
   };
 
+  const handleSaveTask = () => {
+    // 저장
+    closeModal();
+  };
+
   return (
     <form
       action={formAction}
@@ -93,7 +102,6 @@ export default function Editor({ onClose }: Props) {
         value={taskFormData.title}
         onChange={handleTitleChange}
       />
-
       <div className="flex items-center justify-between mt-4">
         <div className="flex items-center space-x-2">
           <CalendarIcon />
@@ -139,7 +147,6 @@ export default function Editor({ onClose }: Props) {
           />
         </div>
       </div>
-
       <textarea
         name="description"
         placeholder="Description"
@@ -147,7 +154,6 @@ export default function Editor({ onClose }: Props) {
         onChange={handleDescriptionChange}
         className="w-full min-h-[350px] h-32 mt-4 border border-gray-300 rounded p-5 outline-none resize-none"
       />
-
       <div className="flex justify-end space-x-2 mt-4">
         <ConfirmButton
           variant="cancel"
@@ -155,16 +161,42 @@ export default function Editor({ onClose }: Props) {
           type="button"
           onClick={onClose}
         />
-        <ConfirmButton variant="confirm" text="Save" onClick={() => {}} />
+        {/* TODO: 저장을 누르면 -> confirmDialog 떠서 -> 
+        close의 경우 그냥 confrimDialog만 끄기 -> 
+        save 누르면 confrimDialog, editor 끄고 -> 저장 완료됐다는 alert 띄우기
+        */}
+        <ConfirmButton
+          variant="confirm"
+          text="Save"
+          onClick={() => setConfirmDialog(true)}
+        />
       </div>
 
+      {/* formState?.success면  */}
+      {confirmDialog &&
+        (formState?.success ? (
+          <ConfirmDialog
+            onClose={closeModal}
+            onConfrim={handleSaveTask}
+            contentText={confirmSaveMessage}
+            closeText="Cancel"
+            confirmText="Save"
+          />
+        ) : (
+          <ConfirmDialog
+            onClose={() => setConfirmDialog(false)}
+            contentText={formState.message}
+            closeText="Confirm"
+          />
+        ))}
+
       {/* TODO: db 연결해서 테스트   */}
-      {formState?.success && (
+      {/* {formState?.success && (
         <div className="text-green-600 mt-2">{formState.message}</div>
       )}
       {formState?.success === false && (
         <div className="text-red-600 mt-2">{formState.message}</div>
-      )}
+      )} */}
     </form>
   );
 }

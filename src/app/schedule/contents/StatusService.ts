@@ -14,7 +14,8 @@ export async function createNewStatus({ status }: Props) {
 export async function getStatusList(): Promise<StatusType[]> {
   const snapshot = await db.collection("statusList").get();
   return snapshot.docs.map(
-    (doc) => ({ id: doc.id, ...doc.data() } as StatusType & { id: string })
+    (doc) =>
+      ({ statusId: doc.id, ...doc.data() } as StatusType & { statusId: string })
   );
 }
 

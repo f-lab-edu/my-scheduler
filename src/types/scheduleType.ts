@@ -9,7 +9,7 @@ export interface StatusType {
 }
 
 export interface TaskType {
-  id?: string;
+  // id?: string; //TODO: 추후 확인 한 번 더 해보고 제거
   title: string;
   startDate: string;
   endDate: string;
