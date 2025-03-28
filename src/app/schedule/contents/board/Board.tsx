@@ -59,14 +59,13 @@ export default function Board({
         ))}
       </section>
       <section className="flex justify-center py-5 px-3 w-[184px] ml-4 rounded-xl m-w-[150px] h-full bg-background-status">
-        {!isAddStatusVisible && (
-          <SideAddColumnButton onClick={handleAddStatusInputVisibility} />
-        )}
-        {isAddStatusVisible && (
+        {isAddStatusVisible ? (
           <AddStatusInput
             onClick={handleAddStatusInputVisibility}
             onSave={handleSaveStatus}
           />
+        ) : (
+          <SideAddColumnButton onClick={handleAddStatusInputVisibility} />
         )}
       </section>
     </div>
