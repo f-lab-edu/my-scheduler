@@ -9,7 +9,7 @@ import { useModal } from "@/hooks/useModal";
 import { StatusType } from "@/types/scheduleType";
 import menuIcon from "@/assets/three-dots.svg";
 import plusIcon from "@/assets/plus.svg";
-import { useContentsContext } from "../ContentsContext";
+import { useContentsContext } from "@/app/schedule/contents/ContentsContext";
 
 interface Props {
   status: StatusType;
