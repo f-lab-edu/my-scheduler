@@ -1,42 +1,37 @@
 import clsx from "clsx";
 interface Props {
-  isSave: boolean;
+  variant?: "confirm" | "cancel";
   text: string;
   type?: "button" | "submit" | "reset";
   size?: "sm" | "md";
-  onClose: () => void;
-  onSave?: () => void;
+  onClick: () => void;
 }
 
 export default function ConfirmButton({
-  isSave,
+  variant = "confirm",
   text,
   type = "submit",
   size = "md",
-  onClose,
-  onSave = () => {},
+  onClick,
 }: Props) {
   const baseClassName = "rounded-lg cursor-pointer";
-  const saveClassName = isSave
-    ? "bg-button-save text-white"
-    : "bg-white border border-button-save";
+
+  const variantClassNames: Record<"confirm" | "cancel", string> = {
+    confirm: "bg-button-save text-white hover:bg-hover-save",
+    cancel: "bg-gray-200 text-gray-600 border border-gray-400 hover:bg-white",
+  };
+
+  const confirmClassName = variantClassNames[variant];
   const sizeClassName =
     size === "sm"
       ? "w-[75px] h-[40px] text-[14px] p-[10px]"
       : "w-[108px] h-11 px-5";
 
-  const handleInputClose = () => {
-    if (isSave) {
-      onClose();
-      onSave();
-    } else onClose();
-  };
-
   return (
     <button
-      className={clsx(saveClassName, sizeClassName, baseClassName)}
+      className={clsx(confirmClassName, sizeClassName, baseClassName)}
       type={type}
-      onClick={handleInputClose}
+      onClick={onClick}
     >
       {text}
     </button>
