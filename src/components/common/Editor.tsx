@@ -86,8 +86,8 @@ export default function Editor({ onClose }: Props) {
   };
 
   const handleSaveTask = () => {
-    // 저장
-    closeModal();
+    //TODO: 저장 로직
+    setConfirmDialog(false);
   };
 
   return (
@@ -161,10 +161,7 @@ export default function Editor({ onClose }: Props) {
           type="button"
           onClick={onClose}
         />
-        {/* TODO: 저장을 누르면 -> confirmDialog 떠서 -> 
-        close의 경우 그냥 confrimDialog만 끄기 -> 
-        save 누르면 confrimDialog, editor 끄고 -> 저장 완료됐다는 alert 띄우기
-        */}
+
         <ConfirmButton
           variant="confirm"
           text="Save"
@@ -172,11 +169,10 @@ export default function Editor({ onClose }: Props) {
         />
       </div>
 
-      {/* formState?.success면  */}
       {confirmDialog &&
         (formState?.success ? (
           <ConfirmDialog
-            onClose={closeModal}
+            onClose={() => setConfirmDialog(false)}
             onConfrim={handleSaveTask}
             contentText={confirmSaveMessage}
             closeText="Cancel"
@@ -189,14 +185,6 @@ export default function Editor({ onClose }: Props) {
             closeText="Confirm"
           />
         ))}
-
-      {/* TODO: db 연결해서 테스트   */}
-      {/* {formState?.success && (
-        <div className="text-green-600 mt-2">{formState.message}</div>
-      )}
-      {formState?.success === false && (
-        <div className="text-red-600 mt-2">{formState.message}</div>
-      )} */}
     </form>
   );
 }
