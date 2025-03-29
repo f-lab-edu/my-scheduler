@@ -9,13 +9,16 @@ import { useModal } from "@/hooks/useModal";
 import { StatusType } from "@/types/scheduleType";
 import menuIcon from "@/assets/three-dots.svg";
 import plusIcon from "@/assets/plus.svg";
+import { useContentsContext } from "@/app/schedule/contents/ContentsContext";
 
 interface Props {
   status: StatusType;
+  onDeleteStatus: (id: string) => Promise<void>;
 }
 
-export default function StatusList({ status }: Props) {
+export default function StatusList({ status, onDeleteStatus }: Props) {
   const { open, openModal, closeModal } = useModal();
+  const { setStatusList } = useContentsContext();
   const [dropdownPosition, setDropdownPosition] = useState<{
     top: number;
     left: number;
@@ -31,6 +34,17 @@ export default function StatusList({ status }: Props) {
             left: rect.left,
           }
     );
+  };
+
+  const handleDeleteStatus = async () => {
+    try {
+      await onDeleteStatus(status.id!);
+      setStatusList((prev) => prev.filter((item) => item.id !== status.id));
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.log(error.message);
+      }
+    }
   };
 
   return (
@@ -61,13 +75,16 @@ export default function StatusList({ status }: Props) {
         <MenuList
           top={dropdownPosition.top}
           left={dropdownPosition.left}
-          onClick={() => setDropdownPosition(null)}
+          onClick={() => {
+            setDropdownPosition(null);
+            handleDeleteStatus();
+          }}
         />
       )}
 
       {open && (
         <Modal onClose={closeModal}>
-          <Editor />
+          <Editor onClose={closeModal} />
         </Modal>
       )}
     </section>

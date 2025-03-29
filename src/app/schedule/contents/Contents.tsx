@@ -1,10 +1,20 @@
+import { getStatusList } from "@/app/schedule/contents/StatusService";
+import {
+  createNewStatus,
+  deleteStatus,
+} from "@/app/schedule/contents/actions/StatusActions";
 import Board from "@/app/schedule/contents/board/Board";
-import { handleCreateNewStatus } from "@/app/schedule/contents/StatusActions";
 
-export default function Contents() {
+export default async function Contents() {
+  const data = await getStatusList();
+
   return (
     <div>
-      <Board onCreateNewStatus={handleCreateNewStatus} />
+      <Board
+        onCreateNewStatus={createNewStatus}
+        onDeleteStatus={deleteStatus}
+        status={data}
+      />
     </div>
   );
 }
