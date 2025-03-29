@@ -2,8 +2,7 @@
 
 import { useState, ChangeEvent, useActionState } from "react";
 import dayjs from "dayjs";
-import { TaskActions } from "@/app/schedule/contents/TaskActions";
-import { useContentsContext } from "@/app/schedule/contents/ContentsContext";
+import { TaskActions } from "@/app/schedule/contents/actions/TaskActions";
 import { confirmSaveMessage } from "@/app/schedule/constants";
 import ConfirmDialog from "@/components/common/button/confirmDialog";
 import ConfirmButton from "@/components/common/button/ConfirmButtons";
@@ -23,7 +22,7 @@ interface Props {
 const PRIORITIES = ["High", "Medium", "Low"];
 
 export default function Editor({ onClose }: Props) {
-  const { open, openModal, closeModal } = useModal();
+  const { closeModal } = useModal();
   const [formState, formAction] = useActionState<TaskFormStatusType, FormData>(
     TaskActions,
     {
@@ -38,7 +37,7 @@ export default function Editor({ onClose }: Props) {
     priority: "High",
     description: "",
   });
-  const [confirmDialog, setConfirmDialog] = useState(false);
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
 
   const priorityClasses: Record<Priority, string> = {
     High: "bg-priority-high",
@@ -46,9 +45,8 @@ export default function Editor({ onClose }: Props) {
     Low: "bg-priority-low",
   };
 
-  const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) =>
     setTaskFormData((prev) => ({ ...prev, title: event.target.value }));
-  };
 
   const handleChangeDate = (
     event: ChangeEvent<HTMLInputElement>,
@@ -74,20 +72,21 @@ export default function Editor({ onClose }: Props) {
     }
   };
 
-  const handlePrioritySelect = (event: ChangeEvent<HTMLSelectElement>) => {
+  const handlePrioritySelect = (event: ChangeEvent<HTMLSelectElement>) =>
     setTaskFormData((prev) => ({
       ...prev,
       priority: event.target.value as Priority,
     }));
-  };
 
-  const handleDescriptionChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleDescriptionChange = (event: ChangeEvent<HTMLTextAreaElement>) =>
     setTaskFormData((prev) => ({ ...prev, description: event.target.value }));
-  };
 
+  const handleCloseDialog = () => setOpenConfirmDialog(false);
   const handleSaveTask = () => {
     //TODO: 저장 로직
-    setConfirmDialog(false);
+
+    setOpenConfirmDialog(false);
+    closeModal();
   };
 
   return (
@@ -165,14 +164,14 @@ export default function Editor({ onClose }: Props) {
         <ConfirmButton
           variant="confirm"
           text="Save"
-          onClick={() => setConfirmDialog(true)}
+          onClick={() => setOpenConfirmDialog(true)}
         />
       </div>
 
-      {confirmDialog &&
+      {openConfirmDialog &&
         (formState?.success ? (
           <ConfirmDialog
-            onClose={() => setConfirmDialog(false)}
+            onClose={() => handleCloseDialog()}
             onConfrim={handleSaveTask}
             contentText={confirmSaveMessage}
             closeText="Cancel"
@@ -180,7 +179,7 @@ export default function Editor({ onClose }: Props) {
           />
         ) : (
           <ConfirmDialog
-            onClose={() => setConfirmDialog(false)}
+            onClose={() => handleCloseDialog()}
             contentText={formState.message}
             closeText="Confirm"
           />

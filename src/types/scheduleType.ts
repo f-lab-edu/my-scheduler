@@ -9,13 +9,11 @@ export interface StatusType {
 }
 
 export interface TaskType {
-  // id?: string; //TODO: 추후 확인 한 번 더 해보고 제거
   title: string;
   startDate: string;
   endDate: string;
   priority: Priority;
   description: string;
-  statusId: string | null;
   taskId?: string; //수정 시에만 필요
   months?: number[]; //calendar 달별로 가져올 때
   order?: number; //drag&drop 순서

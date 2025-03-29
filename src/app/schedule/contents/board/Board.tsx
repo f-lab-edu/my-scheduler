@@ -39,7 +39,7 @@ export default function Board({
   const handleSaveStatus = async (newStatusData: StatusType) => {
     try {
       const docId = await onCreateNewStatus({ status: newStatusData });
-      setStatusList((prev) => [...prev, { ...newStatusData, statusId: docId }]);
+      setStatusList((prev) => [...prev, { ...newStatusData, id: docId }]);
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.log(error.message);

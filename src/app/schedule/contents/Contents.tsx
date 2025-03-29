@@ -1,8 +1,8 @@
+import { getStatusList } from "@/app/schedule/contents/StatusService";
 import {
-  getStatusList,
   createNewStatus,
   deleteStatus,
-} from "@/app/schedule/contents/StatusService";
+} from "@/app/schedule/contents/actions/StatusActions";
 import Board from "@/app/schedule/contents/board/Board";
 
 export default async function Contents() {
