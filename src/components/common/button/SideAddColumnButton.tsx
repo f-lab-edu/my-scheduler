@@ -1,8 +1,13 @@
+"use client";
 import PlusIcon from "@/assets/plus.svg";
 
-export default function SideAddColumnButton() {
+interface Props {
+  onClick: () => void;
+}
+
+export default function SideAddColumnButton({ onClick }: Props) {
   return (
-    <button className="flex justify-end py-5 px-3 w-96 ml-4 rounded-xl w-[150px] h-[64px] bg-background-status hover:bg-headerBlue">
+    <button onClick={onClick}>
       <PlusIcon width={24} height={24} />
     </button>
   );

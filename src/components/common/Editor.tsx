@@ -1,22 +1,21 @@
 "use client";
 import { useState, ChangeEvent, useActionState } from "react";
 import dayjs from "dayjs";
-
-import CalendarIcon from "@/assets/calendar.svg";
-import { submitTask } from "@/app/schedule/actions";
+import { TaskActions } from "@/app/schedule/contents/TaskActions";
+import ConfirmButton from "@/components/common/button/ConfirmButtons";
 import {
   TaskFormStatusType,
   TaskFormType,
-  Priorities,
+  Priority,
   DateField,
 } from "@/types/scheduleType";
-import ConfirmButton from "./button/ConfirmButtons";
+import CalendarIcon from "@/assets/calendar.svg";
 
 const PRIORITIES = ["High", "Medium", "Low"];
 
 export default function Editor() {
   const [formState, formAction] = useActionState<TaskFormStatusType, FormData>(
-    submitTask,
+    TaskActions,
     {
       success: false,
       message: "",
@@ -30,7 +29,7 @@ export default function Editor() {
     description: "",
   });
 
-  const priorityClasses: Record<Priorities, string> = {
+  const priorityClasses: Record<Priority, string> = {
     High: "bg-priority-high",
     Medium: "bg-priority-medium",
     Low: "bg-priority-low",
@@ -67,7 +66,7 @@ export default function Editor() {
   const handlePrioritySelect = (event: ChangeEvent<HTMLSelectElement>) => {
     setTaskFormData((prev) => ({
       ...prev,
-      priority: event.target.value as Priorities,
+      priority: event.target.value as Priority,
     }));
   };
 
@@ -143,8 +142,13 @@ export default function Editor() {
       />
 
       <div className="flex justify-end space-x-2 mt-4">
-        <ConfirmButton isSave={false} text="Cancel" type="button" />
-        <ConfirmButton isSave={true} text="Save" />
+        <ConfirmButton
+          isSave={false}
+          text="Cancel"
+          type="button"
+          onClose={() => {}}
+        />
+        <ConfirmButton isSave={true} text="Save" onClose={() => {}} />
       </div>
 
       {/* TODO: db 연결해서 테스트   */}

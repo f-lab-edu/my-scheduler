@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useTabsContext } from "./TabsContext";
+import { useTabsContext } from "@/app/schedule/tabs/TabsContext";
 
 type Props = {
   tab: string;
