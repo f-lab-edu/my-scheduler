@@ -1,21 +1,23 @@
 "use client";
-
-import Dropdown from "./Dropdown";
+import { MouseEvent } from "react";
+import Dropdown from "@/components/dropdown/Dropdown";
 
 interface Props {
   top: number;
   left: number;
-  onClick: () => void;
+  list: string[];
+  onClick: (event: MouseEvent<HTMLLIElement>) => void;
+  onClose: () => void;
 }
 
-export default function MenuList({ onClick, top, left }: Props) {
-  const list = ["Remove Status"];
-
+export default function MenuList({ onClick, onClose, list, top, left }: Props) {
   return (
-    <Dropdown onClose={onClick} top={top} left={left}>
+    <Dropdown onClose={onClose} top={top} left={left}>
       <ul>
         {list.map((item, index) => (
-          <li key={`${item}-${index}`}>{item}</li>
+          <li key={`${item}-${index}`} onClick={(event) => onClick(event)}>
+            {item}
+          </li>
         ))}
       </ul>
     </Dropdown>

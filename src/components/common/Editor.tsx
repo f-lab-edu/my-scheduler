@@ -4,8 +4,9 @@ import { useState, ChangeEvent, useActionState } from "react";
 import dayjs from "dayjs";
 import { TaskActions } from "@/app/schedule/contents/actions/TaskActions";
 import { confirmSaveMessage } from "@/app/schedule/constants";
-import ConfirmDialog from "@/components/common/button/confirmDialog";
+import ConfirmDialog from "@/components/common/button/ConfirmDialog";
 import ConfirmButton from "@/components/common/button/ConfirmButtons";
+import { useModal } from "@/hooks/useModal";
 import {
   TaskFormStatusType,
   TaskFormType,
@@ -13,7 +14,7 @@ import {
   DateField,
 } from "@/types/scheduleType";
 import CalendarIcon from "@/assets/calendar.svg";
-import { useModal } from "@/hooks/useModal";
+import MenuIcon from "@/assets/three-dots-vertical.svg";
 
 interface Props {
   onClose: () => void;
@@ -54,7 +55,6 @@ export default function Editor({ onClose }: Props) {
   ) => {
     const newDate = dayjs(event.target.value);
 
-    // TODO: 해당 유효성 검사를 submit 때 할지 정하기
     if (dateField === "end") {
       if (newDate.isBefore(dayjs(taskFormData.startDate))) {
         alert("종료 날짜는 시작 날짜보다 이전일 수 없습니다.");
@@ -94,13 +94,16 @@ export default function Editor({ onClose }: Props) {
       action={formAction}
       className="py-[28px] px-[50px] rounded-lg bg-white "
     >
-      <input
-        name="title"
-        placeholder="New Title"
-        className="mt-7 border-b-2 border-border-editor w-[600px] h-[40px] text-2xl outline-none"
-        value={taskFormData.title}
-        onChange={handleTitleChange}
-      />
+      <div className="flex items-baseline justify-between">
+        <input
+          name="title"
+          placeholder="New Title"
+          className="mt-7 border-b-2 border-border-editor w-[450px] h-[40px] text-2xl outline-none"
+          value={taskFormData.title}
+          onChange={handleTitleChange}
+        />
+        <MenuIcon />
+      </div>
       <div className="flex items-center justify-between mt-4">
         <div className="flex items-center space-x-2">
           <CalendarIcon />
@@ -171,7 +174,7 @@ export default function Editor({ onClose }: Props) {
       {openConfirmDialog &&
         (formState?.success ? (
           <ConfirmDialog
-            onClose={() => handleCloseDialog()}
+            onClose={handleCloseDialog}
             onConfrim={handleSaveTask}
             contentText={confirmSaveMessage}
             closeText="Cancel"
@@ -179,7 +182,7 @@ export default function Editor({ onClose }: Props) {
           />
         ) : (
           <ConfirmDialog
-            onClose={() => handleCloseDialog()}
+            onClose={handleCloseDialog}
             contentText={formState.message}
             closeText="Confirm"
           />

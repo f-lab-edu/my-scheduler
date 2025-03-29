@@ -10,6 +10,8 @@ import { StatusType } from "@/types/scheduleType";
 import menuIcon from "@/assets/three-dots.svg";
 import plusIcon from "@/assets/plus.svg";
 import { useContentsContext } from "@/app/schedule/contents/ContentsContext";
+import ConfirmDialog from "@/components/common/button/ConfirmDialog";
+import { confirmDeleteMessage } from "@/app/schedule/constants";
 
 interface Props {
   status: StatusType;
@@ -23,6 +25,7 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
     top: number;
     left: number;
   } | null>(null);
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
 
   const toggleDropdown = (event: MouseEvent<HTMLButtonElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -36,6 +39,7 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
     );
   };
 
+  const handleCloseDialog = () => setOpenConfirmDialog(false);
   const handleDeleteStatus = async () => {
     try {
       await onDeleteStatus(status.id!);
@@ -75,10 +79,19 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
         <MenuList
           top={dropdownPosition.top}
           left={dropdownPosition.left}
-          onClick={() => {
-            setDropdownPosition(null);
-            handleDeleteStatus();
-          }}
+          list={["Remove list"]}
+          onClose={() => setDropdownPosition(null)}
+          onClick={() => setOpenConfirmDialog(true)}
+        />
+      )}
+
+      {openConfirmDialog && (
+        <ConfirmDialog
+          onClose={handleCloseDialog}
+          closeText="Cancel"
+          onConfrim={handleDeleteStatus}
+          confirmText="Delete"
+          contentText={confirmDeleteMessage}
         />
       )}
 
