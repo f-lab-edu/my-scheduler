@@ -29,13 +29,13 @@ export default function Modal({ children, onClose }: Props) {
       role="button"
       className="fixed inset-0 bg-black/60 flex items-center justify-center"
       onClick={onClose}
-      onKeyUp={(e) => e.key === "Escape" && onClose()}
+      onKeyUp={(event) => event.key === "Escape" && onClose()}
     >
       <div
         role="dialog"
         aria-modal="true"
         onClick={(event) => event.stopPropagation()}
-        onKeyUp={(e) => e.key === "Escape" && onClose()}
+        onKeyUp={(event) => event.key === "Escape" && onClose()}
       >
         {children}
       </div>

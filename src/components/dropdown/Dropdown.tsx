@@ -20,7 +20,7 @@ export default function Dropdown({
   useEffect(() => {
     const $portal = document.getElementById("portal");
     setNode($portal);
-  });
+  }, []);
 
   if (!node) return null;
 
@@ -33,11 +33,12 @@ export default function Dropdown({
       <div
         className="absolute p-3 rounded-lg cursor-pointer shadow-md bg-white"
         style={{ left: left, top: top }}
-        onClick={(e) => {
-          e.stopPropagation();
+        onClick={(event) => {
+          event.stopPropagation();
           // TODO: status column 삭제
           onClose();
         }}
+        onKeyUp={(e) => e.key === "Escape" && onClose()}
       >
         {children}
       </div>
