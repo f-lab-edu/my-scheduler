@@ -43,7 +43,7 @@ export default function Board({ onCreateNewStatus }: Props) {
           <StatusList key={`${status.statusName}-${index}`} status={status} />
         ))}
       </section>
-      <section className="flex justify-end py-5 px-3 w-96 ml-4 rounded-xl m-w-[150px] h-full bg-background-status">
+      <section className="flex justify-center py-5 px-3 w-[250px] ml-4 rounded-xl m-w-[150px] h-full bg-background-status">
         {!isAddStatusVisible && (
           <SideAddColumnButton onClick={handleAddStatusInputVisibility} />
         )}

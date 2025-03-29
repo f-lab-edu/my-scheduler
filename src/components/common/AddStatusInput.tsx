@@ -20,8 +20,8 @@ export default function AddStatusInput({ onClick, onSave }: Props) {
       count: 0,
       taskList: [],
     };
-
     onSave(newStatus);
+    onClick();
   };
 
   return (
@@ -34,17 +34,16 @@ export default function AddStatusInput({ onClick, onSave }: Props) {
       />
       <div className="flex justify-end gap-1 mt-2">
         <ConfirmButton
-          isSave={false}
+          variant="cancel"
           text="Cancel"
           size="sm"
-          onClose={onClick}
+          onClick={onClick}
         />
         <ConfirmButton
-          isSave={true}
+          variant="confirm"
           text="Save"
           size="sm"
-          onClose={onClick}
-          onSave={handleSaveStatus}
+          onClick={handleSaveStatus}
         />
       </div>
     </div>

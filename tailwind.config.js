@@ -50,9 +50,10 @@ export default {
           save: "#0851EE",
         },
         hover: {
-          add: "#597BED",
-          filter: "#2C3555",
+          add: "#6d8cf3",
+          filter: "#343e60",
           dropdown: "#e5e4ee",
+          save: "#175ffb",
         },
         scrollbar: {
           track: "#fff6",
