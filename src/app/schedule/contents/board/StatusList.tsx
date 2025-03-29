@@ -1,17 +1,17 @@
 "use client";
 import { MouseEvent, useState } from "react";
 import Task from "@/app/schedule/contents/board/Task";
+import { confirmDeleteMessage } from "@/app/schedule/constants";
+import { useContentsContext } from "@/app/schedule/contents/ContentsContext";
 import Modal from "@/components/common/Modal";
 import Editor from "@/components/common/Editor";
 import MenuList from "@/components/dropdown/MenuList";
 import IconButton from "@/components/common/button/IconButton";
+import ConfirmDialog from "@/components/common/button/ConfirmDialog";
 import { useModal } from "@/hooks/useModal";
 import { StatusType } from "@/types/scheduleType";
 import menuIcon from "@/assets/three-dots.svg";
 import plusIcon from "@/assets/plus.svg";
-import { useContentsContext } from "@/app/schedule/contents/ContentsContext";
-import ConfirmDialog from "@/components/common/button/ConfirmDialog";
-import { confirmDeleteMessage } from "@/app/schedule/constants";
 
 interface Props {
   status: StatusType;
