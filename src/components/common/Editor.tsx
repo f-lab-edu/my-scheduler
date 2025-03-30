@@ -19,12 +19,25 @@ import { useContentsContext } from "@/app/schedule/contents/ContentsContext";
 interface Props {
   onClose: () => void;
   statusId: string;
+  editingTask?: TaskFormType | null;
 }
 
 const PRIORITIES = ["High", "Medium", "Low"];
 
-export default function Editor({ onClose, statusId }: Props) {
-  const { onCreateNewTask, setTaskList, taskList } = useContentsContext();
+export default function Editor({ onClose, statusId, editingTask }: Props) {
+  const initialFormData: TaskFormType = editingTask || {
+    id: "",
+    title: "",
+    startDate: dayjs().format("YYYY-MM-DD"),
+    endDate: dayjs().format("YYYY-MM-DD"),
+    priority: "High",
+    description: "",
+    statusId,
+  };
+  const [taskFormData, setTaskFormData] =
+    useState<TaskFormType>(initialFormData);
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+  const { onCreateNewTask, setTaskList, onUpdateTask } = useContentsContext();
   const [formState, formAction] = useActionState<TaskFormStatusType, FormData>(
     TaskAction,
     {
@@ -32,15 +45,6 @@ export default function Editor({ onClose, statusId }: Props) {
       message: "",
     }
   );
-  const [taskFormData, setTaskFormData] = useState<TaskFormType>({
-    title: "",
-    startDate: dayjs().format("YYYY-MM-DD"),
-    endDate: dayjs().format("YYYY-MM-DD"),
-    priority: "High",
-    description: "",
-    statusId: "",
-  });
-  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
 
   const priorityClasses: Record<Priority, string> = {
     High: "bg-priority-high",
@@ -80,11 +84,30 @@ export default function Editor({ onClose, statusId }: Props) {
   const handleCloseDialog = () => setOpenConfirmDialog(false);
   const handleSaveTask = async () => {
     try {
-      const docId = await onCreateNewTask({ ...taskFormData, statusId });
-      setTaskList((prev) => [
-        ...prev,
-        { ...taskFormData, id: docId, statusId },
-      ]);
+      if (editingTask) {
+        await onUpdateTask({
+          ...taskFormData,
+          statusId,
+          id: editingTask.id,
+        });
+        setTaskList((prev) =>
+          prev.map((t) =>
+            t.id === editingTask.id
+              ? { ...taskFormData, id: editingTask.id, statusId }
+              : t
+          )
+        );
+      } else {
+        const docId = await onCreateNewTask({
+          ...taskFormData,
+          statusId,
+          id: "",
+        });
+        setTaskList((prev) => [
+          ...prev,
+          { ...taskFormData, id: docId, statusId },
+        ]);
+      }
       setOpenConfirmDialog(false);
       onClose();
     } catch (error: unknown) {

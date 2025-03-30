@@ -26,12 +26,13 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
     left: number;
   } | null>(null);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+  const [editingTask, setEditingTask] = useState<TaskType | null>(null);
 
   const filteredTasks = taskList.filter(
     (task: TaskType) => task.statusId === status.id
   );
 
-  const toggleDropdown = (event: MouseEvent<HTMLButtonElement>) => {
+  const handleToggleDropdown = (event: MouseEvent<HTMLButtonElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
     setDropdownPosition(
       dropdownPosition
@@ -43,7 +44,7 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
     );
   };
 
-  const handleCloseDialog = () => setOpenConfirmDialog(false);
+  const handleCloseConfirmDialog = () => setOpenConfirmDialog(false);
   const handleDeleteStatus = async () => {
     try {
       await onDeleteStatus(status.id!);
@@ -54,6 +55,13 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
       }
     }
   };
+
+  const handleEditTask = (task: TaskType) => {
+    setEditingTask(task);
+    openModal();
+  };
+
+  const handleCancelEdit = () => {};
 
   return (
     <section className="flex flex-col py-5 px-3 mb-[100px] w-96 rounded-xl bg-background-status h-full ">
@@ -68,14 +76,18 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
           <IconButton
             icon={menuIcon}
             alt="menu button"
-            onClick={(event) => toggleDropdown(event)}
+            onClick={(event) => handleToggleDropdown(event)}
           />
           <IconButton icon={plusIcon} alt="plus button" onClick={openModal} />
         </span>
       </div>
       <div className="flex flex-col gap-2 mt-5">
         {filteredTasks.map((task, index) => (
-          <Task key={`${task.taskId}-${index}`} task={task} />
+          <Task
+            key={`${task.id}-${index}`}
+            task={task}
+            onClick={() => handleEditTask(task)}
+          />
         ))}
       </div>
 
@@ -91,7 +103,7 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
 
       {openConfirmDialog && (
         <ConfirmDialog
-          onClose={handleCloseDialog}
+          onClose={handleCloseConfirmDialog}
           closeText="Cancel"
           onConfrim={handleDeleteStatus}
           confirmText="Delete"
@@ -101,7 +113,14 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
 
       {open && (
         <Modal onClose={closeModal}>
-          <Editor onClose={closeModal} statusId={status.id!} />
+          <Editor
+            onClose={() => {
+              closeModal();
+              setEditingTask(null);
+            }}
+            statusId={status.id!}
+            editingTask={editingTask}
+          />
         </Modal>
       )}
     </section>

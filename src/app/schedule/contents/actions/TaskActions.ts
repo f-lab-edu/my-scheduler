@@ -56,3 +56,9 @@ export async function createNewTask(task: TaskType): Promise<string> {
   const result = await db.collection("task").add(task);
   return result.id;
 }
+
+export async function updateTask(task: TaskType): Promise<void> {
+  await db.collection("task").doc(task.id).set(task);
+}
+
+export async function deleteTask(task: TaskType): Promise<void> {}

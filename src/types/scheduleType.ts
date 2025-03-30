@@ -9,18 +9,19 @@ export interface StatusType {
 }
 
 export interface TaskType {
+  id: string;
   title: string;
   startDate: string;
   endDate: string;
   priority: Priority;
   description: string;
-  taskId?: string; //수정 시에만 필요
   months?: number[]; //calendar 달별로 가져올 때
   order?: number; //drag&drop 순서
   statusId: string;
 }
 
 export interface TaskFormType {
+  id: string;
   title: string;
   startDate: string;
   endDate: string;
