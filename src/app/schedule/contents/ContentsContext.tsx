@@ -23,12 +23,14 @@ interface Props {
   setFilterList: (filters: Priority[]) => void;
   onCreateNewTask: (task: TaskType) => Promise<string>;
   onUpdateTask: (task: TaskType) => Promise<void>;
+  onDeleteTask: (task: TaskType) => Promise<void>;
 }
 
 interface ContentsProviderProps {
   children: ReactNode;
   onCreateNewTask: (task: TaskType) => Promise<string>;
   onUpdateTask: (task: TaskType) => Promise<void>;
+  onDeleteTask: (task: TaskType) => Promise<void>;
 }
 
 const ContentsContext = createContext<Props | null>(null);
@@ -37,6 +39,7 @@ export function ContentsProvider({
   children,
   onCreateNewTask,
   onUpdateTask,
+  onDeleteTask,
 }: ContentsProviderProps) {
   const [taskList, setTaskList] = useState<TaskType[]>([]);
   const [statusList, setStatusList] = useState<StatusType[]>([]);
@@ -59,6 +62,7 @@ export function ContentsProvider({
         setFilterList,
         onCreateNewTask,
         onUpdateTask,
+        onDeleteTask,
       }}
     >
       {children}

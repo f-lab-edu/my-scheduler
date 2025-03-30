@@ -35,7 +35,6 @@ export default function Dropdown({
         style={{ left: left, top: top }}
         onClick={(event) => {
           event.stopPropagation();
-          // TODO: status column 삭제
           onClose();
         }}
         onKeyUp={(e) => e.key === "Escape" && onClose()}

@@ -20,16 +20,6 @@ export interface TaskType {
   statusId: string;
 }
 
-export interface TaskFormType {
-  id: string;
-  title: string;
-  startDate: string;
-  endDate: string;
-  priority: Priority;
-  description: string;
-  statusId: string;
-}
-
 export interface TaskFormStatusType {
   success: boolean;
   message: string;

@@ -5,6 +5,7 @@ import Tabs from "@/app/schedule/tabs/Tabs";
 import {
   createNewTask,
   updateTask,
+  deleteTask,
 } from "@/app/schedule/contents/actions/TaskActions";
 
 export default function Page() {
@@ -13,6 +14,7 @@ export default function Page() {
       <ContentsProvider
         onCreateNewTask={createNewTask}
         onUpdateTask={updateTask}
+        onDeleteTask={deleteTask}
       >
         <Tabs />
         <InteractionBar />

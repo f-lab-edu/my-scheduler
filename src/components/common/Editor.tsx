@@ -1,31 +1,37 @@
 "use client";
 
-import { useState, ChangeEvent, useActionState } from "react";
+import { useState, ChangeEvent, useActionState, MouseEvent } from "react";
 import dayjs from "dayjs";
+import {
+  confirmSaveMessage,
+  confirmTaskDeleteMessage,
+} from "@/app/schedule/constants";
 import { TaskAction } from "@/app/schedule/contents/actions/TaskActions";
-import { confirmSaveMessage } from "@/app/schedule/constants";
+import { useContentsContext } from "@/app/schedule/contents/ContentsContext";
 import ConfirmDialog from "@/components/common/button/ConfirmDialog";
 import ConfirmButton from "@/components/common/button/ConfirmButtons";
 import {
   TaskFormStatusType,
-  TaskFormType,
+  TaskType,
   Priority,
   DateField,
 } from "@/types/scheduleType";
+import useDropdownPosition from "@/hooks/useDropdownPosition";
 import CalendarIcon from "@/assets/calendar.svg";
-import MenuIcon from "@/assets/three-dots-vertical.svg";
-import { useContentsContext } from "@/app/schedule/contents/ContentsContext";
+import menuIcon from "@/assets/three-dots-vertical.svg";
+import IconButton from "./button/IconButton";
+import MenuList from "../dropdown/MenuList";
 
 interface Props {
   onClose: () => void;
   statusId: string;
-  editingTask?: TaskFormType | null;
+  editingTask?: TaskType | null;
 }
 
 const PRIORITIES = ["High", "Medium", "Low"];
 
 export default function Editor({ onClose, statusId, editingTask }: Props) {
-  const initialFormData: TaskFormType = editingTask || {
+  const initialFormData: TaskType = editingTask || {
     id: "",
     title: "",
     startDate: dayjs().format("YYYY-MM-DD"),
@@ -34,10 +40,11 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
     description: "",
     statusId,
   };
-  const [taskFormData, setTaskFormData] =
-    useState<TaskFormType>(initialFormData);
+  const [taskFormData, setTaskFormData] = useState<TaskType>(initialFormData);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
-  const { onCreateNewTask, setTaskList, onUpdateTask } = useContentsContext();
+  const [openConfirmDeleteDialog, setOpenConfirmDeleteDialog] = useState(false);
+  const { onCreateNewTask, setTaskList, onUpdateTask, onDeleteTask } =
+    useContentsContext();
   const [formState, formAction] = useActionState<TaskFormStatusType, FormData>(
     TaskAction,
     {
@@ -45,6 +52,8 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
       message: "",
     }
   );
+  const { dropdownPosition, setDropdownPosition, toggleDropdown } =
+    useDropdownPosition();
 
   const priorityClasses: Record<Priority, string> = {
     High: "bg-priority-high",
@@ -91,17 +100,16 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
           id: editingTask.id,
         });
         setTaskList((prev) =>
-          prev.map((t) =>
-            t.id === editingTask.id
+          prev.map((task) =>
+            task.id === editingTask.id
               ? { ...taskFormData, id: editingTask.id, statusId }
-              : t
+              : task
           )
         );
       } else {
         const docId = await onCreateNewTask({
           ...taskFormData,
           statusId,
-          id: "",
         });
         setTaskList((prev) => [
           ...prev,
@@ -109,6 +117,20 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
         ]);
       }
       setOpenConfirmDialog(false);
+      onClose();
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.log(error.message);
+      }
+    }
+  };
+
+  const handleCloseConfirmDialog = () => setOpenConfirmDialog(false);
+  const handleDeleteTask = async () => {
+    try {
+      await onDeleteTask(taskFormData);
+      setTaskList((prev) => prev.filter((task) => task.id !== taskFormData.id));
+      setOpenConfirmDeleteDialog(false);
       onClose();
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -131,7 +153,12 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
           onChange={handleTitleChange}
         />
         <div className="pl-8">
-          <MenuIcon />
+          <IconButton
+            icon={menuIcon}
+            alt="menu button"
+            size="sm"
+            onClick={(event) => toggleDropdown(event)}
+          />
         </div>
       </div>
       <div className="flex items-center justify-between mt-4">
@@ -217,6 +244,26 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
             closeText="Confirm"
           />
         ))}
+
+      {dropdownPosition && (
+        <MenuList
+          top={dropdownPosition.top}
+          left={dropdownPosition.left}
+          list={["Remove task"]}
+          onClose={() => setDropdownPosition(null)}
+          onClick={() => setOpenConfirmDeleteDialog(true)}
+        />
+      )}
+
+      {openConfirmDeleteDialog && (
+        <ConfirmDialog
+          onClose={handleCloseConfirmDialog}
+          closeText="Cancel"
+          onConfrim={handleDeleteTask}
+          confirmText="Delete"
+          contentText={confirmTaskDeleteMessage}
+        />
+      )}
     </form>
   );
 }

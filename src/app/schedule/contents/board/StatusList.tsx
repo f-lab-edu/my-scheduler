@@ -1,5 +1,5 @@
 "use client";
-import { MouseEvent, useState } from "react";
+import { useState } from "react";
 import Task from "@/app/schedule/contents/board/Task";
 import { confirmDeleteMessage } from "@/app/schedule/constants";
 import { useContentsContext } from "@/app/schedule/contents/ContentsContext";
@@ -9,6 +9,7 @@ import MenuList from "@/components/dropdown/MenuList";
 import IconButton from "@/components/common/button/IconButton";
 import ConfirmDialog from "@/components/common/button/ConfirmDialog";
 import { useModal } from "@/hooks/useModal";
+import useDropdownPosition from "@/hooks/useDropdownPosition";
 import { StatusType, TaskType } from "@/types/scheduleType";
 import menuIcon from "@/assets/three-dots.svg";
 import plusIcon from "@/assets/plus.svg";
@@ -20,29 +21,16 @@ interface Props {
 
 export default function StatusList({ status, onDeleteStatus }: Props) {
   const { open, openModal, closeModal } = useModal();
-  const { setStatusList, taskList } = useContentsContext();
-  const [dropdownPosition, setDropdownPosition] = useState<{
-    top: number;
-    left: number;
-  } | null>(null);
+  const { dropdownPosition, setDropdownPosition, toggleDropdown } =
+    useDropdownPosition();
+
+  const { setStatusList, taskList, setTaskList } = useContentsContext();
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [editingTask, setEditingTask] = useState<TaskType | null>(null);
 
   const filteredTasks = taskList.filter(
     (task: TaskType) => task.statusId === status.id
   );
-
-  const handleToggleDropdown = (event: MouseEvent<HTMLButtonElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    setDropdownPosition(
-      dropdownPosition
-        ? null
-        : {
-            top: rect.bottom,
-            left: rect.left,
-          }
-    );
-  };
 
   const handleCloseConfirmDialog = () => setOpenConfirmDialog(false);
   const handleDeleteStatus = async () => {
@@ -61,8 +49,6 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
     openModal();
   };
 
-  const handleCancelEdit = () => {};
-
   return (
     <section className="flex flex-col py-5 px-3 mb-[100px] w-96 rounded-xl bg-background-status h-full ">
       <div className="flex justify-between">
@@ -76,7 +62,7 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
           <IconButton
             icon={menuIcon}
             alt="menu button"
-            onClick={(event) => handleToggleDropdown(event)}
+            onClick={(event) => toggleDropdown(event)}
           />
           <IconButton icon={plusIcon} alt="plus button" onClick={openModal} />
         </span>
