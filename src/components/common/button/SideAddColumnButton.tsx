@@ -7,7 +7,7 @@ interface Props {
 
 export default function SideAddColumnButton({ onClick }: Props) {
   return (
-    <button className="hover:bg-headerBlue p-2 rounded-lg" onClick={onClick}>
+    <button className="hover:bg-headerBlue p-2 rounded-lg " onClick={onClick}>
       <PlusIcon width={24} height={24} />
     </button>
   );
