@@ -2,7 +2,7 @@
 
 import { useState, ChangeEvent, useActionState } from "react";
 import dayjs from "dayjs";
-import { TaskActions } from "@/app/schedule/contents/actions/TaskActions";
+import { TaskAction } from "@/app/schedule/contents/actions/TaskActions";
 import { confirmSaveMessage } from "@/app/schedule/constants";
 import ConfirmDialog from "@/components/common/button/ConfirmDialog";
 import ConfirmButton from "@/components/common/button/ConfirmButtons";
@@ -15,6 +15,7 @@ import {
 } from "@/types/scheduleType";
 import CalendarIcon from "@/assets/calendar.svg";
 import MenuIcon from "@/assets/three-dots-vertical.svg";
+import { useContentsContext } from "@/app/schedule/contents/ContentsContext";
 
 interface Props {
   onClose: () => void;
@@ -23,9 +24,10 @@ interface Props {
 const PRIORITIES = ["High", "Medium", "Low"];
 
 export default function Editor({ onClose }: Props) {
+  const { onCreateNewTask, setTaskList } = useContentsContext();
   const { closeModal } = useModal();
   const [formState, formAction] = useActionState<TaskFormStatusType, FormData>(
-    TaskActions,
+    TaskAction,
     {
       success: false,
       message: "",
@@ -53,13 +55,7 @@ export default function Editor({ onClose }: Props) {
     event: ChangeEvent<HTMLInputElement>,
     dateField: DateField
   ) => {
-    const newDate = dayjs(event.target.value);
-
     if (dateField === "end") {
-      if (newDate.isBefore(dayjs(taskFormData.startDate))) {
-        alert("종료 날짜는 시작 날짜보다 이전일 수 없습니다.");
-        return;
-      }
       setTaskFormData((prev) => ({
         ...prev,
         endDate: event.target.value,
@@ -82,11 +78,17 @@ export default function Editor({ onClose }: Props) {
     setTaskFormData((prev) => ({ ...prev, description: event.target.value }));
 
   const handleCloseDialog = () => setOpenConfirmDialog(false);
-  const handleSaveTask = () => {
-    //TODO: 저장 로직
-
-    setOpenConfirmDialog(false);
-    closeModal();
+  const handleSaveTask = async () => {
+    try {
+      const docId = await onCreateNewTask(taskFormData);
+      setTaskList((prev) => [...prev, { ...taskFormData, id: docId }]);
+      setOpenConfirmDialog(false);
+      closeModal();
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.log(error.message);
+      }
+    }
   };
 
   return (
@@ -94,15 +96,17 @@ export default function Editor({ onClose }: Props) {
       action={formAction}
       className="py-[28px] px-[50px] rounded-lg bg-white "
     >
-      <div className="flex items-baseline justify-between">
+      <div className="flex items-end justify-between">
         <input
           name="title"
           placeholder="New Title"
-          className="mt-7 border-b-2 border-border-editor w-[450px] h-[40px] text-2xl outline-none"
+          className="mt-7 border-b-2 border-border-editor w-[500px] h-[40px] text-2xl outline-none"
           value={taskFormData.title}
           onChange={handleTitleChange}
         />
-        <MenuIcon />
+        <div className="pl-8">
+          <MenuIcon />
+        </div>
       </div>
       <div className="flex items-center justify-between mt-4">
         <div className="flex items-center space-x-2">

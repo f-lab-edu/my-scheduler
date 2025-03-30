@@ -8,9 +8,11 @@ import {
   Dispatch,
   SetStateAction,
 } from "react";
-import { Priority, StatusType } from "@/types/scheduleType";
+import { Priority, StatusType, TaskType } from "@/types/scheduleType";
 
-type Props = {
+interface Props {
+  taskList: TaskType[];
+  setTaskList: Dispatch<SetStateAction<TaskType[]>>;
   statusList: StatusType[];
   setStatusList: Dispatch<SetStateAction<StatusType[]>>;
   searchValue: string;
@@ -19,11 +21,21 @@ type Props = {
   setIsAddStatusVisible: (visible: boolean) => void;
   filterList: Priority[];
   setFilterList: (filters: Priority[]) => void;
-};
+  onCreateNewTask: (task: TaskType) => Promise<string>;
+}
+
+interface ContentsProviderProps {
+  children: ReactNode;
+  onCreateNewTask: (task: TaskType) => Promise<string>;
+}
 
 const ContentsContext = createContext<Props | null>(null);
 
-export function ContentsProvider({ children }: { children: ReactNode }) {
+export function ContentsProvider({
+  children,
+  onCreateNewTask,
+}: ContentsProviderProps) {
+  const [taskList, setTaskList] = useState<TaskType[]>([]);
   const [statusList, setStatusList] = useState<StatusType[]>([]);
   const [searchValue, setSearchValue] = useState("");
   const [isAddStatusVisible, setIsAddStatusVisible] = useState(false);
@@ -32,6 +44,8 @@ export function ContentsProvider({ children }: { children: ReactNode }) {
   return (
     <ContentsContext.Provider
       value={{
+        taskList,
+        setTaskList,
         statusList,
         setStatusList,
         searchValue,
@@ -40,6 +54,7 @@ export function ContentsProvider({ children }: { children: ReactNode }) {
         setIsAddStatusVisible,
         filterList,
         setFilterList,
+        onCreateNewTask,
       }}
     >
       {children}

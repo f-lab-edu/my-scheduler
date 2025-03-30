@@ -5,10 +5,14 @@ import StatusList from "@/app/schedule/contents/board/StatusList";
 import { useContentsContext } from "@/app/schedule/contents/ContentsContext";
 import SideAddColumnButton from "@/components/common/button/SideAddColumnButton";
 import AddStatusInput from "@/components/common/AddStatusInput";
-import { StatusType } from "@/types/scheduleType";
+import { StatusType, TaskType } from "@/types/scheduleType";
 
 interface StatusProps {
   status: StatusType;
+}
+
+interface TaskProps {
+  task: TaskType;
 }
 
 interface Props {

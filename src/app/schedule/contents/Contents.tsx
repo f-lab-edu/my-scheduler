@@ -3,17 +3,18 @@ import {
   createNewStatus,
   deleteStatus,
 } from "@/app/schedule/contents/actions/StatusActions";
+
 import Board from "@/app/schedule/contents/board/Board";
 
 export default async function Contents() {
-  const data = await getStatusList();
+  const statusData = await getStatusList();
 
   return (
     <div>
       <Board
         onCreateNewStatus={createNewStatus}
         onDeleteStatus={deleteStatus}
-        status={data}
+        status={statusData}
       />
     </div>
   );
