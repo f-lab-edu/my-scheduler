@@ -3,10 +3,6 @@ import { TaskFormStatusType, Priority } from "@/types/scheduleType";
 import { db } from "@/lib/firebase";
 import { TaskType } from "@/types/scheduleType";
 
-interface Props {
-  task: TaskType;
-}
-
 export async function TaskAction(
   state: TaskFormStatusType,
   payload: FormData
@@ -53,7 +49,7 @@ export async function TaskAction(
 }
 
 export async function createNewTask(task: TaskType): Promise<string> {
-  const { id, ...restData } = task;
+  const { id: _id, ...restData } = task;
   const docRef = await db.collection("task").add(restData); // id 빼서 fireStore에 저장
   return docRef.id;
 }

@@ -11,10 +11,6 @@ interface StatusProps {
   status: StatusType;
 }
 
-interface TaskProps {
-  task: TaskType;
-}
-
 interface Props {
   onCreateNewStatus: (status: StatusProps) => Promise<string>;
   onDeleteStatus: (id: string) => Promise<void>;
@@ -43,7 +39,7 @@ export default function Board({
   useEffect(() => {
     setStatusList(status);
     setTaskList(task);
-  }, [status, setStatusList]);
+  }, [status, setStatusList, setTaskList, task]);
 
   const handleSaveStatus = async (newStatusData: StatusType) => {
     try {
