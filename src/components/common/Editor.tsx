@@ -1,7 +1,10 @@
 "use client";
+
 import { useState, ChangeEvent, useActionState } from "react";
 import dayjs from "dayjs";
-import { TaskActions } from "@/app/schedule/contents/TaskActions";
+import { TaskActions } from "@/app/schedule/contents/actions/TaskActions";
+import { confirmSaveMessage } from "@/app/schedule/constants";
+import ConfirmDialog from "@/components/common/button/confirmDialog";
 import ConfirmButton from "@/components/common/button/ConfirmButtons";
 import {
   TaskFormStatusType,
@@ -10,10 +13,16 @@ import {
   DateField,
 } from "@/types/scheduleType";
 import CalendarIcon from "@/assets/calendar.svg";
+import { useModal } from "@/hooks/useModal";
+
+interface Props {
+  onClose: () => void;
+}
 
 const PRIORITIES = ["High", "Medium", "Low"];
 
-export default function Editor() {
+export default function Editor({ onClose }: Props) {
+  const { closeModal } = useModal();
   const [formState, formAction] = useActionState<TaskFormStatusType, FormData>(
     TaskActions,
     {
@@ -28,6 +37,7 @@ export default function Editor() {
     priority: "High",
     description: "",
   });
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
 
   const priorityClasses: Record<Priority, string> = {
     High: "bg-priority-high",
@@ -35,9 +45,8 @@ export default function Editor() {
     Low: "bg-priority-low",
   };
 
-  const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) =>
     setTaskFormData((prev) => ({ ...prev, title: event.target.value }));
-  };
 
   const handleChangeDate = (
     event: ChangeEvent<HTMLInputElement>,
@@ -63,15 +72,21 @@ export default function Editor() {
     }
   };
 
-  const handlePrioritySelect = (event: ChangeEvent<HTMLSelectElement>) => {
+  const handlePrioritySelect = (event: ChangeEvent<HTMLSelectElement>) =>
     setTaskFormData((prev) => ({
       ...prev,
       priority: event.target.value as Priority,
     }));
-  };
 
-  const handleDescriptionChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleDescriptionChange = (event: ChangeEvent<HTMLTextAreaElement>) =>
     setTaskFormData((prev) => ({ ...prev, description: event.target.value }));
+
+  const handleCloseDialog = () => setOpenConfirmDialog(false);
+  const handleSaveTask = () => {
+    //TODO: 저장 로직
+
+    setOpenConfirmDialog(false);
+    closeModal();
   };
 
   return (
@@ -86,7 +101,6 @@ export default function Editor() {
         value={taskFormData.title}
         onChange={handleTitleChange}
       />
-
       <div className="flex items-center justify-between mt-4">
         <div className="flex items-center space-x-2">
           <CalendarIcon />
@@ -132,7 +146,6 @@ export default function Editor() {
           />
         </div>
       </div>
-
       <textarea
         name="description"
         placeholder="Description"
@@ -140,24 +153,37 @@ export default function Editor() {
         onChange={handleDescriptionChange}
         className="w-full min-h-[350px] h-32 mt-4 border border-gray-300 rounded p-5 outline-none resize-none"
       />
-
       <div className="flex justify-end space-x-2 mt-4">
         <ConfirmButton
           variant="cancel"
           text="Cancel"
           type="button"
-          onClick={() => {}}
+          onClick={onClose}
         />
-        <ConfirmButton variant="confirm" text="Save" onClick={() => {}} />
+
+        <ConfirmButton
+          variant="confirm"
+          text="Save"
+          onClick={() => setOpenConfirmDialog(true)}
+        />
       </div>
 
-      {/* TODO: db 연결해서 테스트   */}
-      {formState?.success && (
-        <div className="text-green-600 mt-2">{formState.message}</div>
-      )}
-      {formState?.success === false && (
-        <div className="text-red-600 mt-2">{formState.message}</div>
-      )}
+      {openConfirmDialog &&
+        (formState?.success ? (
+          <ConfirmDialog
+            onClose={() => handleCloseDialog()}
+            onConfrim={handleSaveTask}
+            contentText={confirmSaveMessage}
+            closeText="Cancel"
+            confirmText="Save"
+          />
+        ) : (
+          <ConfirmDialog
+            onClose={() => handleCloseDialog()}
+            contentText={formState.message}
+            closeText="Confirm"
+          />
+        ))}
     </form>
   );
 }

@@ -2,7 +2,7 @@ import clsx from "clsx";
 interface Props {
   variant?: "confirm" | "cancel";
   text: string;
-  type?: "button" | "submit" | "reset";
+  type?: "button" | "submit";
   size?: "sm" | "md";
   onClick: () => void;
 }
