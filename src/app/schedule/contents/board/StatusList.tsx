@@ -9,7 +9,7 @@ import MenuList from "@/components/dropdown/MenuList";
 import IconButton from "@/components/common/button/IconButton";
 import ConfirmDialog from "@/components/common/button/ConfirmDialog";
 import { useModal } from "@/hooks/useModal";
-import { StatusType } from "@/types/scheduleType";
+import { StatusType, TaskType } from "@/types/scheduleType";
 import menuIcon from "@/assets/three-dots.svg";
 import plusIcon from "@/assets/plus.svg";
 
@@ -20,12 +20,16 @@ interface Props {
 
 export default function StatusList({ status, onDeleteStatus }: Props) {
   const { open, openModal, closeModal } = useModal();
-  const { setStatusList } = useContentsContext();
+  const { setStatusList, taskList } = useContentsContext();
   const [dropdownPosition, setDropdownPosition] = useState<{
     top: number;
     left: number;
   } | null>(null);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+
+  const filteredTasks = taskList.filter(
+    (task: TaskType) => task.statusId === status.id
+  );
 
   const toggleDropdown = (event: MouseEvent<HTMLButtonElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -57,7 +61,7 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
         <div className="flex items-center gap-2">
           <h2 className="text-white text-xl">{status.statusName}</h2>
           <span className="bg-background-countBox py-1 px-3 rounded-xl text-white">
-            {status.count}
+            {filteredTasks.length}
           </span>
         </div>
         <span className="flex">
@@ -70,8 +74,8 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
         </span>
       </div>
       <div className="flex flex-col gap-2 mt-5">
-        {status.taskList.map((task) => (
-          <Task key={task.taskId} task={task} />
+        {filteredTasks.map((task, index) => (
+          <Task key={`${task.taskId}-${index}`} task={task} />
         ))}
       </div>
 
@@ -97,7 +101,7 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
 
       {open && (
         <Modal onClose={closeModal}>
-          <Editor onClose={closeModal} />
+          <Editor onClose={closeModal} statusId={status.id!} />
         </Modal>
       )}
     </section>

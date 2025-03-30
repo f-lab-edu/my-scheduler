@@ -18,12 +18,13 @@ import { useContentsContext } from "@/app/schedule/contents/ContentsContext";
 
 interface Props {
   onClose: () => void;
+  statusId: string;
 }
 
 const PRIORITIES = ["High", "Medium", "Low"];
 
-export default function Editor({ onClose }: Props) {
-  const { onCreateNewTask, setTaskList } = useContentsContext();
+export default function Editor({ onClose, statusId }: Props) {
+  const { onCreateNewTask, setTaskList, taskList } = useContentsContext();
   const [formState, formAction] = useActionState<TaskFormStatusType, FormData>(
     TaskAction,
     {
@@ -37,6 +38,7 @@ export default function Editor({ onClose }: Props) {
     endDate: dayjs().format("YYYY-MM-DD"),
     priority: "High",
     description: "",
+    statusId: "",
   });
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
 
@@ -78,8 +80,11 @@ export default function Editor({ onClose }: Props) {
   const handleCloseDialog = () => setOpenConfirmDialog(false);
   const handleSaveTask = async () => {
     try {
-      const docId = await onCreateNewTask(taskFormData);
-      setTaskList((prev) => [...prev, { ...taskFormData, id: docId }]);
+      const docId = await onCreateNewTask({ ...taskFormData, statusId });
+      setTaskList((prev) => [
+        ...prev,
+        { ...taskFormData, id: docId, statusId },
+      ]);
       setOpenConfirmDialog(false);
       onClose();
     } catch (error: unknown) {

@@ -19,25 +19,30 @@ interface Props {
   onCreateNewStatus: (status: StatusProps) => Promise<string>;
   onDeleteStatus: (id: string) => Promise<void>;
   status: StatusType[];
+  task: TaskType[];
 }
 
 export default function Board({
   onCreateNewStatus,
   onDeleteStatus,
   status,
+  task,
 }: Props) {
   const {
+    setTaskList,
     statusList,
     setStatusList,
     isAddStatusVisible,
     setIsAddStatusVisible,
   } = useContentsContext();
+
   const handleAddStatusInputVisibility = () => {
     setIsAddStatusVisible(!isAddStatusVisible);
   };
 
   useEffect(() => {
     setStatusList(status);
+    setTaskList(task);
   }, [status, setStatusList]);
 
   const handleSaveStatus = async (newStatusData: StatusType) => {
