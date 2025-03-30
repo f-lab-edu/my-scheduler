@@ -24,6 +24,12 @@ export default function Task({ task, onClick }: Props) {
         "p-4 rounded-2xl text-font-gray cursor-pointer"
       )}
       onClick={onClick}
+      tabIndex={0}
+      onKeyUp={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          onClick();
+        }
+      }}
     >
       <div className="flex justify-between">
         <div className="flex gap-2">

@@ -28,7 +28,7 @@ export default function Dropdown({
     <div
       className="fixed inset-0 z-50"
       onClick={onClose}
-      onKeyUp={(e) => e.key === "Escape" && onClose()}
+      onKeyUp={(event) => event.key === "Escape" && onClose()}
     >
       <div
         className="absolute p-3 rounded-lg cursor-pointer shadow-md bg-white"
@@ -37,7 +37,7 @@ export default function Dropdown({
           event.stopPropagation();
           onClose();
         }}
-        onKeyUp={(e) => e.key === "Escape" && onClose()}
+        onKeyUp={(event) => event.key === "Escape" && onClose()}
       >
         {children}
       </div>
