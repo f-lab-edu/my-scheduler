@@ -6,7 +6,6 @@ import { TaskAction } from "@/app/schedule/contents/actions/TaskActions";
 import { confirmSaveMessage } from "@/app/schedule/constants";
 import ConfirmDialog from "@/components/common/button/ConfirmDialog";
 import ConfirmButton from "@/components/common/button/ConfirmButtons";
-import { useModal } from "@/hooks/useModal";
 import {
   TaskFormStatusType,
   TaskFormType,
@@ -25,7 +24,6 @@ const PRIORITIES = ["High", "Medium", "Low"];
 
 export default function Editor({ onClose }: Props) {
   const { onCreateNewTask, setTaskList } = useContentsContext();
-  const { closeModal } = useModal();
   const [formState, formAction] = useActionState<TaskFormStatusType, FormData>(
     TaskAction,
     {
@@ -83,7 +81,7 @@ export default function Editor({ onClose }: Props) {
       const docId = await onCreateNewTask(taskFormData);
       setTaskList((prev) => [...prev, { ...taskFormData, id: docId }]);
       setOpenConfirmDialog(false);
-      closeModal();
+      onClose();
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.log(error.message);
