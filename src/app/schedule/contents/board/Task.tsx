@@ -18,6 +18,7 @@ const PRIORITY: Record<TaskType["priority"], string> = {
 export default function Task({ task, onClick }: Props) {
   return (
     <article
+      role="button"
       className={clsx(
         PRIORITY[task.priority],
         "p-4 rounded-2xl text-font-gray cursor-pointer"
