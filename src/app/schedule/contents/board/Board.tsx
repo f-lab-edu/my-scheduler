@@ -1,49 +1,28 @@
 "use client";
 
-import { useEffect } from "react";
 import StatusList from "@/app/schedule/contents/board/StatusList";
 import { useContentsContext } from "@/app/schedule/contents/ContentsContext";
 import SideAddColumnButton from "@/components/common/button/SideAddColumnButton";
 import AddStatusInput from "@/components/common/AddStatusInput";
-import { StatusType, TaskType } from "@/types/scheduleType";
+import { StatusType } from "@/types/scheduleType";
 
-interface StatusProps {
-  status: StatusType;
-}
-
-interface Props {
-  onCreateNewStatus: (status: StatusProps) => Promise<string>;
-  onDeleteStatus: (id: string) => Promise<void>;
-  status: StatusType[];
-  task: TaskType[];
-}
-
-export default function Board({
-  onCreateNewStatus,
-  onDeleteStatus,
-  status,
-  task,
-}: Props) {
+export default function Board() {
   const {
-    setTaskList,
     statusList,
     setStatusList,
     isAddStatusVisible,
     setIsAddStatusVisible,
+    onDeleteStatus,
+    onCreateNewStatus,
   } = useContentsContext();
 
   const handleAddStatusInputVisibility = () => {
     setIsAddStatusVisible(!isAddStatusVisible);
   };
 
-  useEffect(() => {
-    setStatusList(status);
-    setTaskList(task);
-  }, [status, setStatusList, setTaskList, task]);
-
   const handleSaveStatus = async (newStatusData: StatusType) => {
     try {
-      const docId = await onCreateNewStatus({ status: newStatusData });
+      const docId = await onCreateNewStatus(newStatusData);
       setStatusList((prev) => [...prev, { ...newStatusData, id: docId }]);
     } catch (error: unknown) {
       if (error instanceof Error) {

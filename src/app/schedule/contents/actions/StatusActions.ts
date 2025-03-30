@@ -2,11 +2,7 @@
 import { db } from "@/lib/firebase";
 import { StatusType } from "@/types/scheduleType";
 
-interface Props {
-  status: StatusType;
-}
-
-export async function createNewStatus({ status }: Props): Promise<string> {
+export async function createNewStatus(status: StatusType): Promise<string> {
   const result = await db.collection("statusList").add(status);
   return result.id;
 }
