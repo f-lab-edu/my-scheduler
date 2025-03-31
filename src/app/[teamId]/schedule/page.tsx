@@ -1,17 +1,17 @@
-import { ContentsProvider } from "@/app/schedule/contents/ContentsContext";
-import InteractionBar from "@/app/schedule/interactionBar/InteractionBar";
-import Tabs from "@/app/schedule/tabs/Tabs";
+import { ContentsProvider } from "@/app/[teamId]/schedule/contents/ContentsContext";
+import InteractionBar from "@/app/[teamId]/schedule/interactionBar/InteractionBar";
+import Tabs from "@/app/[teamId]/schedule/tabs/Tabs";
 import {
   createNewTask,
   updateTask,
   deleteTask,
-} from "@/app/schedule/contents/actions/TaskActions";
+} from "@/app/[teamId]/schedule/contents/actions/TaskActions";
 import {
   createNewStatus,
   deleteStatus,
-} from "@/app/schedule/contents/actions/StatusActions";
-import { getStatusList } from "@/app/schedule/contents/StatusService";
-import { getTaskList } from "@/app/schedule/contents/TaskService";
+} from "@/app/[teamId]/schedule/contents/actions/StatusActions";
+import { getStatusList } from "@/app/[teamId]/schedule/contents/StatusService";
+import { getTaskList } from "@/app/[teamId]/schedule/contents/TaskService";
 import Board from "./contents/board/Board";
 
 export default async function Page() {

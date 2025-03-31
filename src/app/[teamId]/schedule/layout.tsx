@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { TabsProvider } from "@/app/schedule/tabs/TabsContext";
+import { TabsProvider } from "@/app/[teamId]/schedule/tabs/TabsContext";
 
 type Props = { children: ReactNode };
 
