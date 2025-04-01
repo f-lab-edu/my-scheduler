@@ -1,6 +1,6 @@
 "use client";
 
-import StatusList from "@/app/[teamId]/schedule/board/StatusList";
+import StatusList from "@/app/[teamId]/schedule/[tab]/board/StatusList";
 import { useContentsContext } from "@/app/[teamId]/schedule/contents/ContentsContext";
 import SideAddColumnButton from "@/components/common/button/SideAddColumnButton";
 import AddStatusInput from "@/components/common/AddStatusInput";

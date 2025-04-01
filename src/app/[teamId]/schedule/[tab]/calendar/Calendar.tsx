@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import Agenda from "@/app/[teamId]/schedule/calendar/Agenda";
+import Agenda from "@/app/[teamId]/schedule/[tab]/calendar/Agenda";
 import { MONTH_NAMES, WEEK } from "@/app/[teamId]/schedule/constants";
 import PrevIcon from "@/assets/caret-left-fill.svg";
 import NextIcon from "@/assets/caret-right-fill.svg";

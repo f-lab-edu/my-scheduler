@@ -1,5 +1,5 @@
-import Board from "@/app/[teamId]/schedule/[tab]/Board";
-import Calendar from "@/app/[teamId]/schedule/[tab]/Calendar";
+import Board from "@/app/[teamId]/schedule/[tab]/board/Board";
+import Calendar from "@/app/[teamId]/schedule/[tab]/calendar/Calendar";
 import { notFound } from "next/navigation";
 interface Props {
   params: Promise<{ tab?: string }>;
