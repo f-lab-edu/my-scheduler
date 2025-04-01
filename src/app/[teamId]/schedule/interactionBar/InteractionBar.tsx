@@ -1,8 +1,8 @@
 "use client";
-import SearchBar from "@/app/schedule/interactionBar/SearchBar";
+import SearchBar from "@/app/[teamId]/schedule/interactionBar/SearchBar";
 import AddColumnButton from "@/components/common/button/AddColumnButton";
 import FilterButton from "@/components/common/button/FilterButtons";
-import { useContentsContext } from "@/app/schedule/contents/ContentsContext";
+import { useContentsContext } from "@/app/[teamId]/schedule/contents/ContentsContext";
 
 export default function InteractionBar() {
   const { setIsAddStatusVisible, taskList } = useContentsContext();

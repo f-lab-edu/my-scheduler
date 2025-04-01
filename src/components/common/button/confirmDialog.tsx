@@ -1,5 +1,5 @@
 import Modal from "@/components/common/Modal";
-import ConfirmButton from "./ConfirmButtons";
+import ConfirmButton from "@/components/common/button/ConfirmButton";
 
 interface Props {
   onClose: () => void;

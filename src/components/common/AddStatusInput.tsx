@@ -1,7 +1,7 @@
 "use client";
 
 import { ChangeEvent, useState } from "react";
-import ConfirmButton from "@/components/common/button/ConfirmButtons";
+import ConfirmButton from "@/components/common/button/ConfirmButton";
 import { StatusType } from "@/types/scheduleType";
 
 interface Props {

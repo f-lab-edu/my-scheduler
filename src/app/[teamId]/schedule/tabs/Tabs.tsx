@@ -1,6 +1,6 @@
 "use client";
 
-import Tab from "@/app/schedule/tabs/Tab";
+import Tab from "@/app/[teamId]/schedule/tabs/Tab";
 import { useTabsContext } from "./TabsContext";
 
 export default function Tabs() {
