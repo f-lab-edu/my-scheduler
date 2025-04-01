@@ -5,11 +5,12 @@ import dayjs from "dayjs";
 import {
   confirmSaveMessage,
   confirmTaskDeleteMessage,
-} from "@/app/schedule/constants";
-import { TaskAction } from "@/app/schedule/contents/actions/TaskActions";
-import { useContentsContext } from "@/app/schedule/contents/ContentsContext";
+} from "@/app/[teamId]/schedule/constants";
+import { TaskAction } from "@/app/[teamId]/schedule/contents/actions/TaskActions";
+import { useContentsContext } from "@/app/[teamId]/schedule/contents/ContentsContext";
 import ConfirmDialog from "@/components/common/button/ConfirmDialog";
-import ConfirmButton from "@/components/common/button/ConfirmButtons";
+
+import ConfirmButton from "@/components/common/button/ConfirmButton";
 import {
   TaskFormStatusType,
   TaskType,
@@ -39,11 +40,12 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
     priority: "High",
     description: "",
     statusId,
+    order: 0,
   };
   const [taskFormData, setTaskFormData] = useState<TaskType>(initialFormData);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [openConfirmDeleteDialog, setOpenConfirmDeleteDialog] = useState(false);
-  const { onCreateNewTask, setTaskList, onUpdateTask, onDeleteTask } =
+  const { onCreateNewTask, setTaskList, taskList, onUpdateTask, onDeleteTask } =
     useContentsContext();
   const [formState, formAction] = useActionState<TaskFormStatusType, FormData>(
     TaskAction,
@@ -107,14 +109,16 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
           )
         );
       } else {
-        const docId = await onCreateNewTask({
-          ...taskFormData,
-          statusId,
-        });
-        setTaskList((prev) => [
-          ...prev,
-          { ...taskFormData, id: docId, statusId },
-        ]);
+        const filteredTasks = taskList.filter(
+          (task: TaskType) => task.statusId === statusId
+        );
+        const newTaskOrder =
+          filteredTasks.length > 0
+            ? Math.max(...filteredTasks.map((task) => task.order ?? 0)) + 1
+            : 0;
+        const newTask = { ...taskFormData, statusId, order: newTaskOrder };
+        const docId = await onCreateNewTask(newTask);
+        setTaskList((prev) => [...prev, { ...newTask, id: docId, statusId }]);
       }
       setOpenConfirmDialog(false);
       onClose();

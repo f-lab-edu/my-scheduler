@@ -16,7 +16,7 @@ export interface TaskType {
   priority: Priority;
   description: string;
   months?: number[]; //calendar 달별로 가져올 때
-  order?: number; //drag&drop 순서
+  order: number; //drag&drop 순서
   statusId: string;
 }
 
