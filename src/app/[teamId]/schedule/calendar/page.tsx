@@ -1,3 +1,9 @@
-export default function Calendar() {
-  return <div></div>;
+import Calendar from "./Calendar";
+
+export default function CalendarPage() {
+  return (
+    <>
+      <Calendar />
+    </>
+  );
 }

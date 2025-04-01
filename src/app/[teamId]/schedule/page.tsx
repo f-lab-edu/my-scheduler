@@ -1,9 +1,10 @@
 import { redirect } from "next/navigation";
 interface Props {
-  params: { teamId: string };
+  params: Promise<{ teamId: string }>;
 }
 
 export default async function SchedulePage({ params }: Props) {
-  redirect(`/${params.teamId}/schedule/board`);
+  const { teamId } = await params;
+  redirect(`/${teamId}/schedule/board`);
   return null;
 }
