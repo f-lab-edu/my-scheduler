@@ -12,7 +12,7 @@ type Props = {
 const TabsContext = createContext<Props | null>(null);
 
 export function TabsProvider({ children }: { children: ReactNode }) {
-  const { teamId, tab } = useParams<{ teamId: string; tab?: string }>();
+  const { tab } = useParams<{ tab?: string }>();
   const [activeTab, setActiveTab] = useState(tab || "Board");
   const tabList = ["Board", "Calendar"];
 

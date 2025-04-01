@@ -20,7 +20,6 @@ export default function Calendar() {
     const currentCellCount = startDay + thisLastDate;
     const nextDays = totalCells - currentCellCount;
 
-    // 이전 달 날짜 셀 생성
     const prevCells = Array.from({ length: startDay }, (_, i) => {
       const prevMonthDay = prevLastDate - startDay + (i + 1);
       return (
@@ -30,7 +29,6 @@ export default function Calendar() {
       );
     });
 
-    // 현재 달 날짜 셀 생성
     const currentCells = Array.from({ length: thisLastDate }, (_, i) => {
       const day = i + 1;
       const dayStr = String(day).padStart(2, "0");
@@ -47,7 +45,6 @@ export default function Calendar() {
       );
     });
 
-    // 다음 달 날짜 셀 생성
     const nextCells = Array.from({ length: nextDays }, (_, i) => {
       const day = i + 1;
       return (
