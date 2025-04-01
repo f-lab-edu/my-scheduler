@@ -1,6 +1,6 @@
 "use client";
 import { DragEvent, useState } from "react";
-import Task from "@/app/[teamId]/schedule/contents/board/Task";
+import Task from "@/app/[teamId]/schedule/board/Task";
 import { confirmDeleteMessage } from "@/app/[teamId]/schedule/constants";
 import { useContentsContext } from "@/app/[teamId]/schedule/contents/ContentsContext";
 import Modal from "@/components/common/Modal";
