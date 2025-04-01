@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
+
 interface Props {
-  params: Promise<{ teamId: string }>;
+  params: { teamId: string };
 }
 
 export default async function SchedulePage({ params }: Props) {

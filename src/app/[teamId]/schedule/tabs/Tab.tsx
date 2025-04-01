@@ -20,7 +20,7 @@ export default function Tab({ tab }: Props) {
     <button
       className={clsx(
         "text-[20px] mr-[32px]",
-        activeTab === tab
+        activeTab === tab.toLowerCase()
           ? "text-white border-b-[3px] border-border-activeTab"
           : "text-tabs"
       )}
