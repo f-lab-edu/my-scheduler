@@ -1,3 +1,4 @@
+import { useRouter, useParams } from "next/navigation";
 import clsx from "clsx";
 import { useTabsContext } from "@/app/[teamId]/schedule/tabs/TabsContext";
 
@@ -7,6 +8,13 @@ type Props = {
 
 export default function Tab({ tab }: Props) {
   const { activeTab, setActiveTab } = useTabsContext();
+  const router = useRouter();
+  const params = useParams();
+
+  const handleTabClick = () => {
+    setActiveTab(tab);
+    router.push(`/${params.teamId}/schedule/${tab.toLowerCase()}`);
+  };
 
   return (
     <button
@@ -16,7 +24,7 @@ export default function Tab({ tab }: Props) {
           ? "text-white border-b-[3px] border-border-activeTab"
           : "text-tabs"
       )}
-      onClick={() => setActiveTab(tab)}
+      onClick={handleTabClick}
     >
       {tab}
     </button>
