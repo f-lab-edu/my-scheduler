@@ -5,11 +5,12 @@ import dayjs from "dayjs";
 import {
   confirmSaveMessage,
   confirmTaskDeleteMessage,
-} from "@/app/schedule/constants";
-import { TaskAction } from "@/app/schedule/contents/actions/TaskActions";
-import { useContentsContext } from "@/app/schedule/contents/ContentsContext";
+} from "@/app/[teamId]/schedule/constants";
+import { TaskAction } from "@/app/[teamId]/schedule/contents/actions/TaskActions";
+import { useContentsContext } from "@/app/[teamId]/schedule/contents/ContentsContext";
 import ConfirmDialog from "@/components/common/button/ConfirmDialog";
-import ConfirmButton from "@/components/common/button/ConfirmButtons";
+
+import ConfirmButton from "@/components/common/button/ConfirmButton";
 import {
   TaskFormStatusType,
   TaskType,
@@ -111,7 +112,6 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
         const filteredTasks = taskList.filter(
           (task: TaskType) => task.statusId === statusId
         );
-        console.log("🟢", filteredTasks);
         const newTaskOrder =
           filteredTasks.length > 0
             ? Math.max(...filteredTasks.map((task) => task.order ?? 0)) + 1
