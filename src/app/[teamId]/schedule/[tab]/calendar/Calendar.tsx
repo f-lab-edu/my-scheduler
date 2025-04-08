@@ -1,22 +1,64 @@
 "use client";
+import dayjs from "dayjs";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { EventClickArg } from "@fullcalendar/core";
+import resolveConfig from "tailwindcss/resolveConfig";
+import tailwindConfig from "../../../../../../tailwind.config";
 import Agenda from "@/app/[teamId]/schedule/[tab]/calendar/Agenda";
 import Modal from "@/components/common/Modal";
 import Editor from "@/components/common/Editor";
 import { useModal } from "@/hooks/useModal";
-// import dynamic from "next/dynamic";
-// const FullCalendar = dynamic(() => import("@fullcalendar/react"), {
-//   ssr: false,
-// });
+import { useEffect, useState } from "react";
+import { TaskType, CalendarEventType } from "@/types/scheduleType";
+import { useContentsContext } from "../../contents/ContentsContext";
+
+const fullConfig = resolveConfig(tailwindConfig) as any;
 
 export default function Calendar() {
-  const { closeModal } = useModal();
+  const { open, closeModal } = useModal();
+  const { taskList } = useContentsContext();
+  const [editingTask, setEditingTask] = useState<TaskType | null>(null);
+  const [eventList, setEventList] = useState<CalendarEventType[] | []>([]);
+
+  useEffect(() => {
+    const taskGroupingById = taskList.reduce((acc, task) => {
+      acc[task.id] = [...(acc[task.id] ?? []), task];
+      return acc;
+    }, {} as Record<string, TaskType[]>);
+
+    const events = Object.keys(taskGroupingById).map((taskId) => {
+      const tasks = taskGroupingById[taskId];
+
+      const { title, priority } = tasks[0];
+
+      const earliestStart = tasks.reduce((prev, cur) =>
+        dayjs(cur.startDate).isBefore(dayjs(prev.startDate)) ? cur : prev
+      );
+
+      const latestEnd = tasks.reduce((prev, cur) =>
+        dayjs(cur.endDate).isAfter(dayjs(prev.endDate)) ? cur : prev
+      );
+
+      const startDate = earliestStart.startDate;
+      const endDate = latestEnd.endDate;
+
+      return {
+        id: taskId,
+        groupId: taskId,
+        title: title,
+        start: startDate,
+        end: dayjs(endDate).add(1, "day").format("YYYY-MM-DD"),
+        color: getColorByPriority(priority),
+      };
+    });
+
+    setEventList(events);
+  }, [taskList]);
 
   const handleTaskClick = (info: EventClickArg) => {
-    console.log("🟡", info.event.start);
+    // TODO: editor 처리
   };
 
   return (
@@ -26,13 +68,7 @@ export default function Calendar() {
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
           aspectRatio={1.5}
-          dayHeaderClassNames={() => ["bg-white", "text-black"]}
-          dayCellClassNames={() => ["bg-white", "text-black"]}
-          events={[
-            { title: "event 1", date: "2025-04-01" },
-            { title: "event 1", date: "2025-04-02" },
-            { title: "event 2", date: "2025-04-02" },
-          ]}
+          events={eventList}
           editable={true}
           selectable={true}
           headerToolbar={{
@@ -46,6 +82,31 @@ export default function Calendar() {
         />
       </div>
       <Agenda />
+      {open && (
+        <Modal onClose={closeModal}>
+          <Editor
+            onClose={() => {
+              closeModal();
+            }}
+            // TODO: 클릭 처리하면서 statusId 수정
+            statusId={"1"}
+            editingTask={editingTask}
+          />
+        </Modal>
+      )}
     </div>
   );
+}
+
+function getColorByPriority(priority: string) {
+  const priotiryName = priority.toLowerCase();
+
+  switch (priotiryName) {
+    case "high":
+      return fullConfig.theme.colors.priority.high;
+    case "medium":
+      return fullConfig.theme.colors.priority.medium;
+    case "low":
+      return fullConfig.theme.colors.priority.low;
+  }
 }

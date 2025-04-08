@@ -27,7 +27,7 @@ export default function Modal({ children, onClose }: Props) {
   return createPortal(
     <div
       role="button"
-      className="fixed inset-0 bg-black/60 flex items-center justify-center"
+      className="fixed inset-0 bg-black/60 flex items-center justify-center z-50"
       onClick={onClose}
       onKeyUp={(event) => event.key === "Escape" && onClose()}
     >

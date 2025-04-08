@@ -17,6 +17,7 @@ export default {
     "fc-view-harness",
     "fc-daygrid-day-frame",
     "fc-scrollgrid",
+    "fc-dayGridMonth-view",
   ],
   theme: {
     extend: {
