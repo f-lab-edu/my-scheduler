@@ -12,14 +12,15 @@ import Editor from "@/components/common/Editor";
 import { useModal } from "@/hooks/useModal";
 import { useEffect, useState } from "react";
 import { TaskType, CalendarEventType } from "@/types/scheduleType";
+import { MyTailwindConfig, PriorityColors } from "@/types/commonType";
 import { useContentsContext } from "../../contents/ContentsContext";
 
-const fullConfig = resolveConfig(tailwindConfig) as any;
+const fullConfig = resolveConfig(tailwindConfig) as unknown as MyTailwindConfig;
 
 export default function Calendar() {
   const { open, closeModal } = useModal();
   const { taskList } = useContentsContext();
-  const [editingTask, setEditingTask] = useState<TaskType | null>(null);
+  const [editingTask] = useState<TaskType | null>(null);
   const [eventList, setEventList] = useState<CalendarEventType[] | []>([]);
 
   useEffect(() => {
@@ -59,6 +60,7 @@ export default function Calendar() {
 
   const handleTaskClick = (info: EventClickArg) => {
     // TODO: editor 처리
+    console.log(info);
   };
 
   return (
@@ -99,14 +101,16 @@ export default function Calendar() {
 }
 
 function getColorByPriority(priority: string) {
-  const priotiryName = priority.toLowerCase();
+  const priorityName = priority.toLowerCase();
+  const priorityObj = fullConfig.theme?.colors?.priority as PriorityColors;
 
-  switch (priotiryName) {
-    case "high":
-      return fullConfig.theme.colors.priority.high;
-    case "medium":
-      return fullConfig.theme.colors.priority.medium;
-    case "low":
-      return fullConfig.theme.colors.priority.low;
+  if (priorityName === "high") {
+    return priorityObj.high;
+  } else if (priorityName === "medium") {
+    return priorityObj.medium;
+  } else if (priorityName === "low") {
+    return priorityObj.low;
+  } else {
+    throw new Error(`${priority} error`);
   }
 }

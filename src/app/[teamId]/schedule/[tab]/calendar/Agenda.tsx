@@ -1,6 +1,4 @@
 "use client";
-import FullCalendar from "@fullcalendar/react";
-import listPlugin from "@fullcalendar/list";
 
 import { TaskType } from "@/types/scheduleType";
 interface Props {
