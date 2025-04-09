@@ -47,7 +47,6 @@ export default function Calendar() {
 
       return {
         id: taskId,
-        groupId: statusId,
         title: title,
         start: startDate,
         end: dayjs(endDate).add(1, "day").format("YYYY-MM-DD"),
