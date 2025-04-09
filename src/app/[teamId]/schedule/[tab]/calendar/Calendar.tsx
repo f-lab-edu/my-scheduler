@@ -92,7 +92,6 @@ export default function Calendar() {
             onClose={() => {
               closeModal();
             }}
-            // TODO: 클릭 처리하면서 statusId 수정
             statusId={editingTask.statusId}
             editingTask={editingTask}
           />
