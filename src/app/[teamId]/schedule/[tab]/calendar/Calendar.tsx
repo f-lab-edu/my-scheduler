@@ -18,7 +18,7 @@ import { useContentsContext } from "../../contents/ContentsContext";
 const fullConfig = resolveConfig(tailwindConfig) as unknown as MyTailwindConfig;
 
 export default function Calendar() {
-  const { open, closeModal } = useModal();
+  const { open, closeModal, openModal } = useModal();
   const { taskList } = useContentsContext();
   const [editingTask] = useState<TaskType | null>(null);
   const [eventList, setEventList] = useState<CalendarEventType[] | []>([]);
@@ -60,6 +60,7 @@ export default function Calendar() {
 
   const handleTaskClick = (info: EventClickArg) => {
     // TODO: editor 처리
+    openModal();
     console.log(info);
   };
 

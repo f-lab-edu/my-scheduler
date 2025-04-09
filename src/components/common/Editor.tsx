@@ -8,7 +8,7 @@ import {
 } from "@/app/[teamId]/schedule/constants";
 import { TaskAction } from "@/app/[teamId]/schedule/contents/actions/TaskActions";
 import { useContentsContext } from "@/app/[teamId]/schedule/contents/ContentsContext";
-import ConfirmDialog from "@/components/common/button/ConfirmDialog";
+import ConfirmDialog from "@/components/common/ConfirmDialog";
 
 import ConfirmButton from "@/components/common/button/ConfirmButton";
 import {
