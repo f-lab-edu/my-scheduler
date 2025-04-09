@@ -32,7 +32,7 @@ export default function Calendar() {
     const events = Object.keys(taskGroupingById).map((taskId) => {
       const tasks = taskGroupingById[taskId];
 
-      const { title, priority, statusId } = tasks[0];
+      const { title, priority } = tasks[0];
 
       const earliestStart = tasks.reduce((prev, cur) =>
         dayjs(cur.startDate).isBefore(dayjs(prev.startDate)) ? cur : prev
