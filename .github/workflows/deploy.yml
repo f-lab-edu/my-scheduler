@@ -2,7 +2,7 @@ name: my-scheduler-nextjs-action
 
 on:
   push:
-    branches: [main]
+    branches: [fix/deploy]
 
 jobs:
   build:
@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0 # 전체 커밋 히스토리포함
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -23,6 +23,9 @@ jobs:
       - name: Build project
         run: |
           npm run build
+
+      - name: Force add build folder
+        run: git add -f build
 
       - name: Pushes to personal repository
         id: push_directory
