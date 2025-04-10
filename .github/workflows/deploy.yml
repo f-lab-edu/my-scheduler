@@ -26,7 +26,7 @@ jobs:
         id: push_directory
         uses: cpina/github-action-push-to-another-repository@main
         env:
-          API_TOKEN_GITHUB: ${{secrets.API_CLASSIC_TOKEN_GITHUB_NEXT }}
+          API_TOKEN_GITHUB: ${{secrets.API_TOKEN_GITHUB_NEXT2 }}
         with:
           source-directory: "."
           destination-github-username: davinahi
