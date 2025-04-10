@@ -2,7 +2,7 @@ name: my-scheduler-nextjs-action
 
 on:
   push:
-    branches: [fix/deploy]
+    branches: [main]
 
 jobs:
   build:
@@ -24,20 +24,20 @@ jobs:
         run: |
           npm run build
 
-      - name: Force add build folder
-        run: git add -f build
+      # - name: Force add build folder
+      #   run: git add -f build
 
-      - name: Pushes to personal repository
-        id: push_directory
-        uses: cpina/github-action-push-to-another-repository@main
-        env:
-          API_TOKEN_GITHUB: ${{secrets.API_TOKEN_GITHUB_NEXT2 }}
-        with:
-          source-directory: "."
-          destination-github-username: davinahi
-          destination-repository-name: my-scheduler
-          user-name: "davinahi"
-          user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
-          # commit-message: ${{ github.event.commits[0].message }}
-          commit-message: ${{ github.event.head_commit.message }}
-          target-branch: main
+      # - name: Pushes to personal repository
+      #   id: push_directory
+      #   uses: cpina/github-action-push-to-another-repository@main
+      #   env:
+      #     API_TOKEN_GITHUB: ${{secrets.API_TOKEN_GITHUB_NEXT2 }}
+      #   with:
+      #     source-directory: "."
+      #     destination-github-username: davinahi
+      #     destination-repository-name: my-scheduler
+      #     user-name: "davinahi"
+      #     user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
+      #     # commit-message: ${{ github.event.commits[0].message }}
+      #     commit-message: ${{ github.event.head_commit.message }}
+      #     target-branch: main
