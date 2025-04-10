@@ -20,6 +20,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      #
+      - name: Debug environment variables
+        env:
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+          FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
+          FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
+        run: |
+          echo "FIREBASE_PROJECT_ID: $FIREBASE_PROJECT_ID"
+          echo "FIREBASE_CLIENT_EMAIL: $FIREBASE_CLIENT_EMAIL"
+          # PRIVATE_KEY는 민감 정보이므로 echo하지 않는 게 안전합니다.
+
       - name: Build project
         env:
           FIREBASE_PROJECT_ID: ${{secrets.FIREBASE_PROJECT_ID }}
@@ -39,5 +50,5 @@ jobs:
           destination-repository-name: my-scheduler
           user-name: "davinahi"
           user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
-          commit-message: ${{ github.event.commits[0].message }}
+          commit-message: "[skip ci] Deploy commit: ${{ github.event.commits[0].message }}"
           target-branch: main
