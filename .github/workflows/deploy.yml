@@ -22,7 +22,7 @@ jobs:
       #   run: |
       #     npm run build
 
-      #개인레포 push 2
+      #개인레포 push
       - name: Pushes to personal repository
         id: push_directory
         uses: cpina/github-action-push-to-another-repository@main
