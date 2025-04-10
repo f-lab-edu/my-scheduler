@@ -19,7 +19,7 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
+      # github firebase 관련코드 추가
       - name: Build project
         env:
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
