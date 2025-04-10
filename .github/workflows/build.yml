@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - deploy-setting2
+      - fix/deploy-setting2
     # paths-ignore:
     #   - ".github/workflows/**"
 
