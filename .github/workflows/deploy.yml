@@ -3,6 +3,8 @@ name: my-scheduler-nextjs-action
 on:
   push:
     branches: [deploy-setting]
+    paths-ignore:
+      - ".github/workflows/**"
 
 jobs:
   build:
