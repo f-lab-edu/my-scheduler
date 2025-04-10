@@ -1,0 +1,34 @@
+name: Push to Personal Repository
+
+on:
+  workflow_run:
+    workflows: ["Build Project"]
+    types:
+      - completed
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: build-output
+          path: .
+
+      - name: Pushes to personal repository
+        id: push_directory
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB_NEXT2 }}
+        with:
+          source-directory: "."
+          destination-github-username: davinahi
+          destination-repository-name: my-scheduler
+          user-name: "davinahi"
+          user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
+          commit-message: "[skip ci] Deploy commit from Build Project"
+          target-branch: main
