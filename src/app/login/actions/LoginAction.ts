@@ -1,0 +1,30 @@
+"use server";
+import { db } from "@/lib/firebase";
+import { LogInFormType } from "@/types/loginType";
+
+export async function LoginAction(
+  state: LogInFormType,
+  payload: FormData
+): Promise<LogInFormType> {
+  const loginInfo = {};
+  const email = payload.get("email")?.toString() || "";
+  const password = payload.get("password")?.toString() || "";
+
+  if (!email) {
+    return {
+      success: false,
+      message: "email는 필수입니다.",
+    };
+  } else if (!password) {
+    return {
+      success: false,
+      message: "password는 필수입니다.",
+    };
+  }
+
+  return {
+    success: true,
+    message: "로그인 성공!!",
+    // loginInfo,
+  };
+}
