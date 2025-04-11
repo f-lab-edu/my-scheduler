@@ -18,9 +18,9 @@ import { useContentsContext } from "../../contents/ContentsContext";
 const fullConfig = resolveConfig(tailwindConfig) as unknown as MyTailwindConfig;
 
 export default function Calendar() {
-  const { open, closeModal } = useModal();
+  const { open, closeModal, openModal } = useModal();
   const { taskList } = useContentsContext();
-  const [editingTask] = useState<TaskType | null>(null);
+  const [editingTask, setEditingTask] = useState<TaskType | null>(null);
   const [eventList, setEventList] = useState<CalendarEventType[] | []>([]);
 
   useEffect(() => {
@@ -47,7 +47,6 @@ export default function Calendar() {
 
       return {
         id: taskId,
-        groupId: taskId,
         title: title,
         start: startDate,
         end: dayjs(endDate).add(1, "day").format("YYYY-MM-DD"),
@@ -59,8 +58,10 @@ export default function Calendar() {
   }, [taskList]);
 
   const handleTaskClick = (info: EventClickArg) => {
-    // TODO: editor 처리
-    console.log(info);
+    const clickedTaskId = info.event.id;
+    const clickedTask = taskList.find((task) => task.id === clickedTaskId);
+    if (clickedTask) setEditingTask(clickedTask);
+    openModal();
   };
 
   return (
@@ -84,14 +85,13 @@ export default function Calendar() {
         />
       </div>
       <Agenda />
-      {open && (
+      {open && editingTask && (
         <Modal onClose={closeModal}>
           <Editor
             onClose={() => {
               closeModal();
             }}
-            // TODO: 클릭 처리하면서 statusId 수정
-            statusId={"1"}
+            statusId={editingTask.statusId}
             editingTask={editingTask}
           />
         </Modal>
