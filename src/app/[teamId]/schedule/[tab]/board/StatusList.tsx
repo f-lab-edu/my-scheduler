@@ -7,7 +7,7 @@ import Modal from "@/components/common/Modal";
 import Editor from "@/components/common/Editor";
 import MenuList from "@/components/dropdown/MenuList";
 import IconButton from "@/components/common/button/IconButton";
-import ConfirmDialog from "@/components/common/button/ConfirmDialog";
+import ConfirmDialog from "@/components/common/ConfirmDialog";
 import { useModal } from "@/hooks/useModal";
 import useDropdownPosition from "@/hooks/useDropdownPosition";
 import { StatusType, TaskType } from "@/types/scheduleType";
