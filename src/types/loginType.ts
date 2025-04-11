@@ -3,6 +3,10 @@ export interface LogInFormType {
   message: string;
   email?: string;
   password?: string;
+  fieldErrors?: {
+    email?: string;
+    password?: string;
+  };
 }
 
 export interface RegisterFormType {
