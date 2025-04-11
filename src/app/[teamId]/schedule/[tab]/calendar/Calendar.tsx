@@ -1,109 +1,116 @@
 "use client";
-import { useState } from "react";
+import dayjs from "dayjs";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import { EventClickArg } from "@fullcalendar/core";
+import resolveConfig from "tailwindcss/resolveConfig";
+import tailwindConfig from "../../../../../../tailwind.config";
 import Agenda from "@/app/[teamId]/schedule/[tab]/calendar/Agenda";
-import { MONTH_NAMES, WEEK } from "@/app/[teamId]/schedule/constants";
-import PrevIcon from "@/assets/caret-left-fill.svg";
-import NextIcon from "@/assets/caret-right-fill.svg";
+import Modal from "@/components/common/Modal";
+import Editor from "@/components/common/Editor";
+import { useModal } from "@/hooks/useModal";
+import { useEffect, useState } from "react";
+import { TaskType, CalendarEventType } from "@/types/scheduleType";
+import { MyTailwindConfig, PriorityColors } from "@/types/commonType";
+import { useContentsContext } from "../../contents/ContentsContext";
+
+const fullConfig = resolveConfig(tailwindConfig) as unknown as MyTailwindConfig;
 
 export default function Calendar() {
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const { open, closeModal } = useModal();
+  const { taskList } = useContentsContext();
+  const [editingTask] = useState<TaskType | null>(null);
+  const [eventList, setEventList] = useState<CalendarEventType[] | []>([]);
 
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
+  useEffect(() => {
+    const taskGroupingById = taskList.reduce((acc, task) => {
+      acc[task.id] = [...(acc[task.id] ?? []), task];
+      return acc;
+    }, {} as Record<string, TaskType[]>);
 
-  const generateCalendarCells = () => {
-    const firstDayOfMonth = new Date(year, month, 1);
-    const startDay = firstDayOfMonth.getDay();
-    const thisLastDate = new Date(year, month + 1, 0).getDate();
-    const prevLastDate = new Date(year, month, 0).getDate();
-    const totalCells = 42;
-    const currentCellCount = startDay + thisLastDate;
-    const nextDays = totalCells - currentCellCount;
+    const events = Object.keys(taskGroupingById).map((taskId) => {
+      const tasks = taskGroupingById[taskId];
 
-    // 이전 달 날짜 셀 생성
-    const prevCells = Array.from({ length: startDay }, (_, i) => {
-      const prevMonthDay = prevLastDate - startDay + (i + 1);
-      return (
-        <div key={`prev-${i}`} className="min-h-[100px] p-3 text-gray-300">
-          <span className="day-num prev-month-day">{prevMonthDay}</span>
-        </div>
+      const { title, priority } = tasks[0];
+
+      const earliestStart = tasks.reduce((prev, cur) =>
+        dayjs(cur.startDate).isBefore(dayjs(prev.startDate)) ? cur : prev
       );
-    });
 
-    // 현재 달 날짜 셀 생성
-    const currentCells = Array.from({ length: thisLastDate }, (_, i) => {
-      const day = i + 1;
-      const dayStr = String(day).padStart(2, "0");
-      const monthStr = String(month + 1).padStart(2, "0");
-      const dateStr = `${year}-${monthStr}-${dayStr}`;
-      return (
-        <div
-          key={`current-${day}`}
-          className="p-3 min-h-[100px]"
-          data-date={dateStr}
-        >
-          <span className="day-num">{day}</span>
-        </div>
+      const latestEnd = tasks.reduce((prev, cur) =>
+        dayjs(cur.endDate).isAfter(dayjs(prev.endDate)) ? cur : prev
       );
+
+      const startDate = earliestStart.startDate;
+      const endDate = latestEnd.endDate;
+
+      return {
+        id: taskId,
+        groupId: taskId,
+        title: title,
+        start: startDate,
+        end: dayjs(endDate).add(1, "day").format("YYYY-MM-DD"),
+        color: getColorByPriority(priority),
+      };
     });
 
-    // 다음 달 날짜 셀 생성
-    const nextCells = Array.from({ length: nextDays }, (_, i) => {
-      const day = i + 1;
-      return (
-        <div key={`next-${day}`} className="p-3 min-h-[100px] text-gray-300">
-          <span className="day-num next-month-day">{day}</span>
-        </div>
-      );
-    });
+    setEventList(events);
+  }, [taskList]);
 
-    return [...prevCells, ...currentCells, ...nextCells];
-  };
-
-  const handlePrevMonth = () => {
-    setCurrentDate((prev) => {
-      const newDate = new Date(prev);
-      newDate.setMonth(newDate.getMonth() - 1);
-      return newDate;
-    });
-  };
-
-  const handleNextMonth = () => {
-    setCurrentDate((prev) => {
-      const newDate = new Date(prev);
-      newDate.setMonth(newDate.getMonth() + 1);
-      return newDate;
-    });
+  const handleTaskClick = (info: EventClickArg) => {
+    // TODO: editor 처리
+    console.log(info);
   };
 
   return (
-    <div className="flex justify-center gap-5 px-[100px]">
-      <section className="flex flex-col py-5 px-3 mb-[100px] w-[700px] rounded-xl  h-auto">
-        <header className="calendar-header flex items-center justify-between p-4 w-[180px] text-white cursor-pointer">
-          <button onClick={handlePrevMonth} className="prev-button">
-            <PrevIcon fill="white" />
-          </button>
-          <h2>
-            {MONTH_NAMES[month]} {year}
-          </h2>
-          <button onClick={handleNextMonth} className="next-button">
-            <NextIcon fill="white" />
-          </button>
-        </header>
-
-        <div className="calendar bg-white">
-          <div className="week-days grid grid-cols-7 p-5 text-center font-bold">
-            {WEEK.map((day) => (
-              <div key={day}>{day}</div>
-            ))}
-          </div>
-          <div className="calendar-grid grid grid-cols-7 gap-1 border-t border-l min-h-[100px] bg-white">
-            {generateCalendarCells()}
-          </div>
-        </div>
-      </section>
-      {/* TODO: Agenda 데이터 연결*/}
-      <Agenda monthlyTasks={[]} />
+    <div className="flex flex-row justify-center gap-5 w-4/5 mx-auto">
+      <div className="w-1/2 min-w-[770px]">
+        <FullCalendar
+          plugins={[dayGridPlugin, interactionPlugin]}
+          initialView="dayGridMonth"
+          aspectRatio={1.5}
+          events={eventList}
+          editable={true}
+          selectable={true}
+          headerToolbar={{
+            left: "prev title next",
+            center: "",
+            right: "today",
+          }}
+          height="auto"
+          contentHeight="auto"
+          eventClick={handleTaskClick}
+        />
+      </div>
+      <Agenda />
+      {open && (
+        <Modal onClose={closeModal}>
+          <Editor
+            onClose={() => {
+              closeModal();
+            }}
+            // TODO: 클릭 처리하면서 statusId 수정
+            statusId={"1"}
+            editingTask={editingTask}
+          />
+        </Modal>
+      )}
     </div>
   );
+}
+
+function getColorByPriority(priority: string) {
+  const priorityName = priority.toLowerCase();
+  const priorityObj = fullConfig.theme?.colors?.priority as PriorityColors;
+
+  if (priorityName === "high") {
+    return priorityObj.high;
+  } else if (priorityName === "medium") {
+    return priorityObj.medium;
+  } else if (priorityName === "low") {
+    return priorityObj.low;
+  } else {
+    throw new Error(`${priority} error`);
+  }
 }

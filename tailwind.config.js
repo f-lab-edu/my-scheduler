@@ -6,6 +6,19 @@ export default {
     "./src/pages/**/*.{js,ts,jsx,tsx}",
     "./src/components/**/*.{js,ts,jsx,tsx}",
   ],
+  safelist: [
+    "fc",
+    "fc-media-screen",
+    "fc-direction-ltr",
+    "fc-theme-standard",
+    "fc-header-toolbar",
+    "fc-toolbar-chunk",
+    "fc-next-button",
+    "fc-view-harness",
+    "fc-daygrid-day-frame",
+    "fc-scrollgrid",
+    "fc-dayGridMonth-view",
+  ],
   theme: {
     extend: {
       colors: {

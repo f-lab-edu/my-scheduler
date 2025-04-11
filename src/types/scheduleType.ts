@@ -31,3 +31,12 @@ export interface TaskFormStatusType {
     description: string;
   };
 }
+
+export interface CalendarEventType {
+  id: string;
+  groupId?: string;
+  title: string;
+  start: string;
+  end: string;
+  color?: string;
+}

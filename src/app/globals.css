@@ -27,3 +27,28 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@layer components {
+  #fc-dom-1 {
+    @apply text-white;
+  }
+  .fc-toolbar-chunk {
+    @apply flex !important;
+  }
+  .fc-prev-button,
+  .fc-next-button {
+    @apply bg-transparent border-none outline-none !important;
+  }
+  .fc-view-harness {
+    @apply min-h-[560px] !important;
+  }
+  .fc-dayGridMonth-view {
+    @apply bg-white  !important;
+  }
+  .fc-daygrid-day-frame {
+    @apply min-h-[98px] !important;
+  }
+  .fc-scrollgrid {
+    @apply mb-[40px];
+  }
+}
