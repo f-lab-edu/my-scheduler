@@ -6,6 +6,7 @@ import { TaskType } from "@/types/scheduleType";
 
 interface Props {
   task: TaskType;
+  onClick: () => void;
 }
 
 const PRIORITY: Record<TaskType["priority"], string> = {
@@ -14,13 +15,21 @@ const PRIORITY: Record<TaskType["priority"], string> = {
   Low: "bg-priority-low",
 };
 
-export default function Task({ task }: Props) {
+export default function Task({ task, onClick }: Props) {
   return (
     <article
+      role="button"
       className={clsx(
         PRIORITY[task.priority],
-        "p-4 rounded-2xl text-font-gray"
+        "p-4 rounded-2xl text-font-gray cursor-pointer"
       )}
+      onClick={onClick}
+      tabIndex={0}
+      onKeyUp={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          onClick();
+        }
+      }}
     >
       <div className="flex justify-between">
         <div className="flex gap-2">

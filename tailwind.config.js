@@ -6,6 +6,19 @@ export default {
     "./src/pages/**/*.{js,ts,jsx,tsx}",
     "./src/components/**/*.{js,ts,jsx,tsx}",
   ],
+  safelist: [
+    "fc",
+    "fc-media-screen",
+    "fc-direction-ltr",
+    "fc-theme-standard",
+    "fc-header-toolbar",
+    "fc-toolbar-chunk",
+    "fc-next-button",
+    "fc-view-harness",
+    "fc-daygrid-day-frame",
+    "fc-scrollgrid",
+    "fc-dayGridMonth-view",
+  ],
   theme: {
     extend: {
       colors: {
@@ -50,9 +63,10 @@ export default {
           save: "#0851EE",
         },
         hover: {
-          add: "#597BED",
-          filter: "#2C3555",
+          add: "#6d8cf3",
+          filter: "#343e60",
           dropdown: "#e5e4ee",
+          save: "#175ffb",
         },
         scrollbar: {
           track: "#fff6",
