@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, ReactNode } from "react";
+import { useParams } from "next/navigation";
 
 type Props = {
   activeTab: string;
@@ -11,7 +12,8 @@ type Props = {
 const TabsContext = createContext<Props | null>(null);
 
 export function TabsProvider({ children }: { children: ReactNode }) {
-  const [activeTab, setActiveTab] = useState("Board");
+  const { tab } = useParams<{ tab?: string }>();
+  const [activeTab, setActiveTab] = useState(tab || "Board");
   const tabList = ["Board", "Calendar"];
 
   return (
