@@ -32,7 +32,7 @@ jobs:
         run: |
           git remote set-url origin https://davinahi:${{ secrets.API_TOKEN_GITHUB_NEXTJS }}@github.com/davinahi/my-scheduler.git
           git push --force origin main
-      # 추후 제거3
+      # 추후 제거
       # - name: Pushes to personal repository
       #   id: push_directory
       #   uses: cpina/github-action-push-to-another-repository@main
