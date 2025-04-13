@@ -10,6 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           token: ${{ secrets.API_TOKEN_GITHUB_NEXTJS }}
 
       - name: Setup Node.js
@@ -27,21 +28,16 @@ jobs:
           FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
         run: npm run build
 
-      - name: Set remote URL manually and push
-        run: |
-          git remote set-url origin https://davinahi:${{ secrets.API_TOKEN_GITHUB_NEXTJS }}@github.com/davinahi/my-scheduler.git
-          git push --force origin main
-      # 추후 제거
-      # - name: Pushes to personal repository
-      #   id: push_directory
-      #   uses: cpina/github-action-push-to-another-repository@main
-      #   env:
-      #     API_TOKEN_GITHUB: ${{secrets.API_TOKEN_GITHUB_NEXTJS }}
-      #   with:
-      #     source-directory: "."
-      #     destination-github-username: davinahi
-      #     destination-repository-name: my-scheduler
-      #     user-name: "davinahi"
-      #     user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
-      #     commit-message: ${{ github.event.commits[0].message }}
-      #     target-branch: main
+      - name: Pushes to personal repository
+        id: push_directory
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{secrets.API_TOKEN_GITHUB_NEXTJS }}
+        with:
+          source-directory: "."
+          destination-github-username: davinahi
+          destination-repository-name: my-scheduler
+          user-name: davinahi
+          user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
+          commit-message: ${{ github.event.commits[0].message }}
+          target-branch: main
