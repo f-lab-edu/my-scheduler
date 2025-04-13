@@ -19,19 +19,22 @@ jobs:
         run: npm ci
 
       - name: Build project
-        run: |
-          npm run build
+        env:
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+          FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
+          FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
+        run: npm run build
 
-      # - name: Pushes to personal repository
-      #   id: push_directory
-      #   uses: cpina/github-action-push-to-another-repository@main
-      #   env:
-      #     API_TOKEN_GITHUB: ${{secrets.API_CLASSIC_TOKEN_GITHUB_NEXT }}
-      #   with:
-      #     source-directory: "."
-      #     destination-github-username: davinahi
-      #     destination-repository-name: my-scheduler
-      #     user-name: "davinahi"
-      #     user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
-      #     commit-message: ${{ github.event.commits[0].message }}
-      #     target-branch: main
+      - name: Pushes to personal repository
+        id: push_directory
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{secrets.API_TOKEN_GITHUB_NEXTJS }}
+        with:
+          source-directory: "."
+          destination-github-username: davinahi
+          destination-repository-name: my-scheduler
+          user-name: "davinahi"
+          user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
+          commit-message: ${{ github.event.commits[0].message }}
+          target-branch: main
