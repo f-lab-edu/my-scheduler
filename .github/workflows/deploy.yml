@@ -30,8 +30,7 @@ jobs:
       - name: Set remote URL manually and push
         run: |
           git remote set-url origin https://davinahi:${{ secrets.API_TOKEN_GITHUB_NEXTJS }}@github.com/davinahi/my-scheduler.git
-          git push origin main
-
+          git push --force origin main
       # - name: Pushes to personal repository
       #   id: push_directory
       #   uses: cpina/github-action-push-to-another-repository@main
