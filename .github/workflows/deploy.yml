@@ -10,7 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
           token: ${{ secrets.API_TOKEN_GITHUB_NEXTJS }}
 
       - name: Setup Node.js
