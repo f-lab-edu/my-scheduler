@@ -30,7 +30,7 @@ jobs:
 
       - name: Pushes to personal repository
         id: push_directory
-        uses: cpina/github-action-push-to-another-repository@v3.7
+        uses: cpina/github-action-push-to-another-repository@main
         env:
           API_TOKEN_GITHUB: ${{secrets.API_TOKEN_GITHUB_NEXTJS }}
         with:
@@ -41,4 +41,3 @@ jobs:
           user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
           commit-message: ${{ github.event.commits[0].message }}
           target-branch: main
-          force: true
