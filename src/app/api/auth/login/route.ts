@@ -5,11 +5,26 @@ import "@/lib/firebase";
 export async function POST(request: any) {
   try {
     const { token } = await request.json();
-    //firebase admin 통해 검증
+    //firebase admin를 통해 유효한 토큰인지 검증
     const decodedToken = await getAuth().verifyIdToken(token);
-    // TODO: 검증 후 세션 쿠키 생성, 사용자 정보를 DB에 저장
 
-    return NextResponse.json({ message: "로그인 성공", uid: decodedToken.uid });
+    // 사용자의 인증 상태를 서버에서 관리할 수 있도록 하는 "키"
+    const sessionCookie = await getAuth().createSessionCookie(token, {
+      expiresIn: 60 * 60 * 24 * 5 * 1000, // 5일
+    });
+
+    const response = NextResponse.json(
+      { message: "로그인 성공", uid: decodedToken.uid },
+      { status: 200 }
+    );
+
+    response.headers.set(
+      "Set-Cookie",
+      `session=${sessionCookie}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${
+        60 * 60 * 24 * 5
+      }`
+    );
+    return response;
   } catch (error) {
     console.log(error);
     return NextResponse.json(
