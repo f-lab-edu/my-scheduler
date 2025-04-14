@@ -2,13 +2,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { getAuth } from "firebase-admin/auth";
 
-interface Props {
-  params: {
-    uid: string;
-  };
-}
-
-export default async function MyPage({ params }: Props) {
+export default async function MyPage({ params }: { params: { uid: string } }) {
   const cookieStore = cookies();
   const sessionCookie = (await cookieStore).get("session")?.value;
 
@@ -19,6 +13,7 @@ export default async function MyPage({ params }: Props) {
   try {
     decodedToken = await getAuth().verifySessionCookie(sessionCookie, true);
   } catch (error) {
+    console.log(error);
     redirect("/404");
   }
 

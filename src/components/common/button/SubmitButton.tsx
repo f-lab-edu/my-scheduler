@@ -2,12 +2,6 @@
 
 import { ButtonHTMLAttributes } from "react";
 
-interface Props {
-  onClick: () => void;
-  text: string;
-  type: string;
-}
-
 interface SubmitButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   text: string;
 }

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getAuth } from "firebase-admin/auth";
 import "@/lib/firebase";
 
-export async function POST(request: any) {
+export async function POST(request: Request): Promise<NextResponse> {
   try {
     const { token } = await request.json();
     //firebase admin를 통해 유효한 토큰인지 검증
