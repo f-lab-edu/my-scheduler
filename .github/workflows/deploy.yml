@@ -28,6 +28,7 @@ jobs:
           FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
         run: npm run build
 
+      # 수정
       - name: Pushes to personal repository
         id: push_directory
         uses: cpina/github-action-push-to-another-repository@main
