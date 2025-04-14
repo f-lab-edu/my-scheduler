@@ -1,5 +1,5 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
-import "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -11,8 +11,11 @@ const firebaseConfig = {
   measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 };
 
+// Firebase 초기화
 if (!getApps().length) {
   initializeApp(firebaseConfig);
 }
-
 export const app = getApp();
+
+// 인증 인스턴스를 만들어서 export
+export const auth = getAuth(app);
