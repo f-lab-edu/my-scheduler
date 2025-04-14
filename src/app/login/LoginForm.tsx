@@ -1,7 +1,6 @@
 "use client";
 import { useActionState } from "react";
 import { useForm } from "react-hook-form";
-import validator from "validator";
 import { LogInFormType } from "@/types/loginType";
 import { LoginAction } from "./actions/LoginAction";
 import SubmitButton from "@/components/common/button/SubmitButton";
@@ -46,12 +45,13 @@ export default function LoginForm() {
           className="p-[20px] border border-border-lightGray rounded-lg"
           {...register("email", {
             required: "email을 입력하세요",
-            validate: (value) => {
-              return (
-                validator.isEmail(value || "") ||
-                "이메일 형식이 올바르지 않습니다."
-              );
-            },
+            // TODO: email validate 처리
+            // validate: (value) => {
+            //   return (
+            //     validator.isEmail(value || "") ||
+            //     "이메일 형식이 올바르지 않습니다."
+            //   );
+            // },
           })}
           placeholder="email"
         />
