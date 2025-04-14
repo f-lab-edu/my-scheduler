@@ -1,14 +1,15 @@
 "use client";
 import { useActionState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { auth } from "@/lib/firebaseClient";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { LoginAction } from "@/app/login/actions/LoginAction";
 import SubmitButton from "@/components/common/button/SubmitButton";
 import { LogInFormType } from "@/types/loginType";
-import { app } from "@/lib/firebaseClient";
 
 export default function LoginForm() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -40,8 +41,10 @@ export default function LoginForm() {
         },
         body: JSON.stringify({ token }),
       });
+      console.log("✅", response);
+      if (response.redirected) router.push(response.url);
+      else console.log("리다이렉트 응답이 아님", response);
 
-      console.log("🟡", response, password);
       console.log(token);
     } catch (error) {
       console.log(error);

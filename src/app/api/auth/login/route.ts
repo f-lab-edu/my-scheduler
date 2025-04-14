@@ -13,10 +13,8 @@ export async function POST(request: any) {
       expiresIn: 60 * 60 * 24 * 5 * 1000, // 5일
     });
 
-    const response = NextResponse.json(
-      { message: "로그인 성공", uid: decodedToken.uid },
-      { status: 200 }
-    );
+    const redirectUrl = new URL(`/mypage/${decodedToken.uid}`, request.url);
+    const response = NextResponse.redirect(redirectUrl);
 
     response.headers.set(
       "Set-Cookie",
