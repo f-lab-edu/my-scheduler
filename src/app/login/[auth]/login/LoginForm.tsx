@@ -3,9 +3,10 @@ import { useActionState } from "react";
 import { useForm } from "react-hook-form";
 import { auth } from "@/lib/firebaseClient";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { LogInFormType } from "@/types/loginType";
-import { LoginAction } from "../../actions/LoginAction";
+import { LoginAction } from "@/app/login/actions/LoginAction";
 import SubmitButton from "@/components/common/button/SubmitButton";
+import { LogInFormType } from "@/types/loginType";
+import { app } from "@/lib/firebaseClient";
 
 export default function LoginForm() {
   const {
@@ -31,6 +32,16 @@ export default function LoginForm() {
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
       const token = await result.user.getIdToken();
+
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token }),
+      });
+
+      console.log("🟡", response, password);
       console.log(token);
     } catch (error) {
       console.log(error);
