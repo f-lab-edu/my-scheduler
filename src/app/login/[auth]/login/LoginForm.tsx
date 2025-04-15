@@ -41,11 +41,8 @@ export default function LoginForm() {
         },
         body: JSON.stringify({ token }),
       });
-      console.log("✅", response);
       if (response.redirected) router.push(response.url);
       else console.log("리다이렉트 응답이 아님", response);
-
-      console.log(token);
     } catch (error) {
       console.log(error);
     }
