@@ -4,9 +4,9 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { auth } from "@/lib/firebaseClient";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { LoginAction } from "@/app/login/actions/LoginAction";
+import { LoginAction } from "@/app/auth/actions/LoginAction";
 import SubmitButton from "@/components/common/button/SubmitButton";
-import { LogInFormType } from "@/types/loginType";
+import { LogInFormType } from "@/types/authType";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -29,7 +29,7 @@ export default function LoginForm() {
     }
   );
 
-  const login = async (email: string, password: string) => {
+  const loginWithEmail = async (email: string, password: string) => {
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
       const token = await result.user.getIdToken();
@@ -49,7 +49,8 @@ export default function LoginForm() {
   };
 
   const onSubmit = async (data: LogInFormType) => {
-    if (data.email && data.password) await login(data.email, data.password);
+    if (data.email && data.password)
+      await loginWithEmail(data.email, data.password);
   };
 
   return (

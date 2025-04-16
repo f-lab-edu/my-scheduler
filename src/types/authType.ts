@@ -10,8 +10,13 @@ export interface LogInFormType {
 }
 
 export interface RegisterFormType {
-  userName: string;
   email: string;
   password: string;
-  phoneNumber: string;
+  name: string;
+  mobile: string;
+}
+
+export interface RegisterResponse {
+  success: boolean;
+  message: string;
 }
