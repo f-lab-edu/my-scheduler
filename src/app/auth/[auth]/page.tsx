@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import LoginForm from "@/app/login/[auth]/login/LoginForm";
-import RegisterForm from "@/app/login/[auth]/register/RegisterForm";
+import LoginForm from "@/app/auth/[auth]/login/LoginForm";
+import RegisterForm from "@/app/auth/[auth]/register/RegisterForm";
 interface PageProps {
   params: Promise<{ auth?: string }>;
 }

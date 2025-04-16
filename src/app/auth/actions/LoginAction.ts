@@ -1,11 +1,10 @@
 "use server";
-import { LogInFormType } from "@/types/loginType";
+import { LogInFormType } from "@/types/authType";
 
 export async function LoginAction(
   state: LogInFormType,
   payload: FormData
 ): Promise<LogInFormType> {
-  // const loginInfo = {};
   const email = payload.get("email")?.toString() || "";
   const password = payload.get("password")?.toString() || "";
 
@@ -27,6 +26,5 @@ export async function LoginAction(
   return {
     success: true,
     message: "로그인 성공!!",
-    // loginInfo,
   };
 }

@@ -6,7 +6,7 @@ interface SubmitButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   text: string;
 }
 
-export default function SUbmitButton({
+export default function SubmitButton({
   onClick,
   text,
   type = "button",

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import { ReactNode } from "react";
 import Header from "@/components/layout/Header";
 import "./globals.css";
-import { ReactNode } from "react";
 
 type Props = Readonly<{
   children: ReactNode;
