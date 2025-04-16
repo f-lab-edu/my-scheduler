@@ -60,6 +60,7 @@ export default {
           filter: "#2e3653",
           prevNext: "#f7edff4d",
           add: "#5E7FEC",
+          create: "#4A1D94",
           save: "#0851EE",
         },
         hover: {
