@@ -1,6 +1,5 @@
 "use client";
-import { useEffect, useTransition } from "react";
-import { useActionState } from "react";
+import { useEffect, useTransition, useActionState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { RegisterAction } from "@/app/auth/actions/RegisterAction";
