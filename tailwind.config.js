@@ -47,6 +47,7 @@ export default {
           input: "#6a6c93",
           agendaBox: "#2e3551",
           tabs: "#2e3653",
+          lightGray: "#DBDBDB",
         },
         border: {
           search: "#817a7a",
