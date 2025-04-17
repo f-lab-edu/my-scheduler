@@ -1,37 +1,50 @@
 "use client";
-import { useEffect, useTransition, useActionState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { RegisterAction } from "@/app/auth/actions/RegisterAction";
 import SubmitButton from "@/components/common/button/SubmitButton";
 import { RegisterFormType, RegisterResponse } from "@/types/authType";
 import AuthInput from "@/components/common/AuthInput";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 
 export default function RegisterForm() {
   const router = useRouter();
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<RegisterFormType>();
+  const [serverMessage, setServerMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [serverState, formAction] = useActionState<
-    RegisterResponse,
-    RegisterFormType
-  >(RegisterAction, { success: false, message: "" });
-
-  const [isPending, startTransition] = useTransition();
-
-  useEffect(() => {
-    if (serverState.success) {
-      router.push("/auth/login");
+  const onSubmit = async (data: RegisterFormType) => {
+    setServerMessage(null);
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const json = (await response.json()) as RegisterResponse;
+      if (!json.success) {
+        if (json.message.includes("email")) {
+          setError("email", { type: "manual", message: json.message });
+        } else if (json.message.includes("password")) {
+          setError("password", { type: "manual", message: json.message });
+        } else {
+          setServerMessage(json.message);
+        }
+      } else {
+        router.push("/auth/login");
+      }
+    } catch (error) {
+      console.error(error);
+      setServerMessage("오류가 발생했습니다.");
+    } finally {
+      setIsLoading(false);
     }
-  }, [serverState.success, router]);
-
-  const onSubmit = (data: RegisterFormType) => {
-    startTransition(() => {
-      formAction(data);
-    });
   };
 
   return (
@@ -72,12 +85,9 @@ export default function RegisterForm() {
         error={errors.mobile?.message as string}
       />
 
-      <SubmitButton text="Register" type="submit" disabled={isPending} />
-      {serverState.message && (
-        <p className={serverState.success ? "text-green-500" : "text-red-500"}>
-          {serverState.message}
-        </p>
-      )}
+      <SubmitButton text="Register" type="submit" />
+      {serverMessage && <p className="text-red-500">{serverMessage}</p>}
+      {isLoading && <LoadingSpinner />}
     </form>
   );
 }
