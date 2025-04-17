@@ -1,18 +1,20 @@
 "use client";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, useFormContext } from "react-hook-form";
 import { auth } from "@/lib/firebaseClient";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { LoginAction } from "@/app/auth/actions/LoginAction";
 import SubmitButton from "@/components/common/button/SubmitButton";
 import { LogInFormType } from "@/types/authType";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 
 export default function LoginForm() {
   const router = useRouter();
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<LogInFormType>({
     defaultValues: {
@@ -20,7 +22,8 @@ export default function LoginForm() {
       password: "",
     },
   });
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [serverState, formAction] = useActionState<LogInFormType, FormData>(
     LoginAction,
     {
@@ -30,6 +33,8 @@ export default function LoginForm() {
   );
 
   const loginWithEmail = async (email: string, password: string) => {
+    setIsLoading(true);
+    setErrorMessage(null);
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
       const token = await result.user.getIdToken();
@@ -41,10 +46,25 @@ export default function LoginForm() {
         },
         body: JSON.stringify({ token }),
       });
-      if (response.redirected) router.push(response.url);
-      else console.log("리다이렉트 응답이 아님", response);
+
+      console.log("🟡", response);
+      if (response.ok && response.redirected) router.push(response.url);
+      else {
+        if (response.status === 400) {
+          const { message: msg400 } = await response.json();
+          setErrorMessage(msg400 || "잘못된 요청입니다.");
+        }
+        if (response.status === 401) {
+          setError("password", {
+            type: "manual",
+            message: "이메일 또는 비밀번호가 올바르지 않습니다.",
+          });
+        }
+      }
     } catch (error) {
-      console.log(error);
+      console.log("🔴", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -107,6 +127,7 @@ export default function LoginForm() {
       )}
 
       <SubmitButton text="Login" type="submit" />
+      {isLoading && <LoadingSpinner />}
     </form>
   );
 }
