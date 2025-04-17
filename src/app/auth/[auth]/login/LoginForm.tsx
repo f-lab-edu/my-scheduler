@@ -1,7 +1,7 @@
 "use client";
 import { useActionState, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useForm, useFormContext } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { auth } from "@/lib/firebaseClient";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { LoginAction } from "@/app/auth/actions/LoginAction";
