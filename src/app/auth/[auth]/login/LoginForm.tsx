@@ -8,6 +8,7 @@ import { LoginAction } from "@/app/auth/actions/LoginAction";
 import SubmitButton from "@/components/common/button/SubmitButton";
 import { LogInFormType } from "@/types/authType";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
+import { FirebaseError } from "firebase/app";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -23,7 +24,6 @@ export default function LoginForm() {
     },
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [serverState, formAction] = useActionState<LogInFormType, FormData>(
     LoginAction,
     {
@@ -34,7 +34,6 @@ export default function LoginForm() {
 
   const loginWithEmail = async (email: string, password: string) => {
     setIsLoading(true);
-    setErrorMessage(null);
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
       const token = await result.user.getIdToken();
@@ -47,22 +46,26 @@ export default function LoginForm() {
         body: JSON.stringify({ token }),
       });
 
-      console.log("🟡", response);
       if (response.ok && response.redirected) router.push(response.url);
-      else {
-        if (response.status === 400) {
-          const { message: msg400 } = await response.json();
-          setErrorMessage(msg400 || "잘못된 요청입니다.");
-        }
-        if (response.status === 401) {
-          setError("password", {
-            type: "manual",
-            message: "이메일 또는 비밀번호가 올바르지 않습니다.",
-          });
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case "auth/invalid-email":
+            setError("email", {
+              type: "manual",
+              message: "유효하지 않은 이메일 형식입니다.",
+            });
+            break;
+          case "auth/user-not-found":
+          case "auth/wrong-password":
+          case "auth/invalid-credential":
+            setError("password", {
+              type: "manual",
+              message: "이메일 또는 비밀번호가 일치하지 않습니다.",
+            });
+            break;
         }
       }
-    } catch (error) {
-      console.log("🔴", error);
     } finally {
       setIsLoading(false);
     }
@@ -116,7 +119,7 @@ export default function LoginForm() {
           placeholder="password"
         />
         {errors.password && (
-          <span className="text-red-50">{errors.password.message}</span>
+          <span className="text-red-500">{errors.password.message}</span>
         )}
       </div>
 
