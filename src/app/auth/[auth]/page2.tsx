@@ -5,9 +5,9 @@ import RegisterForm from "@/app/auth/[auth]/register/RegisterForm";
 export default async function AuthPage({
   params,
 }: {
-  params: Promise<{ auth?: string }>;
+  params: { auth?: string };
 }) {
-  const { auth } = await params;
+  const { auth } = params;
 
   if (auth === "login") {
     return <LoginForm />;

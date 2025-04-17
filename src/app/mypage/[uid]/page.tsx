@@ -1,16 +1,16 @@
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 import { getSessionUid } from "@/lib/server/auth";
 
-interface PageProps {
-  params: { uid: string };
-}
-
-export default async function MyPage({ params }: PageProps) {
-  const { uid } = params;
+export default async function MyPage({
+  params,
+}: {
+  params: Promise<{ uid: string }>;
+}) {
+  const { uid } = await params;
   const sessionUid = await getSessionUid();
 
   if (sessionUid !== uid) {
-    notFound();
+    redirect("/unauthorized");
   }
 
   return (
