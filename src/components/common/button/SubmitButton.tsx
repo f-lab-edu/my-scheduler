@@ -3,7 +3,7 @@
 import { ButtonHTMLAttributes } from "react";
 
 interface SubmitButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  text: string;
+  readonly text: string;
 }
 
 export default function SubmitButton({
