@@ -1,12 +1,15 @@
 "use client";
 import { useActionState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import validator from "validator";
-import { LogInFormType } from "@/types/loginType";
-import { LoginAction } from "./actions/LoginAction";
+import { auth } from "@/lib/firebaseClient";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { LoginAction } from "@/app/login/actions/LoginAction";
 import SubmitButton from "@/components/common/button/SubmitButton";
+import { LogInFormType } from "@/types/loginType";
 
 export default function LoginForm() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -26,17 +29,31 @@ export default function LoginForm() {
     }
   );
 
+  const login = async (email: string, password: string) => {
+    try {
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      const token = await result.user.getIdToken();
+
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token }),
+      });
+      if (response.redirected) router.push(response.url);
+      else console.log("리다이렉트 응답이 아님", response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onSubmit = async (data: LogInFormType) => {
+    if (data.email && data.password) await login(data.email, data.password);
+  };
+
   return (
-    <form
-      action={formAction}
-      onSubmit={(event) => {
-        event.preventDefault();
-        const formElement = event.currentTarget;
-        handleSubmit(() => {
-          formElement.submit();
-        })();
-      }}
-    >
+    <form action={formAction} onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col align-center rounded-lg mb-6">
         <label className="mb-3" htmlFor="email">
           Email
@@ -46,16 +63,19 @@ export default function LoginForm() {
           className="p-[20px] border border-border-lightGray rounded-lg"
           {...register("email", {
             required: "email을 입력하세요",
-            validate: (value) => {
-              return (
-                validator.isEmail(value || "") ||
-                "이메일 형식이 올바르지 않습니다."
-              );
-            },
+            // TODO: email validate 처리
+            // validate: (value) => {
+            //   return (
+            //     validator.isEmail(value || "") ||
+            //     "이메일 형식이 올바르지 않습니다."
+            //   );
+            // },
           })}
           placeholder="email"
         />
-        {errors.email && <span>{errors.email.message}</span>}
+        {errors.email && (
+          <span className="text-red-50">{errors.email.message}</span>
+        )}
       </div>
       <div className="flex flex-col align-center rounded-lg mb-6">
         <label className="mb-3" htmlFor="password">
@@ -74,7 +94,9 @@ export default function LoginForm() {
           })}
           placeholder="password"
         />
-        {errors.password && <span>{errors.password.message}</span>}
+        {errors.password && (
+          <span className="text-red-50">{errors.password.message}</span>
+        )}
       </div>
 
       {serverState.message && (
@@ -83,7 +105,7 @@ export default function LoginForm() {
         </p>
       )}
 
-      <SubmitButton onClick={() => {}} text="Login" />
+      <SubmitButton text="Login" type="submit" />
     </form>
   );
 }

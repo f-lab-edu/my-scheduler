@@ -1,5 +1,5 @@
 import * as admin from "firebase-admin";
-// TODO: login
+
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert({
