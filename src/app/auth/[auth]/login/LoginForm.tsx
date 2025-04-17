@@ -86,12 +86,6 @@ export default function LoginForm() {
           {...register("email", {
             required: "email을 입력하세요",
             // TODO: email validate 처리
-            // validate: (value) => {
-            //   return (
-            //     validator.isEmail(value || "") ||
-            //     "이메일 형식이 올바르지 않습니다."
-            //   );
-            // },
           })}
           placeholder="email"
         />
