@@ -56,8 +56,6 @@ export default function LoginForm() {
               message: "유효하지 않은 이메일 형식입니다.",
             });
             break;
-          case "auth/user-not-found":
-          case "auth/wrong-password":
           case "auth/invalid-credential":
             setError("password", {
               type: "manual",
@@ -98,7 +96,7 @@ export default function LoginForm() {
           placeholder="email"
         />
         {errors.email && (
-          <span className="text-red-50">{errors.email.message}</span>
+          <span className="text-red-500">{errors.email.message}</span>
         )}
       </div>
       <div className="flex flex-col align-center rounded-lg mb-6">
