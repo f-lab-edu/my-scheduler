@@ -1,4 +1,3 @@
-"use client";
 import { notFound } from "next/navigation";
 import LoginForm from "@/app/auth/[auth]/login/LoginForm";
 import RegisterForm from "@/app/auth/[auth]/register/RegisterForm";
