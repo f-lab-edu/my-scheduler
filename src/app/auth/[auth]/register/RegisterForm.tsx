@@ -61,7 +61,7 @@ export default function RegisterForm() {
           className="p-[20px] border border-border-lightGray rounded-lg"
           {...register("email", {
             required: "email을 입력하세요",
-            // TODO: email validate 처리
+            // email validate 처리
           })}
           placeholder="email"
         />
