@@ -17,5 +17,4 @@ if (!getApps().length) {
 }
 export const app = getApp();
 
-// 인증 인스턴스를 만들어서 export
 export const auth = getAuth(app);
