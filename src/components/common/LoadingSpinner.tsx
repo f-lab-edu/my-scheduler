@@ -21,7 +21,7 @@ export default function LoadingSpinner() {
   if (!node) return null;
 
   return createPortal(
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+    <div className="fixed inset-0 flex items-center justify-center z-50">
       <Image
         src={loadingGif}
         alt="로딩 중"
