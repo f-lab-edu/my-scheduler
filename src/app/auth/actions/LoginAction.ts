@@ -5,6 +5,7 @@ export async function LoginAction(
   state: LogInFormType,
   payload: FormData
 ): Promise<LogInFormType> {
+
   const email = payload.get("email")?.toString() ?? "";
   const password = payload.get("password")?.toString() ?? "";
 
