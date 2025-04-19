@@ -9,6 +9,7 @@ import SubmitButton from "@/components/common/button/SubmitButton";
 import { LogInFormType } from "@/types/authType";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import { FirebaseError } from "firebase/app";
+import AuthInput from "@/components/common/AuthInput";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -75,45 +76,23 @@ export default function LoginForm() {
 
   return (
     <form action={formAction} onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col align-center rounded-lg mb-6">
-        <label className="mb-3" htmlFor="email">
-          Email
-        </label>
-        <input
-          id="email"
-          className="p-[20px] border border-border-lightGray rounded-lg"
-          {...register("email", {
-            required: "email을 입력하세요",
-            // email validate 처리
-          })}
-          placeholder="email"
-        />
-        {errors.email && (
-          <span className="text-red-500">{errors.email.message}</span>
-          <span className="text-red-50">{errors.email.message}</span>
-        )}
-      </div>
-      <div className="flex flex-col align-center rounded-lg mb-6">
-        <label className="mb-3" htmlFor="password">
-          Password
-        </label>
-        <input
-          id="password"
-          type="password"
-          className="p-[20px] border border-border-lightGray rounded-lg"
-          {...register("password", {
-            required: "Password를 입력하세요",
-            minLength: {
-              value: 8,
-              message: "비밀번호는 8글자 이상이어야 합니다.",
-            },
-          })}
-          placeholder="password"
-        />
-        {errors.password && (
-          <span className="text-red-500">{errors.password.message}</span>
-        )}
-      </div>
+      <AuthInput
+        name="email"
+        label="Email"
+        type="email"
+        placeholder="email"
+        register={register("email", { required: "이메일은 필수입니다." })}
+        error={errors.email?.message as string}
+      />
+
+      <AuthInput
+        name="password"
+        label="Password"
+        type="password"
+        placeholder="password"
+        register={register("password", { required: "비밀번호는 필수입니다." })}
+        error={errors.password?.message as string}
+      />
 
       {serverState.message && (
         <p className={serverState.success ? "text-green-500" : "text-red-500"}>
