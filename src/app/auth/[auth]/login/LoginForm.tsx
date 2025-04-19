@@ -46,7 +46,6 @@ export default function LoginForm() {
         },
         body: JSON.stringify({ token }),
       });
-
       if (response.ok && response.redirected) router.push(response.url);
     } catch (error) {
       if (error instanceof FirebaseError) {
