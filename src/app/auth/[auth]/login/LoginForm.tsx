@@ -45,7 +45,6 @@ export default function LoginForm() {
         },
         body: JSON.stringify({ token }),
       });
-
       if (response.ok && response.redirected) router.push(response.url);
     } catch (error) {
       if (error instanceof FirebaseError) {
@@ -91,6 +90,7 @@ export default function LoginForm() {
         />
         {errors.email && (
           <span className="text-red-500">{errors.email.message}</span>
+          <span className="text-red-50">{errors.email.message}</span>
         )}
       </div>
       <div className="flex flex-col align-center rounded-lg mb-6">
