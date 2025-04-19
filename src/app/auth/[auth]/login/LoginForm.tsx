@@ -1,5 +1,5 @@
 "use client";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { auth } from "@/lib/firebaseClient";
@@ -7,12 +7,15 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { LoginAction } from "@/app/auth/actions/LoginAction";
 import SubmitButton from "@/components/common/button/SubmitButton";
 import { LogInFormType } from "@/types/authType";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
+import { FirebaseError } from "firebase/app";
 
 export default function LoginForm() {
   const router = useRouter();
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<LogInFormType>({
     defaultValues: {
@@ -20,7 +23,7 @@ export default function LoginForm() {
       password: "",
     },
   });
-
+  const [isLoading, setIsLoading] = useState(false);
   const [serverState, formAction] = useActionState<LogInFormType, FormData>(
     LoginAction,
     {
@@ -30,6 +33,7 @@ export default function LoginForm() {
   );
 
   const loginWithEmail = async (email: string, password: string) => {
+    setIsLoading(true);
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
       const token = await result.user.getIdToken();
@@ -41,10 +45,26 @@ export default function LoginForm() {
         },
         body: JSON.stringify({ token }),
       });
-      if (response.redirected) router.push(response.url);
-      else console.log("리다이렉트 응답이 아님", response);
+      if (response.ok && response.redirected) router.push(response.url);
     } catch (error) {
-      console.log(error);
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case "auth/invalid-email":
+            setError("email", {
+              type: "manual",
+              message: "유효하지 않은 이메일 형식입니다.",
+            });
+            break;
+          case "auth/invalid-credential":
+            setError("password", {
+              type: "manual",
+              message: "이메일 또는 비밀번호가 일치하지 않습니다.",
+            });
+            break;
+        }
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -64,17 +84,12 @@ export default function LoginForm() {
           className="p-[20px] border border-border-lightGray rounded-lg"
           {...register("email", {
             required: "email을 입력하세요",
-            // TODO: email validate 처리
-            // validate: (value) => {
-            //   return (
-            //     validator.isEmail(value || "") ||
-            //     "이메일 형식이 올바르지 않습니다."
-            //   );
-            // },
+            // email validate 처리
           })}
           placeholder="email"
         />
         {errors.email && (
+          <span className="text-red-500">{errors.email.message}</span>
           <span className="text-red-50">{errors.email.message}</span>
         )}
       </div>
@@ -96,7 +111,7 @@ export default function LoginForm() {
           placeholder="password"
         />
         {errors.password && (
-          <span className="text-red-50">{errors.password.message}</span>
+          <span className="text-red-500">{errors.password.message}</span>
         )}
       </div>
 
@@ -107,6 +122,7 @@ export default function LoginForm() {
       )}
 
       <SubmitButton text="Login" type="submit" />
+      {isLoading && <LoadingSpinner />}
     </form>
   );
 }

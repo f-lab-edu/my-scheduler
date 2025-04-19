@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
 import LoginForm from "@/app/auth/[auth]/login/LoginForm";
 import RegisterForm from "@/app/auth/[auth]/register/RegisterForm";
-interface PageProps {
+
+type PageProps = Readonly<{
   params: Promise<{ auth?: string }>;
-}
+}>;
 
 export default async function AuthPage({ params }: PageProps) {
   const { auth } = await params;

@@ -3,3 +3,7 @@ declare module "*.svg" {
   const SVG: ComponentType<SVGProps<SVGSVGElement>>;
   export default SVG;
 }
+declare module "*.gif" {
+  const src: string;
+  export default src;
+}

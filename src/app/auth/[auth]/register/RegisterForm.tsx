@@ -1,6 +1,5 @@
 "use client";
-import { useEffect, useTransition } from "react";
-import { useActionState } from "react";
+import { useEffect, useTransition, useActionState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { RegisterAction } from "@/app/auth/actions/RegisterAction";
@@ -62,13 +61,7 @@ export default function RegisterForm() {
           className="p-[20px] border border-border-lightGray rounded-lg"
           {...register("email", {
             required: "email을 입력하세요",
-            // TODO: email validate 처리
-            // validate: (value) => {
-            //   return (
-            //     validator.isEmail(value || "") ||
-            //     "이메일 형식이 올바르지 않습니다."
-            //   );
-            // },
+            // email validate 처리
           })}
           placeholder="email"
         />

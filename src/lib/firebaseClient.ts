@@ -11,7 +11,6 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-// Firebase 초기화
 if (!getApps().length) {
   initializeApp(firebaseConfig);
 }
