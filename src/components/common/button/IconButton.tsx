@@ -20,11 +20,7 @@ export default function IconButton({
   onClick,
 }: Props) {
   return (
-    <button
-      aria-label={alt}
-      className="p-2 rounded hover:bg-headerBlue"
-      onClick={onClick}
-    >
+    <button aria-label={alt} className="p-2 rounded" onClick={onClick}>
       <Icon className={SIZE[size]} />
     </button>
   );
