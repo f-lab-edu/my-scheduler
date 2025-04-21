@@ -2,7 +2,7 @@ import Board from "@/app/[teamId]/schedule/[tab]/board/Board";
 import { notFound } from "next/navigation";
 
 interface Props {
-  params: { teamId: string };
+  params: Promise<{ teamId: string }>;
 }
 
 export default async function BoardPage({ params }: Props) {
@@ -16,7 +16,6 @@ export default async function BoardPage({ params }: Props) {
     const response = await fetch(`${baseUrl}/api/teams/${teamId}`, {
       cache: "no-store",
     });
-    console.log("🔴", `${baseUrl}/api/teams/${teamId}`);
 
     if (!response.ok) throw new Error(`fetch 실패: ${response.status}`);
 

@@ -11,7 +11,9 @@ interface Props {
   canEdit: boolean;
 }
 
-export default function Board({ team, canEdit }: Props) {
+export default function Board({ team }: Props) {
+  // TODO: team 처리
+  console.log(team);
   const {
     statusList,
     setStatusList,
