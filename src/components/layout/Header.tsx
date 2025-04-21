@@ -11,7 +11,6 @@ export default function Header() {
 
     if (uid) {
       router.push(`/mypage/${uid}`);
-      console.log("🥲", uid);
     } else {
       router.push("/auth/login");
     }

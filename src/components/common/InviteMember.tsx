@@ -21,7 +21,7 @@ export default function InviteMember({ onClose }: Props) {
 
   const handleSendEmail = async () => {
     try {
-      const response = await fetch("/api/teams/create", {
+      await fetch("/api/teams/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ teamName, inviteeEmail }),
