@@ -8,7 +8,7 @@ export function generateInviteCode(teamName: string) {
   const slug = teamName
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
+    .replace(/(^-|-$)/g, "");
 
   const rand = randomBytes(6).toString("hex");
   /** 
