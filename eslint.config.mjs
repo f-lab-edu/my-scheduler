@@ -17,6 +17,7 @@ const eslintConfig = [
         "error",
         { varsIgnorePattern: "^_", argsIgnorePattern: "^_" }, //변수, 매개변수 이름 _로 시작하면 경고x,
       ],
+      "@typescript-eslint/no-explicit-any": "off",
     },
   },
 ];
