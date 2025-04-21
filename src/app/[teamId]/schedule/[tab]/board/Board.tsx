@@ -6,7 +6,12 @@ import SideAddColumnButton from "@/components/common/button/SideAddColumnButton"
 import AddStatusInput from "@/components/common/AddStatusInput";
 import { StatusType } from "@/types/scheduleType";
 
-export default function Board() {
+interface Props {
+  team?: string;
+  canEdit: boolean;
+}
+
+export default function Board({ team, canEdit }: Props) {
   const {
     statusList,
     setStatusList,
