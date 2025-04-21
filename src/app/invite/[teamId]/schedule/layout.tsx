@@ -15,7 +15,10 @@ import {
 import { getStatusList } from "@/app/[teamId]/schedule/contents/StatusService";
 import { getTaskList } from "@/app/[teamId]/schedule/contents/TaskService";
 
-type Props = { children: ReactNode; params: { teamId: string } };
+type Props = {
+  children: ReactNode;
+  params: { teamId: string };
+};
 
 export default async function InviteScheduleLayout({
   children,
