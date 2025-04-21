@@ -1,6 +1,4 @@
 "use client";
-import Modal from "@/components/common/Modal";
-import { useModal } from "@/hooks/useModal";
 import { Member } from "@/types/teamType";
 
 interface Props {
@@ -9,7 +7,6 @@ interface Props {
 }
 
 export default function TeamScheduleCard({ teamName, members }: Props) {
-  const { open, closeModal, openModal } = useModal();
   return (
     <div className="mt-4 rounded-xl w-[308px] h-[192px] bg-white">
       <div className="h-[136px] bg-background-lightGray rounded-tl-xl rounded-tr-xl"></div>
@@ -23,7 +20,6 @@ export default function TeamScheduleCard({ teamName, members }: Props) {
           ))}
         </div>
       </div>
-      {open && <Modal onClose={closeModal}></Modal>}
     </div>
   );
 }

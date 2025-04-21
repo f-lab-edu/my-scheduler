@@ -17,16 +17,18 @@ import { getTaskList } from "@/app/[teamId]/schedule/contents/TaskService";
 
 type Props = {
   children: ReactNode;
-  params: { teamId: string };
+  params: Promise<{ teamId: string }>;
 };
 
 export default async function InviteScheduleLayout({
   children,
-  params: { teamId },
+  params,
 }: Props) {
   const statusData = await getStatusList();
   const taskData = await getTaskList();
-
+  // TODO: teamId별로 처리
+  const { teamId } = await params;
+  console.log(teamId);
   return (
     <TabsProvider>
       <ContentsProvider

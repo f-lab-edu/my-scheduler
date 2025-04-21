@@ -3,12 +3,11 @@ import { getFirestore } from "firebase-admin/firestore";
 import type { TeamType } from "@/types/teamType";
 import "@/lib/firebase";
 
-interface Props {
-  params: { teamId: string };
-}
-
-export async function GET(_req: NextRequest, { params }: Props) {
-  const { teamId } = params;
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ teamId: string }> }
+): Promise<NextResponse> {
+  const { teamId } = await params;
   try {
     const snap = await getFirestore().collection("teams").doc(teamId).get();
 
