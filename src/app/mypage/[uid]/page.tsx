@@ -14,12 +14,5 @@ export default async function MyPage({
     redirect("/unauthorized");
   }
 
-  return (
-    <div>
-      <h1>My Page for {sessionUid}</h1>
-      <h2>Your Schedules</h2>
-      {/* TODO: UI 렌더링 */}
-      <TeamScheduleList />
-    </div>
-  );
+  return <TeamScheduleList />;
 }

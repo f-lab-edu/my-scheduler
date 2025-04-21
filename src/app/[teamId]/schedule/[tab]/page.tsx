@@ -9,7 +9,8 @@ export default async function TabPage({ params }: Props) {
   const { tab } = await params;
 
   if (tab === "board") {
-    return <Board />;
+    // TODO: team 수정
+    return <Board team={"test"} canEdit />;
   } else if (tab === "calendar") {
     return <Calendar />;
   } else {
