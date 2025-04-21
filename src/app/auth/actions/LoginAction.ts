@@ -5,11 +5,10 @@ export async function LoginAction(
   state: LogInFormType,
   payload: FormData
 ): Promise<LogInFormType> {
-
   const email = payload.get("email")?.toString() ?? "";
   const password = payload.get("password")?.toString() ?? "";
 
-  if (!email) {
+  if (email === "") {
     return {
       success: false,
       message: "email는 필수입니다.",
@@ -17,7 +16,7 @@ export async function LoginAction(
         email: "이메일은 필수입니다.",
       },
     };
-  } else if (!password) {
+  } else if (password === "") {
     return {
       success: false,
       message: "password는 필수입니다.",
