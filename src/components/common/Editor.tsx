@@ -132,7 +132,7 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
   const handleCloseConfirmDialog = () => setOpenConfirmDialog(false);
   const handleDeleteTask = async () => {
     try {
-      await onDeleteTask(taskFormData);
+      await onDeleteTask(taskFormData.id);
       setTaskList((prev) => prev.filter((task) => task.id !== taskFormData.id));
       setOpenConfirmDeleteDialog(false);
       onClose();
