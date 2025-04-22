@@ -46,17 +46,3 @@ export async function TaskAction(
     newTask,
   };
 }
-
-export async function createNewTask(task: TaskType): Promise<string> {
-  const { id: _id, ...restData } = task;
-  const docRef = await db.collection("task").add(restData); // id 빼서 fireStore에 저장
-  return docRef.id;
-}
-
-export async function updateTask(task: TaskType): Promise<void> {
-  await db.collection("task").doc(task.id).set(task);
-}
-
-export async function deleteTask(task: TaskType): Promise<void> {
-  await db.collection("task").doc(task.id).delete();
-}
