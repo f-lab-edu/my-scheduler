@@ -7,6 +7,7 @@ import { RegisterFormType, RegisterResponse } from "@/types/authType";
 import AuthInput from "@/components/common/AuthInput";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 
+
 export default function RegisterForm() {
   const router = useRouter();
   const {
