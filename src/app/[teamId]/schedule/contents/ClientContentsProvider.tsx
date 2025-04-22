@@ -1,11 +1,11 @@
 "use client";
 
 import { ReactNode } from "react";
-import { ContentsProvider } from "./ContentsContext";
+import { ContentsProvider } from "@/app/[teamId]/schedule/contents/ContentsContext";
 import { createNewStatus, deleteStatus } from "@/lib/api/schedule/statusList";
 import { createNewTask, updateTask, deleteTask } from "@/lib/api/schedule/task";
 import { StatusType, TaskType } from "@/types/scheduleType";
-import { TabsProvider } from "../tabs/TabsContext";
+import { TabsProvider } from "@/app/[teamId]/schedule/tabs/TabsContext";
 
 interface Props {
   teamId: string;
@@ -20,13 +20,13 @@ export default function ClientContentsProvider({
   initialTaskList,
   children,
 }: Props) {
-  const handleCreateStatus = (s: StatusType) => createNewStatus(teamId, s);
+  const handleCreateStatus = (status: StatusType) =>
+    createNewStatus(teamId, status);
   const handleDeleteStatus = (id: string) => deleteStatus(teamId, id);
 
-  const handleCreateTask = (t: TaskType) => createNewTask(teamId, t);
-  const handleUpdateTask = (t: TaskType) => updateTask(teamId, t);
+  const handleCreateTask = (task: TaskType) => createNewTask(teamId, task);
+  const handleUpdateTask = (task: TaskType) => updateTask(teamId, task);
   const handleDeleteTask = (id: string) => deleteTask(teamId, id);
-
   return (
     <TabsProvider>
       <ContentsProvider
