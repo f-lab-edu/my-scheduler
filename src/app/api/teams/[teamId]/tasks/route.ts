@@ -1,30 +1,29 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { getFirestore } from "firebase-admin/firestore";
-import { StatusType } from "@/types/scheduleType";
 import "@/lib/firebase";
+import { TaskType } from "@/types/scheduleType";
 
 export async function GET(
-  _req: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ teamId: string }> }
 ) {
   const { teamId } = await params;
+
   try {
     const snapshot = await getFirestore()
       .collection("teams")
       .doc(teamId)
-      .collection("statusList")
-      .orderBy("order")
+      .collection("tasks")
       .get();
-
-    const statusList = snapshot.docs.map((status) => ({
-      id: status.id,
-      ...(status.data() as StatusType),
+    const taskList = snapshot.docs.map((task) => ({
+      ...(task.data() as TaskType),
+      id: task.id,
     }));
 
-    return NextResponse.json(statusList, { status: 200 });
+    return NextResponse.json(taskList, { status: 200 });
   } catch (error: any) {
     return NextResponse.json(
-      { error: "서버 에러가 발생했습니다." },
+      { error: "작업 목록 조회에 실패했습니다." },
       { status: 500 }
     );
   }
@@ -35,10 +34,23 @@ export async function POST(
   { params }: { params: Promise<{ teamId: string }> }
 ) {
   const { teamId } = await params;
+  const data = (await request.json()) as Omit<TaskType, "id">;
+  const task = getFirestore()
+    .collection("teams")
+    .doc(teamId)
+    .collection("tasks");
+  const docRef = await task.add(data);
+  return NextResponse.json({ id: docRef.id, ...data }, { status: 201 }); //201 -> created 요청
+}
 
-  let data: StatusType;
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ teamId: string }> }
+) {
+  const { teamId } = await params;
+  let body: TaskType;
   try {
-    data = await request.json();
+    body = (await request.json()) as TaskType;
   } catch {
     return NextResponse.json(
       { error: "잘못된 JSON 형식입니다." },
@@ -46,17 +58,28 @@ export async function POST(
     );
   }
 
+  const { id, ...data } = body;
+  if (!id) {
+    return NextResponse.json(
+      {
+        error: "업데이트할 task의 id가 필요합니다.",
+      },
+      { status: 400 }
+    );
+  }
+
   try {
-    const statusList = getFirestore()
+    await getFirestore()
       .collection("teams")
       .doc(teamId)
-      .collection("statusList");
-    const docRef = await statusList.add(data);
-    return NextResponse.json({ id: docRef.id, ...data }, { status: 201 });
-  } catch (err) {
-    console.error("POST /statusList error", err);
+      .collection("tasks")
+      .doc(id)
+      .set(data);
+    return NextResponse.json(null, { status: 204 });
+  } catch (error: any) {
+    console.error("PATCH /tasks error", error);
     return NextResponse.json(
-      { error: "상태 추가에 실패했습니다." },
+      { error: "Task 업데이트에 실패했습니다." },
       { status: 500 }
     );
   }
@@ -71,7 +94,7 @@ export async function DELETE(
 
   try {
     body = await request.json();
-  } catch {
+  } catch (erro: any) {
     return NextResponse.json(
       { error: "잘못된 JSON 형식입니다." },
       { status: 400 }
@@ -89,13 +112,13 @@ export async function DELETE(
     await getFirestore()
       .collection("teams")
       .doc(teamId)
-      .collection("statusList")
+      .collection("tasks")
       .doc(body.id)
       .delete();
 
-    return new NextResponse(null, { status: 204 });
-  } catch (error: any) {
-    console.error("DELETE /statusList error", error);
+    return NextResponse.json(null, { status: 204 });
+  } catch (error) {
+    console.error("DELETE /task error", error);
     return NextResponse.json(
       { error: "상태 삭제에 실패했습니다." },
       { status: 500 }
