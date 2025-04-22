@@ -9,8 +9,8 @@ export async function fetchInitialStatusList(
     .collection("teams")
     .doc(teamId)
     .collection("statusList")
-    .orderBy("order")
     .get();
+
   return snap.docs.map((status) => ({
     id: status.id,
     ...(status.data() as StatusType),
