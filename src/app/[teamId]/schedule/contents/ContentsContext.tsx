@@ -65,7 +65,7 @@ export function ContentsProvider({
 
   const handleDeleteStatus = async (id: string) => {
     await onDeleteStatus(id);
-    setStatusList((prev) => prev.filter((s) => s.id !== id));
+    setStatusList((prev) => prev.filter((status) => status.id !== id));
   };
 
   const handleCreateTask = async (task: TaskType) => {
@@ -81,7 +81,7 @@ export function ContentsProvider({
 
   const handleDeleteTask = async (id: string) => {
     await onDeleteTask(id);
-    setTaskList((prev) => prev.filter((t) => t.id !== id));
+    setTaskList((prev) => prev.filter((task) => task.id !== id));
   };
 
   return (
