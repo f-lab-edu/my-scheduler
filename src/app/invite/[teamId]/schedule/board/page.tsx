@@ -13,14 +13,14 @@ export default async function BoardPage({ params }: Props) {
         ? process.env.NEXT_PUBLIC_PROD_URL
         : process.env.NEXT_PUBLIC_DEV_URL;
 
+    // TODO: api로 분리
     const response = await fetch(`${baseUrl}/api/teams/${teamId}`, {
       cache: "no-store",
     });
 
     if (!response.ok) throw new Error(`fetch 실패: ${response.status}`);
 
-    const team = await response.json();
-    return <Board team={team} canEdit />;
+    return <Board />;
   } catch (error) {
     console.error(error);
     return notFound();

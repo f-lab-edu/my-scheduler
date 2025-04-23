@@ -8,11 +8,6 @@ import {
   fetchInitialTaskList,
 } from "@/lib/server/schedule";
 
-type Props = {
-  params: { teamId: string };
-  children: ReactNode;
-};
-
 export default async function ScheduleLayout({
   params,
   children,

@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getFirestore } from "firebase-admin/firestore";
 import "@/lib/firebase";
-import { cookies } from "next/headers";
-import { getAuth } from "firebase-admin/auth";
 import { getSessionUid } from "@/lib/server/auth";
 
 export async function GET(request: NextRequest) {

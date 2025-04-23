@@ -10,7 +10,7 @@ export default async function TabPage({ params }: Props) {
 
   if (tab === "board") {
     // TODO: team 수정
-    return <Board team={"test"} canEdit />;
+    return <Board />;
   } else if (tab === "calendar") {
     return <Calendar />;
   } else {

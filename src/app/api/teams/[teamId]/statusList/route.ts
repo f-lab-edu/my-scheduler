@@ -23,6 +23,7 @@ export async function GET(
 
     return NextResponse.json(statusList, { status: 200 });
   } catch (error: any) {
+    console.error(error);
     return NextResponse.json(
       { error: "서버 에러가 발생했습니다." },
       { status: 500 }
