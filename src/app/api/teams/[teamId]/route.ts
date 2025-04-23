@@ -22,8 +22,8 @@ export async function GET(
       { id: snap.id, ...(snap.data() as TeamType) },
       { status: 200 }
     );
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
     return NextResponse.json(
       { error: "서버 에러가 발생했습니다." },
       { status: 500 }
