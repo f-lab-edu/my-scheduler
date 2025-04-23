@@ -24,7 +24,7 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
   const { dropdownPosition, setDropdownPosition, toggleDropdown } =
     useDropdownPosition();
 
-  const { setStatusList, statusList, taskList, setTaskList, onUpdateTask } =
+  const { setStatusList, taskList, setTaskList, onUpdateTask } =
     useContentsContext();
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [editingTask, setEditingTask] = useState<TaskType | null>(null);

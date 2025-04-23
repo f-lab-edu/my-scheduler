@@ -6,6 +6,7 @@ import IconButton from "@/components/common/button/IconButton";
 import closeIcon from "@/assets/x.svg";
 import { createTeam } from "@/lib/api/teams";
 import { createInvitation } from "@/lib/api/invitation";
+import LoadingSpinner from "./LoadingSpinner";
 
 interface Props {
   onClose: () => void;
@@ -15,7 +16,7 @@ export default function InviteMember({ onClose }: Props) {
   const [teamName, setTeamName] = useState("");
   const [inviteeEmail, setInviteeEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleTeamNameChange = (event: ChangeEvent<HTMLInputElement>) =>
     setTeamName(event.target.value);
@@ -39,7 +40,7 @@ export default function InviteMember({ onClose }: Props) {
       return;
     }
 
-    setLoading(true);
+    setIsLoading(true);
     try {
       // 팀 생성 -> 초대
       const { teamId } = await createTeam(teamName);
@@ -49,7 +50,7 @@ export default function InviteMember({ onClose }: Props) {
       console.error(error);
       setError(error.message || "오류가 발생했습니다.");
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -79,6 +80,7 @@ export default function InviteMember({ onClose }: Props) {
           onClick={handleSendInvite}
         />
         {error && <p className="text-red-500 mb-2">{error}</p>}
+        {isLoading && <LoadingSpinner />}
       </div>
     </div>
   );

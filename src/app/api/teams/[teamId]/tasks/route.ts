@@ -22,6 +22,7 @@ export async function GET(
 
     return NextResponse.json(taskList, { status: 200 });
   } catch (error: any) {
+    console.error(error);
     return NextResponse.json(
       { error: "작업 목록 조회에 실패했습니다." },
       { status: 500 }
@@ -43,6 +44,7 @@ export async function POST(
     const docRef = await task.add(data);
     return NextResponse.json({ id: docRef.id, ...data }, { status: 201 }); //201 -> created 요청
   } catch (error: any) {
+    console.error(error);
     return NextResponse.json(
       { error: "잘못된 JSON 형식입니다." },
       { status: 400 }
@@ -58,7 +60,8 @@ export async function PATCH(
   let body: TaskType;
   try {
     body = (await request.json()) as TaskType;
-  } catch {
+  } catch (error: any) {
+    console.error(error);
     return NextResponse.json(
       { error: "잘못된 JSON 형식입니다." },
       { status: 400 }
@@ -101,7 +104,8 @@ export async function DELETE(
 
   try {
     body = await request.json();
-  } catch (erro: any) {
+  } catch (error: any) {
+    console.error(error);
     return NextResponse.json(
       { error: "잘못된 JSON 형식입니다." },
       { status: 400 }

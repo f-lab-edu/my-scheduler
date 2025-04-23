@@ -12,7 +12,7 @@ export default function TeamScheduleList() {
   const [teams, setTeams] = useState<TeamType[]>([]);
   const { open, closeModal, openModal } = useModal();
   const [isLoading, setIsLoading] = useState(true);
-  // const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -21,7 +21,7 @@ export default function TeamScheduleList() {
         setTeams(data);
       } catch (error: any) {
         // TODO: error 알럿으로 처리
-        // setError(error.message);
+        setError(error.message);
       } finally {
         setIsLoading(false);
       }
@@ -33,7 +33,7 @@ export default function TeamScheduleList() {
       <AddNewButton type="team" onClick={openModal} />
       {teams.map((team, index) => (
         <TeamScheduleCard
-          key={team.id}
+          key={`${team.id}-${index}`}
           teamName={team.teamName}
           members={team.members}
         />
@@ -44,7 +44,7 @@ export default function TeamScheduleList() {
           <InviteMember onClose={closeModal} />
         </Modal>
       )}
-
+      {error && <div>TODO: 임시 에러{error}</div>}
       {isLoading && <LoadingSpinner />}
     </div>
   );

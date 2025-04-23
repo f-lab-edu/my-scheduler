@@ -1,6 +1,5 @@
 "use server";
-import { TaskFormStatusType, Priority, TaskType } from "@/types/scheduleType";
-import { db } from "@/lib/firebase";
+import { TaskFormStatusType, Priority } from "@/types/scheduleType";
 
 export async function TaskAction(
   state: TaskFormStatusType,
