@@ -6,7 +6,7 @@ import IconButton from "@/components/common/button/IconButton";
 import closeIcon from "@/assets/x.svg";
 import { createTeam } from "@/lib/api/teams";
 import { createInvitation } from "@/lib/api/invitation";
-import LoadingSpinner from "./LoadingSpinner";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 
 interface Props {
   onClose: () => void;

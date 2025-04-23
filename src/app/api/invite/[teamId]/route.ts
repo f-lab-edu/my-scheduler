@@ -32,7 +32,6 @@ export async function POST(
       .doc(teamId)
       .collection("invitations");
 
-    // 2) 이 uid(email)용 초대 레코드 찾기
     const snapshot = await invitationColumn
       .where("inviteeEmail", "==", email)
       .where("accepted", "==", false)
