@@ -41,8 +41,8 @@ export async function POST(
     data = await request.json();
   } catch {
     return NextResponse.json(
-      { error: "잘못된 JSON 형식입니다." },
-      { status: 400 }
+      { error: "서버 에러가 발생했습니다." },
+      { status: 500 }
     );
   }
 

@@ -34,13 +34,20 @@ export async function POST(
   { params }: { params: Promise<{ teamId: string }> }
 ) {
   const { teamId } = await params;
-  const data = (await request.json()) as Omit<TaskType, "id">;
-  const task = getFirestore()
-    .collection("teams")
-    .doc(teamId)
-    .collection("tasks");
-  const docRef = await task.add(data);
-  return NextResponse.json({ id: docRef.id, ...data }, { status: 201 }); //201 -> created 요청
+  try {
+    const data = (await request.json()) as Omit<TaskType, "id">;
+    const task = getFirestore()
+      .collection("teams")
+      .doc(teamId)
+      .collection("tasks");
+    const docRef = await task.add(data);
+    return NextResponse.json({ id: docRef.id, ...data }, { status: 201 }); //201 -> created 요청
+  } catch (error: any) {
+    return NextResponse.json(
+      { error: "잘못된 JSON 형식입니다." },
+      { status: 400 }
+    );
+  }
 }
 
 export async function PATCH(
