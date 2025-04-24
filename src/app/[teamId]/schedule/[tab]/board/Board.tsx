@@ -24,10 +24,8 @@ export default function Board() {
     try {
       const docId = await onCreateNewStatus(newStatusData);
       setStatusList((prev) => [...prev, { ...newStatusData, id: docId }]);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.log(error.message);
-      }
+    } catch (error: any) {
+      console.log(error.message);
     }
   };
 
