@@ -2,14 +2,15 @@
 import { useActionState, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { auth } from "@/lib/firebaseClient";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { FirebaseError } from "firebase/app";
+import { auth } from "@/lib/firebaseClient";
 import { LoginAction } from "@/app/auth/actions/LoginAction";
 import SubmitButton from "@/components/common/button/SubmitButton";
-import { LogInFormType } from "@/types/authType";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
-import { FirebaseError } from "firebase/app";
 import AuthInput from "@/components/common/AuthInput";
+import { LogInFormType } from "@/types/authType";
+
 
 export default function LoginForm() {
   const router = useRouter();
@@ -61,6 +62,18 @@ export default function LoginForm() {
             setError("password", {
               type: "manual",
               message: "이메일 또는 비밀번호가 일치하지 않습니다.",
+            });
+            break;
+          case "auth/network-request-failed":
+            setError("password", {
+              type: "manual",
+              message: "네트워크 오류입니다.",
+            });
+            break;
+          case "auth/internal-error":
+            setError("password", {
+              type: "manual",
+              message: "서버 내부 오류입니다.",
             });
             break;
         }

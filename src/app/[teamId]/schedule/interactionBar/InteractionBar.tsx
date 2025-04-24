@@ -1,6 +1,6 @@
 "use client";
 import SearchBar from "@/app/[teamId]/schedule/interactionBar/SearchBar";
-import AddColumnButton from "@/components/common/button/AddColumnButton";
+import AddNewButton from "@/components/common/button/AddNewButton";
 import FilterButton from "@/components/common/button/FilterButtons";
 import { useContentsContext } from "@/app/[teamId]/schedule/contents/ContentsContext";
 
@@ -17,7 +17,7 @@ export default function InteractionBar() {
           <span>{taskList.length}</span>
           <span>tasks</span>
         </span>
-        <AddColumnButton onClick={handleChangeAddStatusInput} />
+        <AddNewButton onClick={handleChangeAddStatusInput} />
       </span>
       <span className="flex items-center gap-3">
         <SearchBar />

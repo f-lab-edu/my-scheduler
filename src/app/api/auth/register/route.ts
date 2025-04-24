@@ -43,8 +43,36 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json({ success: true, message: "회원가입 성공!" });
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    if (error.code === "auth/email-already-exists") {
+      return NextResponse.json(
+        {
+          success: false,
+          code: error.code,
+          message: "중복되는 이메일 입니다.",
+        },
+        { status: 409 }
+      );
+    } else if (error.code === "auth/invalid-email") {
+      return NextResponse.json(
+        {
+          success: false,
+          code: error.code,
+          message: "이메일 주소 형식이어야 합니다.",
+        },
+        { status: 400 }
+      );
+    } else if (error.code === "auth/internal-error") {
+      return NextResponse.json(
+        {
+          success: false,
+          code: error.code,
+          message: "서버 내부 오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+        },
+        { status: 500 }
+      );
+    }
+
     return NextResponse.json({
       success: false,
       message: "회원가입에 실패했습니다.",

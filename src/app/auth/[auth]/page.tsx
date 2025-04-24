@@ -5,7 +5,7 @@ import RegisterForm from "@/app/auth/[auth]/register/RegisterForm";
 export default async function AuthPage({
   params,
 }: {
-  params: Promise<{ auth?: string }>;
+  params: Promise<{ auth: string }>;
 }) {
   const { auth } = await params;
 
