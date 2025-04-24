@@ -39,10 +39,8 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
     try {
       await onDeleteStatus(status.id!);
       setStatusList((prev) => prev.filter((item) => item.id !== status.id));
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.log(error.message);
-      }
+    } catch (error: any) {
+      console.log(error.message);
     }
   };
 

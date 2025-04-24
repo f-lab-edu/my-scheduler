@@ -122,10 +122,8 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
       }
       setOpenConfirmDialog(false);
       onClose();
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.log(error.message);
-      }
+    } catch (error: any) {
+      console.log(error.message);
     }
   };
 
@@ -136,10 +134,8 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
       setTaskList((prev) => prev.filter((task) => task.id !== taskFormData.id));
       setOpenConfirmDeleteDialog(false);
       onClose();
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.log(error.message);
-      }
+    } catch (error: any) {
+      console.log(error.message);
     }
   };
 
