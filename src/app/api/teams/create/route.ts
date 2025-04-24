@@ -26,7 +26,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ teamId }, { status: 201 });
   } catch (error) {
-    console.error('"POST /api/teams/create', error);
+    console.error("POST /api/teams/create", error);
     return NextResponse.json(
       { error: "서버 에러가 발생했습니다." },
       { status: 500 }

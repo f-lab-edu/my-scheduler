@@ -1,13 +1,19 @@
 "use client";
 
+import Link from "next/link";
+
 interface Props {
   teamName: string;
+  teamId: string;
   members: string[];
 }
 
-export default function TeamScheduleCard({ teamName }: Props) {
+export default function TeamScheduleCard({ teamName, teamId }: Props) {
   return (
-    <div className="inline-block mt-4 mr-4 rounded-xl w-[308px] h-[192px] bg-white">
+    <Link
+      className="inline-block mt-4 mr-4 rounded-xl w-[308px] h-[192px] bg-white"
+      href={`/${teamId}/schedule/board`}
+    >
       <div className="h-[136px] bg-background-lightGray rounded-tl-xl rounded-tr-xl"></div>
       <div className="flex justify-between">
         <div>{teamName}</div>
@@ -19,6 +25,6 @@ export default function TeamScheduleCard({ teamName }: Props) {
           ))} */}
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
