@@ -9,7 +9,6 @@ import { StatusType } from "@/types/scheduleType";
 export default function Board() {
   const {
     statusList,
-    setStatusList,
     isAddStatusVisible,
     setIsAddStatusVisible,
     onDeleteStatus,
@@ -22,8 +21,7 @@ export default function Board() {
 
   const handleSaveStatus = async (newStatusData: StatusType) => {
     try {
-      const docId = await onCreateNewStatus(newStatusData);
-      setStatusList((prev) => [...prev, { ...newStatusData, id: docId }]);
+      await onCreateNewStatus(newStatusData);
     } catch (error: any) {
       console.log(error.message);
     }

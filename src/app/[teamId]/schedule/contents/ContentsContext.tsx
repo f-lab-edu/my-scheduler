@@ -14,7 +14,6 @@ interface ContentsContextProps {
   taskList: TaskType[];
   setTaskList: Dispatch<SetStateAction<TaskType[]>>;
   statusList: StatusType[];
-  setStatusList: Dispatch<SetStateAction<StatusType[]>>;
   searchValue: string;
   setSearchValue: (value: string) => void;
   isAddStatusVisible: boolean;
@@ -90,7 +89,6 @@ export function ContentsProvider({
         taskList,
         setTaskList,
         statusList,
-        setStatusList,
         searchValue,
         setSearchValue,
         isAddStatusVisible,
