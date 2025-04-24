@@ -8,7 +8,6 @@ import { StatusType } from "@/types/scheduleType";
 
 interface Props {
   team?: string;
-  canEdit: boolean;
 }
 
 export default function Board({ team }: Props) {
