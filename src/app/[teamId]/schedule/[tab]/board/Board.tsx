@@ -6,13 +6,7 @@ import SideAddColumnButton from "@/components/common/button/SideAddColumnButton"
 import AddStatusInput from "@/components/common/AddStatusInput";
 import { StatusType } from "@/types/scheduleType";
 
-interface Props {
-  team?: string;
-}
-
-export default function Board({ team }: Props) {
-  // TODO: team 처리
-  console.log(team);
+export default function Board() {
   const {
     statusList,
     setStatusList,
