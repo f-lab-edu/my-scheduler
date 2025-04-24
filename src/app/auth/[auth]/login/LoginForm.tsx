@@ -24,6 +24,7 @@ export default function LoginForm() {
       password: "",
     },
   });
+
   const [isLoading, setIsLoading] = useState(false);
   const [serverState, formAction] = useActionState<LogInFormType, FormData>(
     LoginAction,

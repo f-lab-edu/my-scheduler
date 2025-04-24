@@ -8,6 +8,7 @@ import { createTeam } from "@/lib/api/teams";
 import { createInvitation } from "@/lib/api/invitation";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 
+
 interface Props {
   onClose: () => void;
 }
@@ -81,6 +82,7 @@ export default function InviteMember({ onClose }: Props) {
         />
         {error && <p className="text-red-500 mb-2">{error}</p>}
         {isLoading && <LoadingSpinner />}
+        />
       </div>
     </div>
   );
