@@ -11,7 +11,6 @@ import LoadingSpinner from "@/components/common/LoadingSpinner";
 import AuthInput from "@/components/common/AuthInput";
 import { LogInFormType } from "@/types/authType";
 
-
 export default function LoginForm() {
   const router = useRouter();
   const {
