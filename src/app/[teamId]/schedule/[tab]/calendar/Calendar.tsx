@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { EventClickArg } from "@fullcalendar/core";
+import { DatesSetArg, EventClickArg, EventDropArg } from "@fullcalendar/core";
 import resolveConfig from "tailwindcss/resolveConfig";
 import tailwindConfig from "../../../../../../tailwind.config";
 import Agenda from "@/app/[teamId]/schedule/[tab]/calendar/Agenda";
@@ -22,6 +22,9 @@ export default function Calendar() {
   const { taskList } = useContentsContext();
   const [editingTask, setEditingTask] = useState<TaskType | null>(null);
   const [eventList, setEventList] = useState<CalendarEventType[] | []>([]);
+
+  const [visibleYear, setVisibleYear] = useState<number>(dayjs().year());
+  const [visibleMonth, setVisibleMonth] = useState<number>(dayjs().month() + 1);
 
   useEffect(() => {
     const taskGroupingById = taskList.reduce((acc, task) => {
@@ -53,9 +56,14 @@ export default function Calendar() {
         color: getColorByPriority(priority),
       };
     });
-
     setEventList(events);
   }, [taskList]);
+
+  const handleDatesSet = (data: DatesSetArg) => {
+    const startDate = data.start;
+    setVisibleYear(startDate.getFullYear());
+    setVisibleMonth(startDate.getMonth() + 1);
+  };
 
   const handleTaskClick = (info: EventClickArg) => {
     const clickedTaskId = info.event.id;
@@ -81,10 +89,11 @@ export default function Calendar() {
           }}
           height="auto"
           contentHeight="auto"
+          datesSet={handleDatesSet}
           eventClick={handleTaskClick}
         />
       </div>
-      <Agenda />
+      <Agenda tasks={eventList} year={visibleYear} month={visibleMonth} />
       {open && editingTask && (
         <Modal onClose={closeModal}>
           <Editor
