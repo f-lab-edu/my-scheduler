@@ -16,6 +16,9 @@ export default function Tab({ tab }: Props) {
     router.push(`/${params.teamId}/schedule/${tab.toLowerCase()}`);
   };
 
+  console.log("🟡", activeTab);
+  console.log("🟢", tab.toLowerCase());
+
   return (
     <button
       className={clsx(
