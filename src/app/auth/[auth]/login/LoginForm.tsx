@@ -33,6 +33,8 @@ export default function LoginForm() {
       message: "",
     }
   );
+  // TODO: 테스트 후 수정
+  console.log(formAction);
 
   const loginWithEmail = async (email: string, password: string) => {
     setIsLoading(true);
