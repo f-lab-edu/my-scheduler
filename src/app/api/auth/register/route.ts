@@ -76,6 +76,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: false,
+      code: error.code,
       message: "회원가입에 실패했습니다.",
     });
   }
