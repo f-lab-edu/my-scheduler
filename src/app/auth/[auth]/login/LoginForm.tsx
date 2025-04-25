@@ -33,8 +33,6 @@ export default function LoginForm() {
       message: "",
     }
   );
-  // TODO: 테스트 후 수정
-  console.log(formAction);
 
   const loginWithEmail = async (email: string, password: string) => {
     setIsLoading(true);
@@ -48,7 +46,10 @@ export default function LoginForm() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ token }),
+        credentials: "include",
+        redirect: "manual",
       });
+      console.log("🟪", response);
       if (response.ok && response.redirected) router.push(response.url);
     } catch (error) {
       if (error instanceof FirebaseError) {
@@ -90,8 +91,7 @@ export default function LoginForm() {
   };
 
   return (
-    // <form action={formAction} onSubmit={handleSubmit(onSubmit)}>
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form action={formAction} onSubmit={handleSubmit(onSubmit)}>
       <AuthInput
         name="email"
         label="Email"
