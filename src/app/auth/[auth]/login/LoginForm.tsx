@@ -49,7 +49,7 @@ export default function LoginForm() {
         credentials: "include",
         redirect: "manual",
       });
-      console.log("🟪", response);
+      console.log("🟪🟪🟪", response);
       if (response.ok && response.redirected) router.push(response.url);
     } catch (error) {
       if (error instanceof FirebaseError) {
