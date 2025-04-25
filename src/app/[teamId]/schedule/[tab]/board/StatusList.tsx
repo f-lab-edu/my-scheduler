@@ -28,6 +28,8 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [editingTask, setEditingTask] = useState<TaskType | null>(null);
   const [dropTargetIndex, setDropTargetIndex] = useState<number | null>(null);
+  const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const filteredTasks = taskList
     .filter((task: TaskType) => task.statusId === status.id)
@@ -38,7 +40,9 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
     try {
       await onDeleteStatus(status.id!);
     } catch (error: any) {
-      console.log(error.message);
+      console.log(error);
+      setIsErrorDialogOpen(true);
+      setErrorMessage(error.message);
     }
   };
 
@@ -194,6 +198,14 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
             editingTask={editingTask}
           />
         </Modal>
+      )}
+
+      {isErrorDialogOpen && (
+        <ConfirmDialog
+          onClose={() => setIsErrorDialogOpen(false)}
+          contentText={errorMessage}
+          closeText="Confirm"
+        />
       )}
     </section>
   );
