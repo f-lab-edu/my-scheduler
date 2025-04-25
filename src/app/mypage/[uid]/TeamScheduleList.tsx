@@ -7,12 +7,14 @@ import Modal from "@/components/common/Modal";
 import InviteMember from "@/components/common/InviteMember";
 import { getMyTeams, TeamType } from "@/lib/api/teams";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
+import ConfirmDialog from "@/components/common/ConfirmDialog";
 
 export default function TeamScheduleList() {
   const [teams, setTeams] = useState<TeamType[]>([]);
   const { open, closeModal, openModal } = useModal();
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
     (async () => {
@@ -20,7 +22,7 @@ export default function TeamScheduleList() {
         const data = await getMyTeams();
         setTeams(data);
       } catch (error: any) {
-        // TODO: error 알럿으로 처리
+        setIsErrorDialogOpen(true);
         setError(error.message);
       } finally {
         setIsLoading(false);
@@ -45,7 +47,15 @@ export default function TeamScheduleList() {
           <InviteMember onClose={closeModal} />
         </Modal>
       )}
-      {error && <div>TODO: 임시 에러{error}</div>}
+
+      {isErrorDialogOpen && (
+        <ConfirmDialog
+          onClose={() => setIsErrorDialogOpen(false)}
+          contentText={error}
+          closeText="Confirm"
+        />
+      )}
+
       {isLoading && <LoadingSpinner />}
     </div>
   );

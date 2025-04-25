@@ -24,7 +24,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     );
     return response;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return NextResponse.json(
       { error: "인증에 실패했습니다." },
       { status: 401 }

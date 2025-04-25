@@ -40,7 +40,7 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
     try {
       await onDeleteStatus(status.id!);
     } catch (error: any) {
-      console.log(error);
+      console.error(error);
       setIsErrorDialogOpen(true);
       setErrorMessage(error.message);
     }
@@ -124,7 +124,7 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
     try {
       await Promise.all(tasksToUpdate.map((task) => onUpdateTask(task)));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

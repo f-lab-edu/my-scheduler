@@ -45,7 +45,6 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
   const [taskFormData, setTaskFormData] = useState<TaskType>(initialFormData);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [openConfirmDeleteDialog, setOpenConfirmDeleteDialog] = useState(false);
-  // const { onCreateNewTask, setTaskList, taskList, onUpdateTask, onDeleteTask } =
   const { onCreateNewTask, taskList, onUpdateTask, onDeleteTask } =
     useContentsContext();
   const [formState, formAction] = useActionState<TaskFormStatusType, FormData>(
@@ -116,7 +115,7 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
       setOpenConfirmDialog(false);
       onClose();
     } catch (error: any) {
-      console.log(error.message);
+      console.error(error.message);
     }
   };
 
@@ -124,11 +123,10 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
   const handleDeleteTask = async () => {
     try {
       await onDeleteTask(taskFormData.id);
-      // setTaskList((prev) => prev.filter((task) => task.id !== taskFormData.id));
       setOpenConfirmDeleteDialog(false);
       onClose();
     } catch (error: any) {
-      console.log(error.message);
+      console.error(error.message);
     }
   };
 
