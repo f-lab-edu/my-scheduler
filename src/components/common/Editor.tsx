@@ -102,13 +102,6 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
           statusId,
           id: editingTask.id,
         });
-        // setTaskList((prev) =>
-        //   prev.map((task) =>
-        //     task.id === editingTask.id
-        //       ? { ...taskFormData, id: editingTask.id, statusId }
-        //       : task
-        //   )
-        // );
       } else {
         const filteredTasks = taskList.filter(
           (task: TaskType) => task.statusId === statusId
@@ -118,8 +111,7 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
             ? Math.max(...filteredTasks.map((task) => task.order ?? 0)) + 1
             : 0;
         const newTask = { ...taskFormData, statusId, order: newTaskOrder };
-        const docId = await onCreateNewTask(newTask);
-        // setTaskList((prev) => [...prev, { ...newTask, id: docId, statusId }]);
+        await onCreateNewTask(newTask);
       }
       setOpenConfirmDialog(false);
       onClose();

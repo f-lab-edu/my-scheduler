@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarEventType, TaskType } from "@/types/scheduleType";
+import { CalendarEventType } from "@/types/scheduleType";
 import dayjs from "dayjs";
 interface Props {
   tasks: CalendarEventType[];
