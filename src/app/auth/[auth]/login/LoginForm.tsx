@@ -88,7 +88,8 @@ export default function LoginForm() {
   };
 
   return (
-    <form action={formAction} onSubmit={handleSubmit(onSubmit)}>
+    // <form action={formAction} onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <AuthInput
         name="email"
         label="Email"

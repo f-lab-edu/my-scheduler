@@ -2,7 +2,7 @@ name: my-scheduler-nextjs-action
 
 on:
   push:
-    branches: [main]
+    branches: [refactor/error-code]
 
 jobs:
   build:
