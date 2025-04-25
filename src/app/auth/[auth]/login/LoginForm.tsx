@@ -46,10 +46,7 @@ export default function LoginForm() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ token }),
-        credentials: "include",
-        redirect: "manual",
       });
-      console.log("🟪", response);
       if (response.ok && response.redirected) router.push(response.url);
     } catch (error) {
       if (error instanceof FirebaseError) {

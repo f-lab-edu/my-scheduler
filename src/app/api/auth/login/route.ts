@@ -14,7 +14,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     });
 
     const redirectUrl = new URL(`/mypage/${decodedToken.uid}`, request.url);
-    const response = NextResponse.redirect(redirectUrl);
+    const response = NextResponse.redirect(redirectUrl, 303); //303: 쿠키설정 + GET 방식 리다이렉트
 
     response.headers.set(
       "Set-Cookie",
