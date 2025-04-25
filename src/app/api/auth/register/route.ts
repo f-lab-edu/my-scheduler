@@ -44,6 +44,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true, message: "회원가입 성공!" });
   } catch (error: any) {
+    console.error(error);
     if (error.code === "auth/email-already-exists") {
       return NextResponse.json(
         {
