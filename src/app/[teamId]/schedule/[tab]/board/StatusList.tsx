@@ -1,5 +1,6 @@
 "use client";
 import { DragEvent, useState } from "react";
+import { useParams } from "next/navigation";
 import Task from "@/app/[teamId]/schedule/[tab]/board/Task";
 import { confirmDeleteMessage } from "@/app/[teamId]/schedule/constants";
 import { useContentsContext } from "@/app/[teamId]/schedule/contents/ContentsContext";
@@ -13,6 +14,7 @@ import useDropdownPosition from "@/hooks/useDropdownPosition";
 import { StatusType, TaskType } from "@/types/scheduleType";
 import menuIcon from "@/assets/three-dots.svg";
 import plusIcon from "@/assets/plus.svg";
+import { useRealtimeTask } from "@/hooks/useRealtimeTask";
 
 interface Props {
   status: StatusType;
@@ -24,17 +26,22 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
   const { dropdownPosition, setDropdownPosition, toggleDropdown } =
     useDropdownPosition();
 
-  const { taskList, setTaskList, onUpdateTask } = useContentsContext();
+  const { setTaskList, onUpdateTask } = useContentsContext();
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [editingTask, setEditingTask] = useState<TaskType | null>(null);
   const [dropTargetIndex, setDropTargetIndex] = useState<number | null>(null);
   const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const filteredTasks = taskList
-    .filter((task: TaskType) => task.statusId === status.id)
+  const params = useParams();
+  const teamId = params.teamId as string;
+  const realtimeTasks = useRealtimeTask(teamId);
+
+  const filteredTasks = realtimeTasks
+    .filter((task) => task.statusId === status.id)
     .sort((a, b) => a.order - b.order);
 
+  console.log("🚨", filteredTasks);
   const handleCloseConfirmDialog = () => setOpenConfirmDialog(false);
   const handleDeleteStatus = async () => {
     try {
