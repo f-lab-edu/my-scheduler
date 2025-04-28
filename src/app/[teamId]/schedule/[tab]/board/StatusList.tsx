@@ -122,8 +122,9 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
     );
     try {
       await Promise.all(tasksToUpdate.map((task) => onUpdateTask(task)));
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      setIsErrorDialogOpen(true);
+      setErrorMessage(error.message);
     }
   };
 
