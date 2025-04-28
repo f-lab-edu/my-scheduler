@@ -5,6 +5,8 @@ import { useContentsContext } from "@/app/[teamId]/schedule/contents/ContentsCon
 import SideAddColumnButton from "@/components/common/button/SideAddColumnButton";
 import AddStatusInput from "@/components/common/AddStatusInput";
 import { StatusType } from "@/types/scheduleType";
+import ConfirmDialog from "@/components/common/ConfirmDialog";
+import { useState } from "react";
 
 export default function Board() {
   const {
@@ -15,6 +17,9 @@ export default function Board() {
     onCreateNewStatus,
   } = useContentsContext();
 
+  const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
   const handleAddStatusInputVisibility = () => {
     setIsAddStatusVisible(!isAddStatusVisible);
   };
@@ -23,7 +28,8 @@ export default function Board() {
     try {
       await onCreateNewStatus(newStatusData);
     } catch (error: any) {
-      console.log(error.message);
+      setIsErrorDialogOpen(true);
+      setErrorMessage(error.message);
     }
   };
 
@@ -48,6 +54,14 @@ export default function Board() {
           <SideAddColumnButton onClick={handleAddStatusInputVisibility} />
         )}
       </section>
+
+      {isErrorDialogOpen && (
+        <ConfirmDialog
+          onClose={() => setIsErrorDialogOpen(false)}
+          contentText={errorMessage}
+          closeText="Confirm"
+        />
+      )}
     </div>
   );
 }

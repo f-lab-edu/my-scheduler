@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarEventType, TaskType } from "@/types/scheduleType";
+import { CalendarEventType } from "@/types/scheduleType";
 import dayjs from "dayjs";
 interface Props {
   tasks: CalendarEventType[];
@@ -19,7 +19,6 @@ export default function Agenda({ tasks, year, month }: Props) {
     return taskStart.isBefore(nextMonthStart) && taskEnd.isAfter(monthStart);
   });
 
-  console.log(tasks);
   return (
     <aside className=" mt-[64px] rounded-lg w-[500px] min-w-[505px] h-full min-h-[200px] p-5 text-white bg-background-agendaBox">
       {filtered.length === 0 ? (

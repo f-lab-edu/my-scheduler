@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { DatesSetArg, EventClickArg, EventDropArg } from "@fullcalendar/core";
+import { DatesSetArg, EventClickArg } from "@fullcalendar/core";
 import resolveConfig from "tailwindcss/resolveConfig";
 import tailwindConfig from "../../../../../../tailwind.config";
 import Agenda from "@/app/[teamId]/schedule/[tab]/calendar/Agenda";
