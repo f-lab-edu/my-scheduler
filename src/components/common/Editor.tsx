@@ -45,7 +45,8 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
   const [taskFormData, setTaskFormData] = useState<TaskType>(initialFormData);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [openConfirmDeleteDialog, setOpenConfirmDeleteDialog] = useState(false);
-  const { onCreateNewTask, setTaskList, taskList, onUpdateTask, onDeleteTask } =
+  // const { onCreateNewTask, setTaskList, taskList, onUpdateTask, onDeleteTask } =
+  const { onCreateNewTask, taskList, onUpdateTask, onDeleteTask } =
     useContentsContext();
   const [formState, formAction] = useActionState<TaskFormStatusType, FormData>(
     TaskAction,
@@ -101,13 +102,13 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
           statusId,
           id: editingTask.id,
         });
-        setTaskList((prev) =>
-          prev.map((task) =>
-            task.id === editingTask.id
-              ? { ...taskFormData, id: editingTask.id, statusId }
-              : task
-          )
-        );
+        // setTaskList((prev) =>
+        //   prev.map((task) =>
+        //     task.id === editingTask.id
+        //       ? { ...taskFormData, id: editingTask.id, statusId }
+        //       : task
+        //   )
+        // );
       } else {
         const filteredTasks = taskList.filter(
           (task: TaskType) => task.statusId === statusId
@@ -118,14 +119,12 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
             : 0;
         const newTask = { ...taskFormData, statusId, order: newTaskOrder };
         const docId = await onCreateNewTask(newTask);
-        setTaskList((prev) => [...prev, { ...newTask, id: docId, statusId }]);
+        // setTaskList((prev) => [...prev, { ...newTask, id: docId, statusId }]);
       }
       setOpenConfirmDialog(false);
       onClose();
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.log(error.message);
-      }
+    } catch (error: any) {
+      console.log(error.message);
     }
   };
 
@@ -133,13 +132,11 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
   const handleDeleteTask = async () => {
     try {
       await onDeleteTask(taskFormData.id);
-      setTaskList((prev) => prev.filter((task) => task.id !== taskFormData.id));
+      // setTaskList((prev) => prev.filter((task) => task.id !== taskFormData.id));
       setOpenConfirmDeleteDialog(false);
       onClose();
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.log(error.message);
-      }
+    } catch (error: any) {
+      console.log(error.message);
     }
   };
 

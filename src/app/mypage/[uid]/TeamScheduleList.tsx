@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import AddNewButton from "@/components/common/button/AddNewButton";
-import TeamScheduleCard from "./TeamScheduleCard";
+import TeamScheduleCard from "@/app/mypage/[uid]/TeamScheduleCard";
 import { useModal } from "@/hooks/useModal";
 import Modal from "@/components/common/Modal";
 import InviteMember from "@/components/common/InviteMember";
@@ -35,6 +35,7 @@ export default function TeamScheduleList() {
         <TeamScheduleCard
           key={`${team.id}-${index}`}
           teamName={team.teamName}
+          teamId={team.id}
           members={team.members}
         />
       ))}

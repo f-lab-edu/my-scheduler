@@ -24,8 +24,7 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
   const { dropdownPosition, setDropdownPosition, toggleDropdown } =
     useDropdownPosition();
 
-  const { setStatusList, taskList, setTaskList, onUpdateTask } =
-    useContentsContext();
+  const { taskList, setTaskList, onUpdateTask } = useContentsContext();
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [editingTask, setEditingTask] = useState<TaskType | null>(null);
   const [dropTargetIndex, setDropTargetIndex] = useState<number | null>(null);
@@ -38,11 +37,8 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
   const handleDeleteStatus = async () => {
     try {
       await onDeleteStatus(status.id!);
-      setStatusList((prev) => prev.filter((item) => item.id !== status.id));
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.log(error.message);
-      }
+    } catch (error: any) {
+      console.log(error.message);
     }
   };
 

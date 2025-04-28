@@ -6,16 +6,9 @@ import SideAddColumnButton from "@/components/common/button/SideAddColumnButton"
 import AddStatusInput from "@/components/common/AddStatusInput";
 import { StatusType } from "@/types/scheduleType";
 
-interface Props {
-  team?: string;
-}
-
-export default function Board({ team }: Props) {
-  // TODO: team 처리
-  console.log(team);
+export default function Board() {
   const {
     statusList,
-    setStatusList,
     isAddStatusVisible,
     setIsAddStatusVisible,
     onDeleteStatus,
@@ -28,12 +21,9 @@ export default function Board({ team }: Props) {
 
   const handleSaveStatus = async (newStatusData: StatusType) => {
     try {
-      const docId = await onCreateNewStatus(newStatusData);
-      setStatusList((prev) => [...prev, { ...newStatusData, id: docId }]);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.log(error.message);
-      }
+      await onCreateNewStatus(newStatusData);
+    } catch (error: any) {
+      console.log(error.message);
     }
   };
 
