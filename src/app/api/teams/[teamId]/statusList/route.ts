@@ -52,8 +52,18 @@ export async function POST(
       .collection("teams")
       .doc(teamId)
       .collection("statusList");
-    const docRef = await statusList.add(data);
-    return NextResponse.json({ id: docRef.id, ...data }, { status: 201 });
+
+    const snapshot = await statusList.get();
+    const nextOrder = snapshot.size;
+
+    const docRef = await statusList.add({
+      ...data,
+      order: nextOrder,
+    });
+    return NextResponse.json(
+      { id: docRef.id, ...data, order: nextOrder },
+      { status: 201 }
+    );
   } catch (err) {
     console.error("POST /statusList error", err);
     return NextResponse.json(

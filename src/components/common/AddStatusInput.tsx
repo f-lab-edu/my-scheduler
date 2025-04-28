@@ -17,8 +17,7 @@ export default function AddStatusInput({ onClick, onSave }: Props) {
   const handleSaveStatus = () => {
     const newStatus: StatusType = {
       statusName: value,
-      count: 0,
-      taskList: [],
+      order: 0,
     };
     onSave(newStatus);
     onClick();

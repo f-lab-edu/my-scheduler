@@ -36,9 +36,9 @@ export default function Board() {
   return (
     <div className="flex px-[70px] overflow-x-auto scrollbar-thin scrollbar-thumb-gray-500">
       <section className="flex gap-4 h-full">
-        {statusList.map((status, index) => (
+        {statusList.map((status) => (
           <StatusList
-            key={`${status.statusName}-${index}`}
+            key={status.id}
             status={status}
             onDeleteStatus={onDeleteStatus}
           />
