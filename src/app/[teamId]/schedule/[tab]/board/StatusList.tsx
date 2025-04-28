@@ -40,7 +40,6 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
     try {
       await onDeleteStatus(status.id!);
     } catch (error: any) {
-      console.error(error);
       setIsErrorDialogOpen(true);
       setErrorMessage(error.message);
     }

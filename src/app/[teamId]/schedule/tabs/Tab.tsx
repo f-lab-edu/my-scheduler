@@ -1,6 +1,7 @@
 import { useRouter, useParams } from "next/navigation";
 import clsx from "clsx";
 import { useTabsContext } from "@/app/[teamId]/schedule/tabs/TabsContext";
+import { useEffect } from "react";
 
 type Props = {
   tab: string;

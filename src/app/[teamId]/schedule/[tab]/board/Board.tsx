@@ -28,7 +28,6 @@ export default function Board() {
     try {
       await onCreateNewStatus(newStatusData);
     } catch (error: any) {
-      console.error(error);
       setIsErrorDialogOpen(true);
       setErrorMessage(error.message);
     }
