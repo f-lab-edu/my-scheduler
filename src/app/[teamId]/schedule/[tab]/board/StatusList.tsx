@@ -41,7 +41,6 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
     .filter((task) => task.statusId === status.id)
     .sort((a, b) => a.order - b.order);
 
-  console.log("🚨", filteredTasks);
   const handleCloseConfirmDialog = () => setOpenConfirmDialog(false);
   const handleDeleteStatus = async () => {
     try {
