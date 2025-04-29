@@ -1,5 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getFirestore } from "firebase-admin/firestore";
+import { getDatabase } from "firebase-admin/database";
 import "@/lib/firebase";
 import { TaskType } from "@/types/scheduleType";
 
@@ -8,7 +9,6 @@ export async function GET(
   { params }: { params: Promise<{ teamId: string }> }
 ) {
   const { teamId } = await params;
-
   try {
     const snapshot = await getFirestore()
       .collection("teams")
@@ -42,6 +42,15 @@ export async function POST(
       .doc(teamId)
       .collection("tasks");
     const docRef = await task.add(data);
+
+    const rtDb = getDatabase();
+    await rtDb.ref(`teams/${teamId}/tasks/${docRef.id}`).set({
+      ...data,
+      id: docRef.id,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    });
+
     return NextResponse.json({ id: docRef.id, ...data }, { status: 201 }); //201 -> created 요청
   } catch (error: any) {
     console.error(error);
@@ -57,6 +66,7 @@ export async function PATCH(
   { params }: { params: Promise<{ teamId: string }> }
 ) {
   const { teamId } = await params;
+
   let body: TaskType;
   try {
     body = (await request.json()) as TaskType;
@@ -85,6 +95,9 @@ export async function PATCH(
       .collection("tasks")
       .doc(id)
       .set(data);
+
+    await getDatabase().ref(`teams/${teamId}/tasks/${id}`).update(data);
+
     return NextResponse.json(null, { status: 204 });
   } catch (error: any) {
     console.error("PATCH /tasks error", error);
@@ -126,6 +139,8 @@ export async function DELETE(
       .collection("tasks")
       .doc(body.id)
       .delete();
+
+    await getDatabase().ref(`teams/${teamId}/tasks/${body.id}`).remove();
 
     return NextResponse.json(null, { status: 204 });
   } catch (error) {

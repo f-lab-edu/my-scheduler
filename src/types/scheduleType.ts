@@ -4,8 +4,7 @@ export type Priority = "High" | "Medium" | "Low";
 export interface StatusType {
   id?: string;
   statusName: string;
-  count: number;
-  taskList: TaskType[];
+  order: number;
 }
 
 export interface TaskType {
