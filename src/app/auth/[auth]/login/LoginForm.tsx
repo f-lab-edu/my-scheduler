@@ -1,6 +1,6 @@
 "use client";
 import { useActionState, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
@@ -13,6 +13,9 @@ import { LogInFormType } from "@/types/authType";
 
 export default function LoginForm() {
   const router = useRouter();
+  const params = useSearchParams();
+  const callbackUrl = params.get("callbackUrl") ?? "/";
+
   const {
     register,
     handleSubmit,
@@ -40,14 +43,20 @@ export default function LoginForm() {
       const result = await signInWithEmailAndPassword(auth, email, password);
       const token = await result.user.getIdToken();
 
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ token }),
-      });
+      const response = await fetch(
+        `/api/auth/login?callbackUrl=${encodeURIComponent(callbackUrl)}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token }),
+        }
+      );
+
       if (response.ok && response.redirected) router.push(response.url);
+      else {
+        const json = await response.json();
+        throw new Error(json.error || "로그인에 실패했습니다.");
+      }
     } catch (error) {
       if (error instanceof FirebaseError) {
         switch (error.code) {

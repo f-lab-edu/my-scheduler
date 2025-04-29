@@ -1,20 +1,25 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { getAuth } from "firebase-admin/auth";
 import "@/lib/firebase";
 
-export async function POST(request: Request): Promise<NextResponse> {
+export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
     const { token } = await request.json();
     //firebase admin를 통해 유효한 토큰인지 검증
     const decodedToken = await getAuth().verifyIdToken(token);
+
+    const baseUrl = request.nextUrl.origin;
+    const callbackUrl = request.nextUrl.searchParams.get("callbackUrl");
+    const targetUrl = callbackUrl
+      ? new URL(callbackUrl, baseUrl).toString()
+      : new URL(`/mypage/${decodedToken.uid}`, baseUrl).toString();
 
     // 사용자의 인증 상태를 서버에서 관리할 수 있도록 하는 "키"
     const sessionCookie = await getAuth().createSessionCookie(token, {
       expiresIn: 60 * 60 * 24 * 5 * 1000, // 5일
     });
 
-    const redirectUrl = new URL(`/mypage/${decodedToken.uid}`, request.url);
-    const response = NextResponse.redirect(redirectUrl, 303); //303: 쿠키설정 + GET 방식 리다이렉트
+    const response = NextResponse.redirect(targetUrl, 303); //303: 쿠키설정 + GET 방식 리다이렉트
 
     response.cookies.set("session", sessionCookie, {
       httpOnly: true,
