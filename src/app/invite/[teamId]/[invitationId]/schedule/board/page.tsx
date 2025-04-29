@@ -4,9 +4,8 @@ import { FieldValue, getFirestore } from "firebase-admin/firestore";
 import { redirect, notFound } from "next/navigation";
 
 interface Props {
-  params: { teamId: string; invitationId: string };
+  params: Promise<{ teamId: string; invitationId: string }>;
 }
-
 export default async function InviteBoardPage({ params }: Props) {
   const { teamId, invitationId } = await params;
 
