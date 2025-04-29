@@ -7,6 +7,7 @@ export async function createInvitation(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ emails }),
   });
+
   const json = await response.json();
   if (!response.ok) {
     throw new Error(json.error || "초대 생성에 실패했습니다.");

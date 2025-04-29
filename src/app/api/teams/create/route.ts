@@ -9,7 +9,7 @@ export async function POST(request: Request) {
 
     const inviterUid = await getSessionUid();
     if (!inviterUid)
-      return NextResponse.json({ error: "unaythorized" }, { status: 401 });
+      return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
     const db = getFirestore();
     const teamId = generateInviteCode(teamName);
