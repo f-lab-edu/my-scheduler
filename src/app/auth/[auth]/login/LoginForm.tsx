@@ -10,6 +10,7 @@ import SubmitButton from "@/components/common/button/SubmitButton";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import AuthInput from "@/components/common/AuthInput";
 import { LogInFormType } from "@/types/authType";
+import Link from "next/link";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -125,6 +126,13 @@ export default function LoginForm() {
 
       <SubmitButton text="Login" type="submit" />
       {isLoading && <LoadingSpinner />}
+
+      <Link
+        href="/auth/register"
+        className="flex justify-center mt-2 underline"
+      >
+        register
+      </Link>
     </form>
   );
 }
