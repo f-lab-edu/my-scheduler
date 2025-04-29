@@ -15,8 +15,8 @@ export default function TeamScheduleCard({ teamName, teamId }: Props) {
       href={`/${teamId}/schedule/board`}
     >
       <div className="h-[136px] bg-background-lightGray rounded-tl-xl rounded-tr-xl"></div>
-      <div className="flex justify-between">
-        <div>{teamName}</div>
+      <div className="flex justify-between p-3">
+        <strong>{teamName}</strong>
         <div>
           {/* TODO: member 관련 정보 api 생성 + icon, 3명 이상 icon 처리, 나머지 +n */}
           {/* {members.map((member) => (
