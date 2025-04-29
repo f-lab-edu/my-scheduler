@@ -45,6 +45,8 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
   const [taskFormData, setTaskFormData] = useState<TaskType>(initialFormData);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [openConfirmDeleteDialog, setOpenConfirmDeleteDialog] = useState(false);
+  const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const { onCreateNewTask, taskList, onUpdateTask, onDeleteTask } =
     useContentsContext();
   const [formState, formAction] = useActionState<TaskFormStatusType, FormData>(
@@ -115,7 +117,8 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
       setOpenConfirmDialog(false);
       onClose();
     } catch (error: any) {
-      console.error(error.message);
+      setIsErrorDialogOpen(true);
+      setErrorMessage(error.message);
     }
   };
 
@@ -126,7 +129,8 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
       setOpenConfirmDeleteDialog(false);
       onClose();
     } catch (error: any) {
-      console.error(error.message);
+      setIsErrorDialogOpen(true);
+      setErrorMessage(error.message);
     }
   };
 
@@ -253,6 +257,14 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
           onConfrim={handleDeleteTask}
           confirmText="Delete"
           contentText={confirmTaskDeleteMessage}
+        />
+      )}
+
+      {isErrorDialogOpen && (
+        <ConfirmDialog
+          onClose={() => setIsErrorDialogOpen(false)}
+          contentText={errorMessage}
+          closeText="Confirm"
         />
       )}
     </form>

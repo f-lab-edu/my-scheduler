@@ -39,9 +39,8 @@ export default function RegisterForm() {
       } else {
         router.push("/auth/login");
       }
-    } catch (error) {
-      console.error(error);
-      setServerMessage("오류가 발생했습니다.");
+    } catch (error: any) {
+      setServerMessage(error.message);
     } finally {
       setIsLoading(false);
     }

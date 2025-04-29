@@ -26,8 +26,8 @@ export default function Agenda({ tasks, year, month }: Props) {
           이벤트가 없습니다 {year}-{String(month).padStart(2, "0")}
         </p>
       ) : (
-        filtered.map((task, index) => (
-          <div key={`${task.id}-${index}`} className="flex gap-2 items-center">
+        filtered.map((task) => (
+          <div key={task.id} className="flex gap-2 items-center">
             <div
               className="w-5 h-5 rounded-sm"
               style={{ backgroundColor: task.color }}

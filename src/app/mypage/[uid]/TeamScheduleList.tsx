@@ -33,9 +33,9 @@ export default function TeamScheduleList() {
   return (
     <div className="pt-16 px-8">
       <AddNewButton type="team" onClick={openModal} />
-      {teams.map((team, index) => (
+      {teams.map((team) => (
         <TeamScheduleCard
-          key={`${team.id}-${index}`}
+          key={team.id}
           teamName={team.teamName}
           teamId={team.id}
           members={team.members}

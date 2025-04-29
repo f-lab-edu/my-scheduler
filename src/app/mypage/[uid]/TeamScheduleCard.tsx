@@ -19,8 +19,8 @@ export default function TeamScheduleCard({ teamName, teamId }: Props) {
         <div>{teamName}</div>
         <div>
           {/* TODO: member 관련 정보 api 생성 + icon, 3명 이상 icon 처리, 나머지 +n */}
-          {/* {members.map((member, index) => (
-            <span key={`${member.id}-${index}`}>
+          {/* {members.map((member) => (
+            <span key={member.id}>
             </span>
           ))} */}
         </div>

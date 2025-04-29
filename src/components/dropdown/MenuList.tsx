@@ -16,10 +16,10 @@ export default function MenuList({ onClick, onClose, list, top, left }: Props) {
   return (
     <Dropdown onClose={onClose} top={top} left={left}>
       <ul>
-        {list.map((item, index) => (
+        {list.map((item) => (
           <li
             role="button"
-            key={`${item}-${index}`}
+            key={item}
             onClick={(event) => onClick(event)}
             tabIndex={0}
             onKeyUp={(event: KeyboardEvent<HTMLLIElement>) => {

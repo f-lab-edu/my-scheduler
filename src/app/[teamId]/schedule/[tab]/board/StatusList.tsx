@@ -122,8 +122,9 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
     );
     try {
       await Promise.all(tasksToUpdate.map((task) => onUpdateTask(task)));
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      setIsErrorDialogOpen(true);
+      setErrorMessage(error.message);
     }
   };
 
@@ -152,16 +153,12 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
       <div className="flex flex-col gap-2 mt-5">
         {filteredTasks.map((task, index) => (
           <div
-            key={`${task.id}-${index}`}
+            key={task.id}
             draggable
             onDragStart={(event) => handleDragStart(event, task)}
             onDragOver={(event) => handleDragOverTask(event, index)}
           >
-            <Task
-              key={`${task.id}-${index}`}
-              task={task}
-              onClick={() => handleEditTask(task)}
-            />
+            <Task task={task} onClick={() => handleEditTask(task)} />
           </div>
         ))}
       </div>
