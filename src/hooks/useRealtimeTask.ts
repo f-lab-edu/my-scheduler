@@ -16,7 +16,7 @@ export function useRealtimeTask(teamId: string) {
   const [tasksMap, setTasksMap] = useState<Record<string, TaskType>>({});
 
   useEffect(() => {
-    if (!teamId) return;
+    if (!teamId || !rtDb) return;
 
     const path = `teams/${teamId}/tasks`;
     const tasksRef = ref(rtDb, path);

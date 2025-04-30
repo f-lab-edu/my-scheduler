@@ -13,10 +13,20 @@ const firebaseConfig = {
   databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
 };
 
-if (!getApps().length) {
-  initializeApp(firebaseConfig);
-}
-export const app = getApp();
+// if (!getApps().length) {
+//   initializeApp(firebaseConfig);
+// }
+// export const app = getApp();
 
-export const auth = getAuth(app);
-export const rtDb = getDatabase(app);
+// export const auth = getAuth(app);
+// export const rtDb = getDatabase(app);
+
+let app;
+if (typeof window !== "undefined") {
+  if (!getApps().length) initializeApp(firebaseConfig);
+  app = getApp();
+}
+
+// client-only exports
+export const auth = app ? getAuth(app) : null;
+export const rtDb = app ? getDatabase(app) : null;
