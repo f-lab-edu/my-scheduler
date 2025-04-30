@@ -33,7 +33,7 @@ export default function InvitationForm({
   const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) =>
     setInviteeEmail(event.target.value);
 
-  const handleSendInvite = async () => {
+  const handleTeamInvite = async () => {
     if (teamName.trim().length === 0) {
       setError("팀 제목을 입력하세요.");
       return;
@@ -88,7 +88,7 @@ export default function InvitationForm({
           text="Invite"
           type="button"
           size="sm"
-          onClick={handleSendInvite}
+          onClick={handleTeamInvite}
         />
         {error && <p className="text-red-500 mb-2">{error}</p>}
         {isLoading && <LoadingSpinner />}

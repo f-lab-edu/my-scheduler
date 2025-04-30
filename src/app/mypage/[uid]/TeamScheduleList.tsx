@@ -33,26 +33,41 @@ export default function TeamScheduleList() {
     })();
   }, []);
 
+  const handleCreateAndInvite = async (teamName: string, emails: string[]) => {
+    const { teamId } = await createTeam(teamName);
+    await createInvitation(teamId, emails);
+    setTeams((prev) => {
+      const newTeam = {
+        id: teamId,
+        teamName,
+        members: [],
+        createdAt: Date.now(),
+      };
+      return [...prev, newTeam].sort((a, b) => b.createdAt! - a.createdAt!);
+    });
+  };
+
   return (
     <div className="pt-16 px-8">
       <AddNewButton type="team" onClick={openModal} />
-      {teams.map((team) => (
-        <TeamScheduleCard
-          key={team.id}
-          teamName={team.teamName}
-          teamId={team.id}
-          members={team.members}
-        />
-      ))}
+      {teams
+        .sort((a, b) => b.createdAt! - a.createdAt!)
+        .map((team) => {
+          return (
+            <TeamScheduleCard
+              key={team.id}
+              teamName={team.teamName}
+              teamId={team.id}
+              members={team.members}
+            />
+          );
+        })}
 
       {open && (
         <Modal onClose={closeModal}>
           <InvitationForm
             onClose={closeModal}
-            onSubmit={async (teamName, emails) => {
-              const { teamId } = await createTeam(teamName);
-              await createInvitation(teamId, emails);
-            }}
+            onSubmit={handleCreateAndInvite}
           />
         </Modal>
       )}

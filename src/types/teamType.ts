@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase-admin/firestore";
+
 export interface MemberType {
   name: string;
   email: string;
@@ -6,6 +8,8 @@ export interface MemberType {
 }
 
 export interface TeamType {
+  createdAt?: number;
+  createdBy?: string;
   id: string;
   teamName: string;
   members: MemberType[];
