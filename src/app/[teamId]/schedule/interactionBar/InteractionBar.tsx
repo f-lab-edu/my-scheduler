@@ -6,9 +6,16 @@ import FilterButton from "@/components/common/button/FilterButtons";
 import { useContentsContext } from "@/app/[teamId]/schedule/contents/ContentsContext";
 import IconButton from "@/components/common/button/IconButton";
 import personIcon from "@/assets/people.svg";
+import { useModal } from "@/hooks/useModal";
+import Modal from "@/components/common/Modal";
+import InvitationForm from "@/components/common/invitation/InvitationForm";
+import { createInvitation } from "@/lib/api/invitation";
 
 export default function InteractionBar() {
-  const { tab } = useParams();
+  const { tab, teamId } = useParams();
+  const { open, openModal, closeModal } = useModal();
+
+  const id = Array.isArray(teamId) ? teamId[0] : teamId!;
 
   const { setIsAddStatusVisible, taskList } = useContentsContext();
   const handleChangeAddStatusInput = () => {
@@ -28,7 +35,7 @@ export default function InteractionBar() {
         <div className="relative flex w-11 h-11 rounded-lg bg-background-lightGray  hover:bg-background-extraLightGray">
           <IconButton
             icon={personIcon}
-            onClick={() => {}}
+            onClick={() => openModal()}
             alt="member invitation icon"
           />
           <span className="absolute top-[5px] left-[30px]">+</span>
@@ -38,6 +45,18 @@ export default function InteractionBar() {
         <SearchBar />
         <FilterButton />
       </span>
+
+      {open && (
+        <Modal onClose={closeModal}>
+          <InvitationForm
+            teamId={id}
+            onClose={closeModal}
+            onSubmit={async (_, emails) => {
+              await createInvitation(id, emails);
+            }}
+          />
+        </Modal>
+      )}
     </div>
   );
 }
