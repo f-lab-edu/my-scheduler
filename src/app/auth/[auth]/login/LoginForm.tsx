@@ -1,6 +1,7 @@
 "use client";
 import { useActionState, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
@@ -10,7 +11,6 @@ import SubmitButton from "@/components/common/button/SubmitButton";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import AuthInput from "@/components/common/AuthInput";
 import { LogInFormType } from "@/types/authType";
-import Link from "next/link";
 
 export default function LoginForm() {
   const router = useRouter();
