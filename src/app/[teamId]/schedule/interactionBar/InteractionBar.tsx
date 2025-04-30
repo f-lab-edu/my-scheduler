@@ -1,10 +1,15 @@
 "use client";
+import { useParams } from "next/navigation";
 import SearchBar from "@/app/[teamId]/schedule/interactionBar/SearchBar";
 import AddNewButton from "@/components/common/button/AddNewButton";
 import FilterButton from "@/components/common/button/FilterButtons";
 import { useContentsContext } from "@/app/[teamId]/schedule/contents/ContentsContext";
+import IconButton from "@/components/common/button/IconButton";
+import personIcon from "@/assets/people.svg";
 
 export default function InteractionBar() {
+  const { tab } = useParams();
+
   const { setIsAddStatusVisible, taskList } = useContentsContext();
   const handleChangeAddStatusInput = () => {
     setIsAddStatusVisible(true);
@@ -17,7 +22,17 @@ export default function InteractionBar() {
           <span>{taskList.length}</span>
           <span>tasks</span>
         </span>
-        <AddNewButton onClick={handleChangeAddStatusInput} />
+        {tab === "board" && (
+          <AddNewButton onClick={handleChangeAddStatusInput} />
+        )}
+        <div className="relative flex w-11 h-11 rounded-lg bg-background-lightGray  hover:bg-background-extraLightGray">
+          <IconButton
+            icon={personIcon}
+            onClick={() => {}}
+            alt="member invitation icon"
+          />
+          <span className="absolute top-[5px] left-[30px]">+</span>
+        </div>
       </span>
       <span className="flex items-center gap-3">
         <SearchBar />

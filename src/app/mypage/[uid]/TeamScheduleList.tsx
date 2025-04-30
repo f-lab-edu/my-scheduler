@@ -1,15 +1,16 @@
 "use client";
 import { useEffect, useState } from "react";
-import AddNewButton from "@/components/common/button/AddNewButton";
-import TeamScheduleCard from "@/app/mypage/[uid]/TeamScheduleCard";
 import { useModal } from "@/hooks/useModal";
-import Modal from "@/components/common/Modal";
-import InviteMember from "@/components/common/InviteMember";
 import { getMyTeams } from "@/lib/api/teams";
-import { TeamType } from "@/types/teamType";
-
-import LoadingSpinner from "@/components/common/LoadingSpinner";
+import { createTeam } from "@/lib/api/teams";
+import { createInvitation } from "@/lib/api/invitation";
+import Modal from "@/components/common/Modal";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
+import AddNewButton from "@/components/common/button/AddNewButton";
+import InvitationForm from "@/components/common/invitation/InvitationForm";
+import TeamScheduleCard from "@/app/mypage/[uid]/TeamScheduleCard";
+import { TeamType } from "@/types/teamType";
 
 export default function TeamScheduleList() {
   const [teams, setTeams] = useState<TeamType[]>([]);
@@ -46,7 +47,13 @@ export default function TeamScheduleList() {
 
       {open && (
         <Modal onClose={closeModal}>
-          <InviteMember onClose={closeModal} />
+          <InvitationForm
+            onClose={closeModal}
+            onSubmit={async (teamName, emails) => {
+              const { teamId } = await createTeam(teamName);
+              await createInvitation(teamId, emails);
+            }}
+          />
         </Modal>
       )}
 
