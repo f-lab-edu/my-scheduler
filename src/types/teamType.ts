@@ -1,5 +1,3 @@
-import { Timestamp } from "firebase-admin/firestore";
-
 export interface MemberType {
   name: string;
   email: string;
