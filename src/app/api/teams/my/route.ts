@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getFirestore } from "firebase-admin/firestore";
+import { getFirestore, FieldPath } from "firebase-admin/firestore";
 import "@/lib/firebase";
 import { getSessionUid } from "@/lib/server/auth";
 
@@ -12,17 +12,40 @@ export async function GET(request: NextRequest) {
     }
 
     // 소속된 팀스케줄 조회
-    const snap = await getFirestore()
+    const db = getFirestore();
+    const snap = await db
       .collection("teams")
       .where("members", "array-contains", uid)
       .get();
 
-    const teams = snap.docs.map((doc) => ({
-      id: doc.id,
-      ...(doc.data() as { teamName: string; members: string[] }),
-    }));
+    const teams = snap.docs.map((doc) => {
+      return {
+        id: doc.id,
+        ...(doc.data() as { teamName: string; members: string[] }),
+      };
+    });
 
-    return NextResponse.json(teams, { status: 200 });
+    const teamsWithProfiles = await Promise.all(
+      teams.map(async (team) => {
+        // 문서id로 쿼리 -> FieldPath.documentId()
+        const profilesSnap = await db
+          .collection("users")
+          .where(FieldPath.documentId(), "in", team.members)
+          .get();
+
+        const members = profilesSnap.docs.map((member) => ({
+          uid: member.id,
+          ...(member.data() as { email: string; displayName: string }),
+        }));
+
+        return {
+          ...team,
+          members,
+        };
+      })
+    );
+
+    return NextResponse.json(teamsWithProfiles, { status: 200 });
   } catch (error: any) {
     console.error(error);
     return NextResponse.json(

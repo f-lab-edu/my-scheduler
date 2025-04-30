@@ -5,7 +5,9 @@ import TeamScheduleCard from "@/app/mypage/[uid]/TeamScheduleCard";
 import { useModal } from "@/hooks/useModal";
 import Modal from "@/components/common/Modal";
 import InviteMember from "@/components/common/InviteMember";
-import { getMyTeams, TeamType } from "@/lib/api/teams";
+import { getMyTeams } from "@/lib/api/teams";
+import { TeamType } from "@/types/teamType";
+
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
 

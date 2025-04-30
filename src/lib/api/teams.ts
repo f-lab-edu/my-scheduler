@@ -1,10 +1,7 @@
+import { TeamType } from "@/types/teamType";
+
 export interface CreateTeamType {
   teamId: string;
-}
-export interface TeamType {
-  id: string;
-  teamName: string;
-  members: string[];
 }
 
 export async function createTeam(teamName: string): Promise<CreateTeamType> {

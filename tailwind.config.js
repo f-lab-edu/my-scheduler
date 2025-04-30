@@ -76,6 +76,12 @@ export default {
         },
         shadow: "#545454",
         backdrop: "#00000080",
+        profiles: {
+          green: "#92B96F",
+          orange: "#FFA42D",
+          pink: "#FFA9B0",
+          gray: "#9D9D9D",
+        },
       },
     },
   },
