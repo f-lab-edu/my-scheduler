@@ -27,6 +27,5 @@ if (typeof window !== "undefined") {
   app = getApp();
 }
 
-// client-only exports
 export const auth = app ? getAuth(app) : null;
 export const rtDb = app ? getDatabase(app) : null;
