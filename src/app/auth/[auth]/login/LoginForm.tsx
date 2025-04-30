@@ -39,7 +39,7 @@ export default function LoginForm() {
   );
 
   const loginWithEmail = async (email: string, password: string) => {
-    if (!auth) throw new Error("Firebase Auth 초기화 실패");
+    if (!auth) return;
     setIsLoading(true);
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
