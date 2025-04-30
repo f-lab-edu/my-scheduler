@@ -1,6 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getFirestore } from "firebase-admin/firestore";
-// import { getDatabase } from "firebase-admin/database";
 import { getRtdb } from "@/lib/realtimeDb";
 import "@/lib/firebase";
 import { TaskType } from "@/types/scheduleType";
