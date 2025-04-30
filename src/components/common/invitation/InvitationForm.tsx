@@ -34,11 +34,9 @@ export default function InvitationForm({
     setInviteeEmail(event.target.value);
 
   const handleTeamInvite = async () => {
-    if (!initialTeamId) {
-      if (teamName.trim().length === 0) {
-        setError("팀 제목을 입력하세요.");
-        return;
-      }
+    if (!initialTeamId && teamName.trim().length === 0) {
+      setError("팀 제목을 입력하세요.");
+      return;
     }
 
     const emails = inviteeEmail
