@@ -10,7 +10,7 @@ export default async function MyPage({
   const { uid } = await params;
   const sessionUid = await getSessionUid();
 
-  if (sessionUid !== uid) {
+  if (!sessionUid || sessionUid !== uid) {
     redirect("/unauthorized");
   }
 
