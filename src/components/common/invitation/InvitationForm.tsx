@@ -34,9 +34,11 @@ export default function InvitationForm({
     setInviteeEmail(event.target.value);
 
   const handleTeamInvite = async () => {
-    if (teamName.trim().length === 0) {
-      setError("팀 제목을 입력하세요.");
-      return;
+    if (!initialTeamId) {
+      if (teamName.trim().length === 0) {
+        setError("팀 제목을 입력하세요.");
+        return;
+      }
     }
 
     const emails = inviteeEmail
@@ -61,7 +63,7 @@ export default function InvitationForm({
   };
 
   return (
-    <div className="p-8 pt-4 w-[600px] min-h-[300px] bg-white rounded-lg">
+    <div className="p-8 pt-4 w-[600px] min-h-[200px] bg-white rounded-lg">
       <div className="flex justify-between items-center pb-8">
         <h2 className="text-xl font-bold text-gray-500">{formTitle}</h2>
         <IconButton icon={closeIcon} onClick={onClose} alt="close icon" />
