@@ -1,10 +1,12 @@
-export interface Member {
+export interface MemberType {
   name: string;
-  id: string;
+  email: string;
+  mobile: string;
+  uid: string;
 }
 
 export interface TeamType {
+  id: string;
   teamName: string;
-  createdBy: string;
-  members: string[];
+  members: MemberType[];
 }

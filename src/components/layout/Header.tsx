@@ -35,8 +35,11 @@ export default function Header() {
       <h1>My Scheduler</h1>
       <div className="text-base">
         {user ? (
-          <div className="flex">
-            <button onClick={handleLogout} className="underline">
+          <div className="flex gap-3">
+            <button
+              onClick={handleLogout}
+              className="underline text-sm font-extralight"
+            >
               Log out
             </button>
             <IconButton
@@ -47,7 +50,12 @@ export default function Header() {
             />
           </div>
         ) : (
-          <button onClick={handleLogin}>Log in</button>
+          <button
+            onClick={handleLogin}
+            className="underline text-sm font-extralight"
+          >
+            Log in
+          </button>
         )}
       </div>
     </div>
