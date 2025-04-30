@@ -12,7 +12,7 @@ export default function Header() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!auth) throw new Error("Firebase Auth 초기화 실패");
+    if (!auth) return;
     const unsubscribe = onAuthStateChanged(auth, (u) => {
       setUser(u);
     });
@@ -24,7 +24,7 @@ export default function Header() {
   };
 
   const handleLogout = async () => {
-    if (!auth) throw new Error("Firebase Auth 초기화 실패");
+    if (!auth) return;
     await signOut(auth);
     await fetch("/api/auth/logout", { method: "POST" });
     router.push("/auth/login");
