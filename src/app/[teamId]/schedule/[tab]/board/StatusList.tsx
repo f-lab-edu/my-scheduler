@@ -26,7 +26,8 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
   const { dropdownPosition, setDropdownPosition, toggleDropdown } =
     useDropdownToggle();
 
-  const { setTaskList, onUpdateTask, searchValue } = useContentsContext();
+  const { setTaskList, onUpdateTask, searchValue, filterList } =
+    useContentsContext();
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [editingTask, setEditingTask] = useState<TaskType | null>(null);
   const [dropTargetIndex, setDropTargetIndex] = useState<number | null>(null);
@@ -41,11 +42,20 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
     .filter((task) => task.statusId === status.id)
     .filter((task) => {
       const term = searchValue.toLowerCase().trim();
-      if (!term) return true;
-      return (
-        task.title.toLowerCase().includes(term) ||
-        task.description.toLowerCase().includes(term)
+      const priorities = filterList.map((priority) =>
+        priority.toLowerCase().trim()
       );
+      const matchesSearch =
+        !term ||
+        task.title.toLowerCase().includes(term) ||
+        task.description.toLowerCase().includes(term) ||
+        task.priority.toLowerCase().includes(term);
+
+      const matchesPriority =
+        priorities.length === 0 ||
+        priorities.includes(task.priority.toLowerCase().trim());
+
+      return matchesSearch && matchesPriority;
     })
     .sort((a, b) => a.order - b.order);
 
