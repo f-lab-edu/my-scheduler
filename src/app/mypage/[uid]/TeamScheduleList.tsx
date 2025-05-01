@@ -11,10 +11,13 @@ import AddNewButton from "@/components/common/button/AddNewButton";
 import InvitationForm from "@/components/common/invitation/InvitationForm";
 import TeamScheduleCard from "@/app/mypage/[uid]/TeamScheduleCard";
 import { TeamType } from "@/types/teamType";
+import { useRouter } from "next/navigation";
 
 export default function TeamScheduleList() {
   const [teams, setTeams] = useState<TeamType[]>([]);
   const { open, closeModal, openModal } = useModal();
+  const router = useRouter();
+
   const [isLoading, setIsLoading] = useState(true);
   const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
   const [error, setError] = useState<string>("");
@@ -25,13 +28,17 @@ export default function TeamScheduleList() {
         const data = await getMyTeams();
         setTeams(data);
       } catch (error: any) {
+        if (error.message === "404") {
+          router.replace("/unauthorized");
+          return;
+        }
         setIsErrorDialogOpen(true);
         setError(error.message);
       } finally {
         setIsLoading(false);
       }
     })();
-  }, []);
+  }, [router]);
 
   const handleCreateAndInvite = async (teamName: string, emails: string[]) => {
     const { teamId } = await createTeam(teamName);
