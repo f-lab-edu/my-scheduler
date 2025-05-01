@@ -1,6 +1,10 @@
-"use client";
+import { getSessionUid } from "@/lib/server/auth";
 import Link from "next/link";
-export default function UnauthorizedPage() {
+import { redirect } from "next/navigation";
+export default async function UnauthorizedPage() {
+  const uid = await getSessionUid();
+  if (uid) redirect(`/mypage/${uid}`);
+
   return (
     <div className="text-center mt-60">
       <p className="mb-6 text-gray-500">로그인이 필요하거나 권한이 없습니다.</p>
