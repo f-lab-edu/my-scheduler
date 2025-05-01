@@ -19,7 +19,6 @@ export async function createTeam(teamName: string): Promise<CreateTeamType> {
 
 export async function getMyTeams(): Promise<TeamType[]> {
   const response = await fetch("/api/teams/my");
-  // if (!response.ok) throw new Error("팀 목록 불러오기 실패");
   if (!response.ok) throw new Error(`${response.status}`);
   return (await response.json()) as TeamType[];
 }

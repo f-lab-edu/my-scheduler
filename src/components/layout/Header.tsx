@@ -8,26 +8,43 @@ import profileIcon from "@/assets/person-circle.svg";
 
 export default function Header() {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const router = useRouter();
 
   useEffect(() => {
     if (!auth) return;
     const unsubscribe = onAuthStateChanged(auth, (u) => {
+      if (isLoggingOut) return;
+      if (isLoggingIn) {
+        if (u) {
+          setUser(u);
+          setIsLoggingIn(false);
+        }
+        return;
+      }
       setUser(u);
     });
     return () => unsubscribe();
-  }, []);
+  }, [isLoggingOut, isLoggingIn]);
 
   const handleLogin = () => {
     router.push("/auth/login");
+    setIsLoggingIn(true);
   };
 
   const handleLogout = async () => {
     if (!auth) return;
-    await signOut(auth);
-    await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/auth/login");
+    setIsLoggingOut(true);
+    try {
+      await signOut(auth);
+      await fetch("/api/auth/logout", { method: "POST" });
+      setUser(null);
+      await router.push("/auth/login");
+    } finally {
+      setIsLoggingOut(false);
+    }
   };
 
   return (
@@ -39,13 +56,14 @@ export default function Header() {
             <button
               onClick={handleLogout}
               className="underline text-sm font-extralight"
+              disabled={isLoggingOut}
             >
-              Log out
+              {isLoggingOut ? "Logging out..." : "Log out"}
             </button>
             <IconButton
               icon={profileIcon}
               size="md"
-              onClick={() => router.push(`/mypage/${user.uid}`)}
+              onClick={async () => await router.push(`/mypage/${user.uid}`)}
               alt="profile icon"
             />
           </div>
@@ -53,8 +71,9 @@ export default function Header() {
           <button
             onClick={handleLogin}
             className="underline text-sm font-extralight"
+            disabled={isLoggingIn}
           >
-            Log in
+            {isLoggingIn ? "Loading..." : "Log in"}
           </button>
         )}
       </div>
