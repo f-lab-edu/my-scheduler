@@ -1,3 +1,5 @@
+"use client";
+
 import { ComponentType, SVGProps, MouseEventHandler } from "react";
 
 type Size = "sm" | "md";

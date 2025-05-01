@@ -17,7 +17,7 @@ import {
   Priority,
   DateField,
 } from "@/types/scheduleType";
-import useDropdownPosition from "@/hooks/useDropdownPosition";
+import { useDropdownToggle } from "@/hooks/useDropdown";
 import CalendarIcon from "@/assets/calendar.svg";
 import menuIcon from "@/assets/three-dots-vertical.svg";
 import IconButton from "./button/IconButton";
@@ -57,7 +57,7 @@ export default function Editor({ onClose, statusId, editingTask }: Props) {
     }
   );
   const { dropdownPosition, setDropdownPosition, toggleDropdown } =
-    useDropdownPosition();
+    useDropdownToggle();
 
   const priorityClasses: Record<Priority, string> = {
     High: "bg-priority-high",

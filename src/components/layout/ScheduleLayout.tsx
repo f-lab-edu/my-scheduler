@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import Tabs from "@/app/[teamId]/schedule/tabs/Tabs";
-import InteractionBar from "@/app/[teamId]/schedule/interactionBar/InteractionBar";
+import InteractionBar from "@/components/common/interactionBar/InteractionBar";
 import ClientContentsProvider from "@/app/[teamId]/schedule/contents/ClientContentsProvider";
 import {
   fetchInitialStatusList,
