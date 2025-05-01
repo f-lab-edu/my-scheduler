@@ -11,8 +11,9 @@ export default function SearchBar() {
   const debouncedRef = useRef(debounce((value) => setSearchValue(value), 300));
 
   useEffect(() => {
+    const handler = debouncedRef.current;
     return () => {
-      debouncedRef.current.cancel();
+      handler.cancel();
     };
   }, []);
 

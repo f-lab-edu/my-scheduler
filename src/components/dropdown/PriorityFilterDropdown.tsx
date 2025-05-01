@@ -1,6 +1,5 @@
 "use client";
 import Dropdown from "@/components/dropdown/Dropdown";
-import { useDropdownApply } from "@/hooks/useDropdown";
 import ConfirmButton from "../common/button/ConfirmButton";
 import { Priority } from "@/types/scheduleType";
 
@@ -25,8 +24,8 @@ export default function PriorityFilterDropdown({
 
   return (
     <Dropdown
-      top={dropdownPosition?.top!}
-      left={dropdownPosition?.left!}
+      top={dropdownPosition && dropdownPosition.top}
+      left={dropdownPosition && dropdownPosition.left}
       onClose={onClose}
     >
       <div>
