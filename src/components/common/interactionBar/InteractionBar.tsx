@@ -10,18 +10,28 @@ import { useModal } from "@/hooks/useModal";
 import Modal from "@/components/common/Modal";
 import InvitationForm from "@/components/common/invitation/InvitationForm";
 import { createInvitation } from "@/lib/api/invitation";
-import { useDropdownToggle } from "@/hooks/useDropdown";
+import { useDropdownApply } from "@/hooks/useDropdown";
 import PriorityFilterDropdown from "@/components/dropdown/PriorityFilterDropdown";
+import { Priority } from "@/types/scheduleType";
 
 export default function InteractionBar() {
   const { tab, teamId } = useParams();
   const { open, openModal, closeModal } = useModal();
-  const { dropdownPosition, setDropdownPosition, toggleDropdown } =
-    useDropdownToggle();
+  const {
+    dropdownPosition,
+    selectedPriorities,
+    openDropdown,
+    closeDropdown,
+    togglePriority,
+    applyPriorities,
+  } = useDropdownApply({
+    onApply: (priorities: Priority[]) => setFilterList(priorities),
+  });
 
   const id = Array.isArray(teamId) ? teamId[0] : teamId!;
 
-  const { setIsAddStatusVisible, taskList } = useContentsContext();
+  const { setIsAddStatusVisible, taskList, setFilterList } =
+    useContentsContext();
   const handleChangeAddStatusInput = () => {
     setIsAddStatusVisible(true);
   };
@@ -47,15 +57,16 @@ export default function InteractionBar() {
       </span>
       <span className="flex items-center gap-3">
         <SearchBar />
-        <FilterButton onClick={() => {}} />
+        <FilterButton onClick={openDropdown} />
       </span>
 
       {dropdownPosition && (
         <PriorityFilterDropdown
-          top={dropdownPosition.top + 10}
-          left={dropdownPosition.left}
-          list={["Remove list"]}
-          onClose={() => setDropdownPosition(null)}
+          dropdownPosition={dropdownPosition}
+          selectedPriorities={selectedPriorities}
+          togglePriority={togglePriority}
+          applyPriorities={applyPriorities}
+          onClose={closeDropdown}
         />
       )}
 

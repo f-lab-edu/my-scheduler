@@ -7,6 +7,7 @@ interface MenuListProps {
   left: number;
   onClose: () => void;
   children?: ReactNode;
+  isApply?: boolean;
 }
 
 export default function Dropdown({
@@ -14,6 +15,7 @@ export default function Dropdown({
   left,
   onClose,
   children,
+  isApply = false,
 }: MenuListProps) {
   const [node, setNode] = useState<HTMLElement | null>(null);
 
@@ -29,15 +31,18 @@ export default function Dropdown({
       className="fixed inset-0 z-50"
       onClick={onClose}
       onKeyUp={(event) => event.key === "Escape" && onClose()}
+      tabIndex={-1}
     >
       <div
         className="absolute p-3 rounded-lg cursor-pointer shadow-md bg-white"
         style={{ left: left, top: top }}
         onClick={(event) => {
           event.stopPropagation();
-          onClose();
         }}
-        onKeyUp={(event) => event.key === "Escape" && onClose()}
+        onKeyUp={(event) => {
+          if (!isApply) return event.key;
+          return event.key;
+        }}
       >
         {children}
       </div>
