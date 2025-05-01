@@ -3,7 +3,12 @@ import { useActionState, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  browserSessionPersistence,
+  inMemoryPersistence,
+  setPersistence,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { FirebaseError } from "firebase/app";
 import { auth } from "@/lib/firebaseClient";
 import { LoginAction } from "@/app/auth/actions/LoginAction";
@@ -30,6 +35,7 @@ export default function LoginForm() {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [serverState, formAction] = useActionState<LogInFormType, FormData>(
     LoginAction,
     {
@@ -38,10 +44,19 @@ export default function LoginForm() {
     }
   );
 
-  const loginWithEmail = async (email: string, password: string) => {
+  const loginWithEmail = async (
+    email: string,
+    password: string,
+    stayLoggedIn: boolean
+  ) => {
     if (!auth) return;
     setIsLoading(true);
     try {
+      await setPersistence(
+        auth,
+        stayLoggedIn ? browserSessionPersistence : inMemoryPersistence
+      );
+
       const result = await signInWithEmailAndPassword(auth, email, password);
       const token = await result.user.getIdToken();
 
@@ -50,7 +65,7 @@ export default function LoginForm() {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token }),
+          body: JSON.stringify({ token, stayLoggedIn }),
           credentials: "include",
         }
       );
@@ -95,8 +110,10 @@ export default function LoginForm() {
   };
 
   const onSubmit = async (data: LogInFormType) => {
+    if (isLoggedIn) {
+    }
     if (data.email && data.password)
-      await loginWithEmail(data.email, data.password);
+      await loginWithEmail(data.email, data.password, isLoggedIn);
   };
 
   return (
@@ -126,14 +143,21 @@ export default function LoginForm() {
       )}
 
       <SubmitButton text="Login" type="submit" />
-      {isLoading && <LoadingSpinner />}
+      <div className="flex justify-between items-center mt-4">
+        <div className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            id="loggedIn"
+            onChange={() => setIsLoggedIn((prev) => !prev)}
+          />
+          <label htmlFor="loggedIn">Stay Logged in</label>
+        </div>
+        <Link href="/auth/register" className="flex justify-center underline">
+          register
+        </Link>
+      </div>
 
-      <Link
-        href="/auth/register"
-        className="flex justify-center mt-2 underline"
-      >
-        register
-      </Link>
+      {isLoading && <LoadingSpinner />}
     </form>
   );
 }
