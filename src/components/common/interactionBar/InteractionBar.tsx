@@ -1,6 +1,6 @@
 "use client";
 import { useParams } from "next/navigation";
-import SearchBar from "@/app/[teamId]/schedule/interactionBar/SearchBar";
+import SearchBar from "@/components/common/interactionBar/SearchBar";
 import AddNewButton from "@/components/common/button/AddNewButton";
 import FilterButton from "@/components/common/button/FilterButtons";
 import { useContentsContext } from "@/app/[teamId]/schedule/contents/ContentsContext";
@@ -10,10 +10,14 @@ import { useModal } from "@/hooks/useModal";
 import Modal from "@/components/common/Modal";
 import InvitationForm from "@/components/common/invitation/InvitationForm";
 import { createInvitation } from "@/lib/api/invitation";
+import { useDropdownToggle } from "@/hooks/useDropdown";
+import PriorityFilterDropdown from "@/components/dropdown/PriorityFilterDropdown";
 
 export default function InteractionBar() {
   const { tab, teamId } = useParams();
   const { open, openModal, closeModal } = useModal();
+  const { dropdownPosition, setDropdownPosition, toggleDropdown } =
+    useDropdownToggle();
 
   const id = Array.isArray(teamId) ? teamId[0] : teamId!;
 
@@ -43,8 +47,17 @@ export default function InteractionBar() {
       </span>
       <span className="flex items-center gap-3">
         <SearchBar />
-        <FilterButton />
+        <FilterButton onClick={() => {}} />
       </span>
+
+      {dropdownPosition && (
+        <PriorityFilterDropdown
+          top={dropdownPosition.top + 10}
+          left={dropdownPosition.left}
+          list={["Remove list"]}
+          onClose={() => setDropdownPosition(null)}
+        />
+      )}
 
       {open && (
         <Modal onClose={closeModal}>

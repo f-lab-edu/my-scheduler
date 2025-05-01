@@ -5,7 +5,7 @@ interface DropdownPosition {
   left: number;
 }
 
-export default function useDropdownPosition() {
+export function useDropdownToggle() {
   const [dropdownPosition, setDropdownPosition] =
     useState<DropdownPosition | null>(null);
 

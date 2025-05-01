@@ -11,7 +11,7 @@ import IconButton from "@/components/common/button/IconButton";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
 import { useModal } from "@/hooks/useModal";
 import { useRealtimeTask } from "@/hooks/useRealtimeTask";
-import useDropdownPosition from "@/hooks/useDropdownPosition";
+import { useDropdownToggle } from "@/hooks/useDropdown";
 import { StatusType, TaskType } from "@/types/scheduleType";
 import menuIcon from "@/assets/three-dots.svg";
 import plusIcon from "@/assets/plus.svg";
@@ -24,7 +24,7 @@ interface Props {
 export default function StatusList({ status, onDeleteStatus }: Props) {
   const { open, openModal, closeModal } = useModal();
   const { dropdownPosition, setDropdownPosition, toggleDropdown } =
-    useDropdownPosition();
+    useDropdownToggle();
 
   const { setTaskList, onUpdateTask, searchValue } = useContentsContext();
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
