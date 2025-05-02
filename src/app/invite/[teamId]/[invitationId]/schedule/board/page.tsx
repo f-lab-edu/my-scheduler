@@ -27,6 +27,7 @@ export default async function InviteBoardPage({ params }: Props) {
   if (!invitationSnap.exists) return notFound();
 
   const inviteeData = invitationSnap.data()!;
+  // TODO: 만료페이지 생성
   if (inviteeData.expiresAt < Date.now()) return notFound();
 
   if (inviteeData.accepted) {
