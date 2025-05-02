@@ -1,6 +1,7 @@
 "use client";
 import { useActionState, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
@@ -38,6 +39,7 @@ export default function LoginForm() {
   );
 
   const loginWithEmail = async (email: string, password: string) => {
+    if (!auth) return;
     setIsLoading(true);
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
@@ -125,6 +127,13 @@ export default function LoginForm() {
 
       <SubmitButton text="Login" type="submit" />
       {isLoading && <LoadingSpinner />}
+
+      <Link
+        href="/auth/register"
+        className="flex justify-center mt-2 underline"
+      >
+        register
+      </Link>
     </form>
   );
 }

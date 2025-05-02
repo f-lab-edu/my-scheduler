@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getFirestore } from "firebase-admin/firestore";
-import { getDatabase } from "firebase-admin/database";
+import { getRtdb } from "@/lib/realtimeDb";
 import "@/lib/firebase";
 import { TaskType } from "@/types/scheduleType";
 
@@ -43,7 +43,7 @@ export async function POST(
       .collection("tasks");
     const docRef = await task.add(data);
 
-    const rtDb = getDatabase();
+    const rtDb = getRtdb();
     await rtDb.ref(`teams/${teamId}/tasks/${docRef.id}`).set({
       ...data,
       id: docRef.id,
@@ -96,7 +96,7 @@ export async function PATCH(
       .doc(id)
       .set(data);
 
-    await getDatabase().ref(`teams/${teamId}/tasks/${id}`).update(data);
+    await getRtdb().ref(`teams/${teamId}/tasks/${id}`).update(data);
 
     return NextResponse.json(null, { status: 204 });
   } catch (error: any) {
@@ -140,7 +140,7 @@ export async function DELETE(
       .doc(body.id)
       .delete();
 
-    await getDatabase().ref(`teams/${teamId}/tasks/${body.id}`).remove();
+    await getRtdb().ref(`teams/${teamId}/tasks/${body.id}`).remove();
 
     return NextResponse.json(null, { status: 204 });
   } catch (error) {

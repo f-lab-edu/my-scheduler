@@ -13,10 +13,12 @@ const firebaseConfig = {
   databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
 };
 
-if (!getApps().length) {
-  initializeApp(firebaseConfig);
+// 서버(빌드)에서는 실행되지 않게 처리
+let app;
+if (typeof window !== "undefined") {
+  if (!getApps().length) initializeApp(firebaseConfig);
+  app = getApp();
 }
-export const app = getApp();
 
-export const auth = getAuth(app);
-export const rtDb = getDatabase(app);
+export const auth = app ? getAuth(app) : null;
+export const rtDb = app ? getDatabase(app) : null;
