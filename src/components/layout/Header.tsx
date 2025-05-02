@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { signOut, onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "@/lib/firebaseClient";
 import IconButton from "@/components/common/button/IconButton";
@@ -11,6 +11,7 @@ export default function Header() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
+  const params = useParams();
   const router = useRouter();
 
   useEffect(() => {
@@ -51,7 +52,7 @@ export default function Header() {
     <div className="flex justify-between py-[51px] px-[45px] text-4xl font-extrabold text-white bg-headerBlue">
       <h1>My Scheduler</h1>
       <div className="text-base">
-        {user ? (
+        {user && (
           <div className="flex gap-3">
             <button
               onClick={handleLogout}
@@ -67,13 +68,13 @@ export default function Header() {
               alt="profile icon"
             />
           </div>
-        ) : (
+        )}
+        {!user && params.auth !== "login" && (
           <button
             onClick={handleLogin}
             className="underline text-sm font-extralight"
-            disabled={isLoggingIn}
           >
-            {isLoggingIn ? "Loading..." : "Log in"}
+            Log in
           </button>
         )}
       </div>
