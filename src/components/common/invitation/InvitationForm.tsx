@@ -4,19 +4,28 @@ import { useState, ChangeEvent } from "react";
 import ConfirmButton from "@/components/common/button/ConfirmButton";
 import IconButton from "@/components/common/button/IconButton";
 import closeIcon from "@/assets/x.svg";
-import { createTeam } from "@/lib/api/teams";
-import { createInvitation } from "@/lib/api/invitation";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 
 interface Props {
+  teamId?: string;
+  title?: string;
+  onSubmit: (teamIdOrName: string, emails: string[]) => Promise<void>;
   onClose: () => void;
 }
 
-export default function InviteMember({ onClose }: Props) {
+export default function InvitationForm({
+  teamId: initialTeamId,
+  title,
+  onSubmit,
+  onClose,
+}: Props) {
   const [teamName, setTeamName] = useState("");
   const [inviteeEmail, setInviteeEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const formTitle =
+    title ?? (initialTeamId ? "팀원 초대" : "팀 생성/팀원 초대");
 
   const handleTeamNameChange = (event: ChangeEvent<HTMLInputElement>) =>
     setTeamName(event.target.value);
@@ -24,8 +33,8 @@ export default function InviteMember({ onClose }: Props) {
   const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) =>
     setInviteeEmail(event.target.value);
 
-  const handleSendInvite = async () => {
-    if (teamName.trim().length === 0) {
+  const handleTeamInvite = async () => {
+    if (!initialTeamId && teamName.trim().length === 0) {
       setError("팀 제목을 입력하세요.");
       return;
     }
@@ -42,9 +51,7 @@ export default function InviteMember({ onClose }: Props) {
 
     setIsLoading(true);
     try {
-      // 팀 생성 -> 초대
-      const { teamId } = await createTeam(teamName);
-      await createInvitation(teamId, emails);
+      await onSubmit(initialTeamId ?? teamName, emails);
       onClose();
     } catch (error: any) {
       setError(error.message || "오류가 발생했습니다.");
@@ -54,17 +61,22 @@ export default function InviteMember({ onClose }: Props) {
   };
 
   return (
-    <div className="p-8 w-[600px] min-h-[300px] bg-white rounded-lg">
-      <div className="flex justify-end">
+    <div className="p-8 pt-4 w-[600px] min-h-[200px] bg-white rounded-lg">
+      <div className="flex justify-between items-center pb-8">
+        <h2 className="text-xl font-bold text-gray-500">{formTitle}</h2>
         <IconButton icon={closeIcon} onClick={onClose} alt="close icon" />
       </div>
-      <input
-        name="Team Title"
-        placeholder="New Title"
-        className="border-b-2 border-border-editor w-[500px] h-[40px] text-2xl outline-none"
-        value={teamName}
-        onChange={handleTeamNameChange}
-      />
+
+      {!initialTeamId && (
+        <input
+          name="Team Title"
+          placeholder="New Title"
+          className="border-b-2 border-border-editor w-[500px] h-[40px] text-2xl outline-none"
+          value={teamName}
+          onChange={handleTeamNameChange}
+        />
+      )}
+
       <div className="mt-4">
         <input
           placeholder="쉼표를 사용하여 이메일을 작성하세요"
@@ -76,7 +88,7 @@ export default function InviteMember({ onClose }: Props) {
           text="Invite"
           type="button"
           size="sm"
-          onClick={handleSendInvite}
+          onClick={handleTeamInvite}
         />
         {error && <p className="text-red-500 mb-2">{error}</p>}
         {isLoading && <LoadingSpinner />}

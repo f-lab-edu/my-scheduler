@@ -48,6 +48,7 @@ export default {
           agendaBox: "#2e3551",
           tabs: "#2e3653",
           lightGray: "#DBDBDB",
+          extraLightGray: "#f0ebeb",
         },
         border: {
           search: "#817a7a",
@@ -76,6 +77,12 @@ export default {
         },
         shadow: "#545454",
         backdrop: "#00000080",
+        profiles: {
+          green: "#92B96F",
+          orange: "#FFA42D",
+          pink: "#FFA9B0",
+          gray: "#9D9D9D",
+        },
       },
     },
   },

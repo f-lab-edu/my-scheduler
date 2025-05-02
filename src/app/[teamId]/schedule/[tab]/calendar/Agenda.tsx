@@ -27,12 +27,12 @@ export default function Agenda({ tasks, year, month }: Props) {
         </p>
       ) : (
         filtered.map((task) => (
-          <div key={task.id} className="flex gap-2 items-center">
+          <div key={task.id} className="flex gap-2">
             <div
               className="w-5 h-5 rounded-sm"
               style={{ backgroundColor: task.color }}
             />
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-center">
               <strong>{task.title}</strong>
               <div className="text-sm">
                 <span>{task.start} → </span>
