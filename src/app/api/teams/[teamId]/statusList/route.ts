@@ -104,7 +104,7 @@ export async function DELETE(
       .doc(body.id)
       .delete();
 
-    return new NextResponse(null, { status: 204 });
+    return new NextResponse(null, { status: 200 });
   } catch (error: any) {
     console.error("DELETE /statusList error", error);
     return NextResponse.json(

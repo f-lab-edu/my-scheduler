@@ -47,7 +47,6 @@ export default function InviteMember({ onClose }: Props) {
       await createInvitation(teamId, emails);
       onClose();
     } catch (error: any) {
-      console.error(error);
       setError(error.message || "오류가 발생했습니다.");
     } finally {
       setIsLoading(false);
