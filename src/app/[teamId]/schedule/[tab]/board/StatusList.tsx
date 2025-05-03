@@ -10,11 +10,11 @@ import MenuList from "@/components/dropdown/MenuList";
 import IconButton from "@/components/common/button/IconButton";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
 import { useModal } from "@/hooks/useModal";
-import useDropdownPosition from "@/hooks/useDropdownPosition";
+import { useRealtimeTask } from "@/hooks/useRealtimeTask";
+import { useDropdownToggle } from "@/hooks/useDropdown";
 import { StatusType, TaskType } from "@/types/scheduleType";
 import menuIcon from "@/assets/three-dots.svg";
 import plusIcon from "@/assets/plus.svg";
-import { useRealtimeTask } from "@/hooks/useRealtimeTask";
 
 interface Props {
   status: StatusType;
@@ -24,9 +24,10 @@ interface Props {
 export default function StatusList({ status, onDeleteStatus }: Props) {
   const { open, openModal, closeModal } = useModal();
   const { dropdownPosition, setDropdownPosition, toggleDropdown } =
-    useDropdownPosition();
+    useDropdownToggle();
 
-  const { setTaskList, onUpdateTask } = useContentsContext();
+  const { setTaskList, onUpdateTask, searchValue, filterList } =
+    useContentsContext();
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [editingTask, setEditingTask] = useState<TaskType | null>(null);
   const [dropTargetIndex, setDropTargetIndex] = useState<number | null>(null);
@@ -39,6 +40,23 @@ export default function StatusList({ status, onDeleteStatus }: Props) {
 
   const filteredTasks = realtimeTasks
     .filter((task) => task.statusId === status.id)
+    .filter((task) => {
+      const term = searchValue.toLowerCase().trim();
+      const priorities = filterList.map((priority) =>
+        priority.toLowerCase().trim()
+      );
+      const matchesSearch =
+        !term ||
+        task.title.toLowerCase().includes(term) ||
+        task.description.toLowerCase().includes(term) ||
+        task.priority.toLowerCase().includes(term);
+
+      const matchesPriority =
+        priorities.length === 0 ||
+        priorities.includes(task.priority.toLowerCase().trim());
+
+      return matchesSearch && matchesPriority;
+    })
     .sort((a, b) => a.order - b.order);
 
   const handleCloseConfirmDialog = () => setOpenConfirmDialog(false);

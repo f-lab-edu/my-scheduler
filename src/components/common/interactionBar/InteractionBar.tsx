@@ -1,6 +1,6 @@
 "use client";
 import { useParams } from "next/navigation";
-import SearchBar from "@/app/[teamId]/schedule/interactionBar/SearchBar";
+import SearchBar from "@/components/common/interactionBar/SearchBar";
 import AddNewButton from "@/components/common/button/AddNewButton";
 import FilterButton from "@/components/common/button/FilterButtons";
 import { useContentsContext } from "@/app/[teamId]/schedule/contents/ContentsContext";
@@ -10,14 +10,28 @@ import { useModal } from "@/hooks/useModal";
 import Modal from "@/components/common/Modal";
 import InvitationForm from "@/components/common/invitation/InvitationForm";
 import { createInvitation } from "@/lib/api/invitation";
+import { useDropdownApply } from "@/hooks/useDropdown";
+import PriorityFilterDropdown from "@/components/dropdown/PriorityFilterDropdown";
+import { Priority } from "@/types/scheduleType";
 
 export default function InteractionBar() {
   const { tab, teamId } = useParams();
   const { open, openModal, closeModal } = useModal();
+  const {
+    dropdownPosition,
+    selectedPriorities,
+    openDropdown,
+    closeDropdown,
+    togglePriority,
+    applyPriorities,
+  } = useDropdownApply({
+    onApply: (priorities: Priority[]) => setFilterList(priorities),
+  });
 
   const id = Array.isArray(teamId) ? teamId[0] : teamId!;
 
-  const { setIsAddStatusVisible, taskList } = useContentsContext();
+  const { setIsAddStatusVisible, taskList, setFilterList } =
+    useContentsContext();
   const handleChangeAddStatusInput = () => {
     setIsAddStatusVisible(true);
   };
@@ -43,8 +57,18 @@ export default function InteractionBar() {
       </span>
       <span className="flex items-center gap-3">
         <SearchBar />
-        <FilterButton />
+        <FilterButton onClick={openDropdown} />
       </span>
+
+      {dropdownPosition && (
+        <PriorityFilterDropdown
+          dropdownPosition={dropdownPosition}
+          selectedPriorities={selectedPriorities}
+          togglePriority={togglePriority}
+          applyPriorities={applyPriorities}
+          onClose={closeDropdown}
+        />
+      )}
 
       {open && (
         <Modal onClose={closeModal}>

@@ -3,7 +3,7 @@ interface Props {
   variant?: "confirm" | "cancel";
   text: string;
   type?: "button" | "submit";
-  size?: "sm" | "md";
+  size?: "xs" | "sm" | "md";
   onClick: () => void;
 }
 
@@ -23,7 +23,9 @@ export default function ConfirmButton({
 
   const confirmClassName = variantClassNames[variant];
   const sizeClassName =
-    size === "sm"
+    size === "xs"
+      ? "w-[55px] h-[30px] text-[10px] p-[5px]"
+      : size === "sm"
       ? "w-[75px] h-[40px] text-[14px] p-[10px]"
       : "w-[108px] h-11 px-5";
 
