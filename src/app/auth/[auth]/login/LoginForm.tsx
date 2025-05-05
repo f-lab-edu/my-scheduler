@@ -44,17 +44,13 @@ export default function LoginForm() {
     }
   );
 
-  const loginWithEmail = async (
-    email: string,
-    password: string,
-    stayLoggedIn: boolean
-  ) => {
+  const loginWithEmail = async (email: string, password: string) => {
     if (!auth) return;
     setIsLoading(true);
     try {
       await setPersistence(
         auth,
-        stayLoggedIn ? browserSessionPersistence : inMemoryPersistence
+        isLoggedIn ? browserSessionPersistence : inMemoryPersistence
       );
 
       const result = await signInWithEmailAndPassword(auth, email, password);
@@ -65,7 +61,7 @@ export default function LoginForm() {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token, stayLoggedIn }),
+          body: JSON.stringify({ token, stayLoggedIn: isLoggedIn }),
           credentials: "include",
         }
       );
@@ -110,10 +106,8 @@ export default function LoginForm() {
   };
 
   const onSubmit = async (data: LogInFormType) => {
-    if (isLoggedIn) {
-    }
     if (data.email && data.password)
-      await loginWithEmail(data.email, data.password, isLoggedIn);
+      await loginWithEmail(data.email, data.password);
   };
 
   return (
