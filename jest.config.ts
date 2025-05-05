@@ -1,3 +1,4 @@
+import "ts-node/register";
 import type { Config } from "jest";
 import nextJest from "next/jest.js";
 
@@ -6,6 +7,7 @@ const createJestConfig = nextJest({
 });
 
 const config: Config = {
+  preset: "ts-jest",
   coverageProvider: "v8",
   testEnvironment: "jsdom",
   moduleNameMapper: {
