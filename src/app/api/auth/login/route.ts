@@ -5,7 +5,7 @@ import "@/lib/firebase";
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
     const { token, stayLoggedIn } = await request.json();
-    //firebase admin를 통해 유효한 토큰인지 검증
+
     const decodedToken = await getAuth().verifyIdToken(token);
 
     const baseUrl = request.nextUrl.origin;
