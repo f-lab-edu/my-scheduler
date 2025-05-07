@@ -66,8 +66,10 @@ export default function LoginForm() {
         }
       );
 
-      if (response.ok && response.redirected) router.replace(response.url);
-      else {
+      if (response.ok && response.redirected) {
+        router.replace(response.url);
+        router.refresh();
+      } else {
         const json = await response.json();
         throw new Error(json.error || "로그인에 실패했습니다.");
       }
