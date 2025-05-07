@@ -28,5 +28,3 @@
 
 ### 폴더구조
 - 특정 라우트에서만 사용되는 컴포넌트를 묶고 공통 컴포넌트는 components의 common으로 분리
-  
-![Screenshot 2025-03-18 at 6 08 51 PM](https://github.com/user-attachments/assets/4c956954-b4bc-423d-9071-25de3e46c559)
