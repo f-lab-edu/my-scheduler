@@ -3,7 +3,6 @@ import { useDropdownToggle, useDropdownApply } from "@/hooks/useDropdown";
 import { Priority } from "@/types/scheduleType";
 
 const HIGH: Priority = "High";
-const MEDIUM: Priority = "Medium";
 const LOW: Priority = "Low";
 
 describe("useDropdownToggle 훅 테스트", () => {
