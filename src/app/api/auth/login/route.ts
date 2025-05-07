@@ -4,8 +4,8 @@ import "@/lib/firebase";
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
-    const { token } = await request.json();
-    //firebase admin를 통해 유효한 토큰인지 검증
+    const { token, stayLoggedIn } = await request.json();
+
     const decodedToken = await getAuth().verifyIdToken(token);
 
     const baseUrl = request.nextUrl.origin;
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 5, // 5일(초)
+      maxAge: stayLoggedIn ? 60 * 60 * 24 * 5 : undefined, // 5일(초)
       path: "/",
     });
 

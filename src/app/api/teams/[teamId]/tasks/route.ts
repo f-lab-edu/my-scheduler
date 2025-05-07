@@ -51,7 +51,7 @@ export async function POST(
       updatedAt: Date.now(),
     });
 
-    return NextResponse.json({ id: docRef.id, ...data }, { status: 201 }); //201 -> created 요청
+    return NextResponse.json({ id: docRef.id, ...data }, { status: 201 });
   } catch (error: any) {
     console.error(error);
     return NextResponse.json(
