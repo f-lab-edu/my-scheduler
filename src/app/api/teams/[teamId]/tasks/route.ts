@@ -55,8 +55,8 @@ export async function POST(
   } catch (error: any) {
     console.error(error);
     return NextResponse.json(
-      { error: "잘못된 JSON 형식입니다." },
-      { status: 400 }
+      { error: error.message },
+      { status: error.status }
     );
   }
 }
@@ -73,8 +73,8 @@ export async function PATCH(
   } catch (error: any) {
     console.error(error);
     return NextResponse.json(
-      { error: "잘못된 JSON 형식입니다." },
-      { status: 400 }
+      { error: error.message },
+      { status: error.status }
     );
   }
 
@@ -143,11 +143,8 @@ export async function DELETE(
     await getRtdb().ref(`teams/${teamId}/tasks/${body.id}`).remove();
 
     return NextResponse.json(null, { status: 204 });
-  } catch (error) {
+  } catch (error: any) {
     console.error("DELETE /task error", error);
-    return NextResponse.json(
-      { error: "상태 삭제에 실패했습니다." },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

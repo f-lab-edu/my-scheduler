@@ -1,5 +1,4 @@
 import { generateInviteCode } from "@/util/helper";
-import { randomBytes } from "crypto";
 
 jest.mock("crypto", () => ({
   randomBytes: jest.fn(() => Buffer.from("123456789012", "hex")),
