@@ -1,5 +1,10 @@
 import { renderHook, act } from "@testing-library/react";
-import { useDropdownToggle } from "@/hooks/useDropdown";
+import { useDropdownToggle, useDropdownApply } from "@/hooks/useDropdown";
+import { Priority } from "@/types/scheduleType";
+
+const HIGH: Priority = "High";
+const MEDIUM: Priority = "Medium";
+const LOW: Priority = "Low";
 
 describe("useDropdownToggle 훅 테스트", () => {
   it("dropdownPosition의 초기 상태는 null이다", () => {
@@ -44,6 +49,59 @@ describe("useDropdownToggle 훅 테스트", () => {
     act(() => {
       result.current.toggleDropdown(mockEvent);
     });
+    expect(result.current.dropdownPosition).toBeNull();
+  });
+});
+
+describe("useDropdownApply 훅 테스트", () => {
+  let result: { current: any };
+  const onApplyMock = jest.fn();
+
+  const mockEvent = (bottom = 100, left = 50) => {
+    return {
+      currentTarget: {
+        getBoundingClientRect: () => ({ left, bottom }),
+      },
+    } as any;
+  };
+
+  beforeEach(() => {
+    const hook = renderHook(() => useDropdownApply({ onApply: onApplyMock }));
+    result = hook.result;
+  });
+
+  it("초기상태의 dropdownPosition은 null, selectedPriorities는 빈 배열이다", () => {
+    expect(result.current.dropdownPosition).toBeNull();
+    expect(result.current.selectedPriorities).toEqual([]);
+    expect(onApplyMock).not.toHaveBeenCalled();
+  });
+
+  it("openDropdown 호출 시 dropdownPosition이 셋팅되고 togglePriorites가 selectedPriorities로 셋팅된다", () => {
+    act(() => {
+      result.current.openDropdown(mockEvent(120, 80));
+    });
+    expect(result.current.dropdownPosition).toEqual({ top: 120, left: 80 });
+    expect(result.current.selectedPriorities).toEqual([]);
+  });
+
+  it("togglePriority함수 호출시 togglePriorities가 호출되어 토글된다.", () => {
+    act(() => result.current.openDropdown(mockEvent()));
+    act(() => result.current.togglePriority(HIGH));
+    expect(result.current.selectedPriorities).toEqual([HIGH]);
+
+    act(() => result.current.togglePriority(HIGH));
+    expect(result.current.selectedPriorities).toEqual([]);
+  });
+
+  it("applyPriorities 호출 시 onApply에 priorities 문자열이 전달된다", () => {
+    act(() => result.current.openDropdown(mockEvent()));
+
+    act(() => {
+      result.current.togglePriority(HIGH);
+      result.current.togglePriority(LOW);
+    });
+    act(() => result.current.applyPriorities());
+    expect(onApplyMock).toHaveBeenCalledWith([HIGH, LOW]);
     expect(result.current.dropdownPosition).toBeNull();
   });
 });
