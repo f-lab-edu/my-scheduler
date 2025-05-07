@@ -13,6 +13,7 @@ const config: Config = {
   moduleNameMapper: {
     "^.+\\.(svg)$": "<rootDir>/__mocks__/svgMock.js",
     "^.+\\.(gif)$": "<rootDir>/__mocks__/fileMock.js",
+    "^@/(.*)$": "<rootDir>/src/$1",
   },
 };
 
