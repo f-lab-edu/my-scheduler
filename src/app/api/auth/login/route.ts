@@ -4,7 +4,7 @@ import "@/lib/firebase";
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
-    const { token, stayLoggedIn } = await request.json();
+    const { token, isLoggedIn } = await request.json();
 
     const decodedToken = await getAuth().verifyIdToken(token);
 
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      maxAge: stayLoggedIn ? 60 * 60 * 24 * 5 : undefined, // 5일(초)
+      maxAge: isLoggedIn ? 60 * 60 * 24 * 5 : undefined, // 5일(초)
       path: "/",
     });
 
