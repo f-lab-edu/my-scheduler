@@ -6,22 +6,28 @@ const HIGH: Priority = "High";
 const LOW: Priority = "Low";
 
 describe("useDropdownToggle 훅 테스트", () => {
+  let result: { current: any };
+
+  const mockEvent = {
+    currentTarget: {
+      getBoundingClientRect: jest.fn(() => ({
+        left: 345,
+        bottom: 265,
+      })),
+    },
+  } as any;
+
+  beforeEach(() => {
+    const hook = renderHook(() => useDropdownToggle());
+    result = hook.result;
+  });
+
   it("dropdownPosition의 초기 상태는 null이다", () => {
     const { result } = renderHook(() => useDropdownToggle());
     expect(result.current.dropdownPosition).toBeNull();
   });
 
   it("toggleDropdown 호출 시 getBoundingClientRect 값에 따라 dropdownPosition이 설정된다", () => {
-    const { result } = renderHook(() => useDropdownToggle());
-    const mockEvent = {
-      currentTarget: {
-        getBoundingClientRect: jest.fn(() => ({
-          left: 345,
-          bottom: 265,
-        })),
-      },
-    } as any;
-
     act(() => {
       result.current.toggleDropdown(mockEvent);
     });
@@ -30,16 +36,6 @@ describe("useDropdownToggle 훅 테스트", () => {
   });
 
   it("열려있는 상태에서 toggleDropdown 호출 시 dropdownPosition은 null이 되어 토글된다", () => {
-    const { result } = renderHook(() => useDropdownToggle());
-    const mockEvent = {
-      currentTarget: {
-        getBoundingClientRect: jest.fn(() => ({
-          left: 345,
-          bottom: 265,
-        })),
-      },
-    } as any;
-
     act(() => {
       result.current.toggleDropdown(mockEvent);
     });
