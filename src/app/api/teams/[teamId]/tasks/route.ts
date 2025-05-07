@@ -24,8 +24,8 @@ export async function GET(
   } catch (error: any) {
     console.error(error);
     return NextResponse.json(
-      { error: "작업 목록 조회에 실패했습니다." },
-      { status: 500 }
+      { error: error.message },
+      { status: error.status }
     );
   }
 }
@@ -102,8 +102,8 @@ export async function PATCH(
   } catch (error: any) {
     console.error("PATCH /tasks error", error);
     return NextResponse.json(
-      { error: "Task 업데이트에 실패했습니다." },
-      { status: 500 }
+      { error: error.message },
+      { status: error.status }
     );
   }
 }
@@ -118,10 +118,9 @@ export async function DELETE(
   try {
     body = await request.json();
   } catch (error: any) {
-    console.error(error);
     return NextResponse.json(
-      { error: "잘못된 JSON 형식입니다." },
-      { status: 400 }
+      { error: error.message },
+      { status: error.status }
     );
   }
 
@@ -145,6 +144,9 @@ export async function DELETE(
     return NextResponse.json(null, { status: 204 });
   } catch (error: any) {
     console.error("DELETE /task error", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { error: error.message },
+      { status: error.status }
+    );
   }
 }
