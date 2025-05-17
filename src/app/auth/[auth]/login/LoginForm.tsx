@@ -61,13 +61,15 @@ export default function LoginForm() {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token, stayLoggedIn: isLoggedIn }),
+          body: JSON.stringify({ token, isLoggedIn }),
           credentials: "include",
         }
       );
 
-      if (response.ok && response.redirected) router.replace(response.url);
-      else {
+      if (response.ok && response.redirected) {
+        router.replace(response.url);
+        router.refresh();
+      } else {
         const json = await response.json();
         throw new Error(json.error || "로그인에 실패했습니다.");
       }
