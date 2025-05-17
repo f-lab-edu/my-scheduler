@@ -18,6 +18,7 @@ describe("useDropdownToggle 훅 테스트", () => {
   } as any;
 
   beforeEach(() => {
+    jest.clearAllMocks();
     const hook = renderHook(() => useDropdownToggle());
     result = hook.result;
   });
@@ -61,6 +62,7 @@ describe("useDropdownApply 훅 테스트", () => {
   };
 
   beforeEach(() => {
+    jest.clearAllMocks();
     const hook = renderHook(() => useDropdownApply({ onApply: onApplyMock }));
     result = hook.result;
   });
