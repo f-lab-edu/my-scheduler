@@ -12,11 +12,6 @@ describe("useModal 훅 테스트", () => {
     expect(result.current.open).toBe(false);
   });
 
-  it("openModal을 호출하면 open여부는 true가 된다", () => {
-    act(() => result.current.openModal());
-    expect(result.current.open).toBe(true);
-  });
-
   it("closeModal을 호출하면 open여부는 false가 된다", () => {
     act(() => result.current.openModal());
     expect(result.current.open).toBe(true);
