@@ -20,7 +20,6 @@ export default async function MyPage() {
 
   const db = getFirestore();
 
-  console.time("✅ fetchTeams+Profiles 시간체크");
   let teams;
   try {
     const teamDocs = await db
@@ -64,8 +63,8 @@ export default async function MyPage() {
         };
       })
     );
-  } finally {
-    console.timeEnd("✅ fetchTeams+Profiles 시간체크");
+  } catch (error: any) {
+    throw new Error(error.status, error.message);
   }
 
   return (
