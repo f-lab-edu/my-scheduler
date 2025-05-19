@@ -18,7 +18,6 @@ export default function TeamScheduleList({ data }: Props) {
   const { open, closeModal, openModal } = useModal();
 
   const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
-  const [error, setError] = useState<string>("");
 
   const handleCreateAndInvite = async (teamName: string, emails: string[]) => {
     const { teamId } = await createTeam(teamName);
@@ -62,7 +61,8 @@ export default function TeamScheduleList({ data }: Props) {
       {isErrorDialogOpen && (
         <ConfirmDialog
           onClose={() => setIsErrorDialogOpen(false)}
-          contentText={error}
+          // TODO: error.tsx 생성하여 page에서 에러 처리
+          contentText={"error"}
           closeText="Confirm"
         />
       )}

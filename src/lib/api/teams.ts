@@ -1,5 +1,3 @@
-import { TeamType } from "@/types/teamType";
-
 export interface CreateTeamType {
   teamId: string;
 }
