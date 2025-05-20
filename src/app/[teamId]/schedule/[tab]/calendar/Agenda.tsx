@@ -1,6 +1,7 @@
 "use client";
 
 import { CalendarEventType } from "@/types/scheduleType";
+import { filterTasksByMonth } from "@/util/helper";
 import dayjs from "dayjs";
 interface Props {
   tasks: CalendarEventType[];
@@ -9,15 +10,7 @@ interface Props {
 }
 
 export default function Agenda({ tasks, year, month }: Props) {
-  const monthStart = dayjs(`${year}-${month + 1}-01`);
-  const nextMonthStart = monthStart.add(1, "month");
-
-  const filtered = tasks.filter((task) => {
-    const taskStart = dayjs(task.start);
-    const taskEnd = dayjs(task.end);
-
-    return taskStart.isBefore(nextMonthStart) && taskEnd.isAfter(monthStart);
-  });
+  const filtered = filterTasksByMonth(tasks, year, month);
 
   return (
     <aside className=" mt-[64px] rounded-lg w-[500px] min-w-[505px] h-full min-h-[200px] p-5 text-white bg-background-agendaBox">
