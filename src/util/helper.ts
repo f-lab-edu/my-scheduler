@@ -1,4 +1,6 @@
+import { CalendarEventType } from "@/types/scheduleType";
 import { randomBytes } from "crypto";
+import dayjs from "dayjs";
 
 export function generateInviteCode(teamName: string) {
   /**
@@ -17,4 +19,20 @@ export function generateInviteCode(teamName: string) {
    */
   const combined = Buffer.from(`${slug}:${rand}`).toString("base64url");
   return combined;
+}
+
+export function filterTasksByMonth(
+  tasks: CalendarEventType[],
+  year: number,
+  month: number
+) {
+  const monthStart = dayjs(`${year}-${month + 1}-01`);
+  const nextMonthStart = monthStart.add(1, "month");
+
+  return tasks.filter((task) => {
+    const taskStart = dayjs(task.start);
+    const taskEnd = dayjs(task.end);
+
+    return taskStart.isBefore(nextMonthStart) && taskEnd.isAfter(monthStart);
+  });
 }
