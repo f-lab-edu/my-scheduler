@@ -2,9 +2,6 @@ import { renderHook, act } from "@testing-library/react";
 import { useDropdownToggle, useDropdownApply } from "@/hooks/useDropdown";
 import { Priority } from "@/types/scheduleType";
 
-type UseDropdownToggleReturn = ReturnType<typeof useDropdownToggle>;
-type UseDropdownApplyReturn = ReturnType<typeof useDropdownApply>;
-
 const HIGH: Priority = "High";
 const LOW: Priority = "Low";
 const LEFT: number = 345;
