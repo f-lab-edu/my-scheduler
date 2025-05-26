@@ -1,5 +1,3 @@
-import { TeamType } from "@/types/teamType";
-
 export interface CreateTeamType {
   teamId: string;
 }
@@ -15,10 +13,4 @@ export async function createTeam(teamName: string): Promise<CreateTeamType> {
   if (!response.ok) throw new Error(json.error || "팀 생성에 실패했습니다.");
 
   return json as CreateTeamType;
-}
-
-export async function getMyTeams(): Promise<TeamType[]> {
-  const response = await fetch("/api/teams/my");
-  if (!response.ok) throw new Error(`${response.status}`);
-  return (await response.json()) as TeamType[];
 }
